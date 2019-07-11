@@ -3,21 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:zw_app/common/help_obj.dart';
 
 final navList = [
-  NavObj('test', 'test', 'test', icon: Icons.ac_unit ),
-  NavObj('home', 'home/classifications', 'home'),
-  NavObj('tabBarBottom', 'tabBarBottom', 'tabBarBottom'),
+  NavObj('test', 'main/test', icon: Icons.ac_unit),
+  NavObj('home', 'main/home'),
+  NavObj('tabBarBottom', 'tabBarBottom'),
 ];
 
 class MainLayout extends StatelessWidget {
   final Widget child;
   final automaticallyImplyLeading;
+  final GlobalKey<NavigatorState> navigationKey;
 
   const MainLayout(
-      {Key key, this.automaticallyImplyLeading = false, this.child})
+      {Key key,
+      this.automaticallyImplyLeading = false,
+      this.child,
+      this.navigationKey})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+//    print(navigationKey.currentState.canPop());
+//    print(ModalRoute.of(context).settings.name);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: automaticallyImplyLeading,
@@ -49,7 +56,7 @@ class MainLayout extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: child,
+            child: Container(child: child),
           ),
         ],
       ),
@@ -57,8 +64,12 @@ class MainLayout extends StatelessWidget {
         onTap: (active) {
           Navigator.pushNamed(context, navList[active].routeName);
         },
-        currentIndex: max(0, navList
-            .indexWhere((e) => ModalRoute.of(context).settings.name.contains(e.routeNameRoot))),
+        currentIndex: max(
+            0,
+            navList.indexWhere((e) => ModalRoute.of(context)
+                .settings
+                .name
+                .contains(e.routeNameRoot))),
         items: [
           ...navList
               .map((e) => BottomNavigationBarItem(

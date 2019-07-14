@@ -1,24 +1,25 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zw_app/common/help_obj.dart';
+import 'package:zw_app/common/router_help.dart';
+import 'package:zw_app/model/log.dart';
+import 'package:zw_app/model/router.dart';
+import 'package:zw_app/view/main_page/main_page.dart';
 
-final navList = [
-  NavObj('test', 'main/test', icon: Icons.ac_unit),
-  NavObj('home', 'main/home'),
-  NavObj('tabBarBottom', 'tabBarBottom'),
-];
 
 class MainLayout extends StatelessWidget {
   final Widget child;
   final automaticallyImplyLeading;
-  final GlobalKey<NavigatorState> navigationKey;
+  final List<NavObj> navList;
 
-  const MainLayout(
-      {Key key,
-      this.automaticallyImplyLeading = false,
-      this.child,
-      this.navigationKey})
-      : super(key: key);
+  const MainLayout({
+    Key key,
+    this.automaticallyImplyLeading = false,
+    this.child,
+    @required this.navList,
+  })  : assert(navList.length > 1),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,19 +63,22 @@ class MainLayout extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (active) {
-          Navigator.pushNamed(context, navList[active].routeName);
+          homePushName(context, navList[active].routeName);
         },
         currentIndex: max(
             0,
-            navList.indexWhere((e) => ModalRoute.of(context)
-                .settings
-                .name
-                .contains(e.routeNameRoot))),
+            navList?.indexWhere((e) => Provider.of<RouterModel>(context)
+                ?.homeCurrent
+                ?.contains(e.routeName))),
         items: [
           ...navList
               .map((e) => BottomNavigationBarItem(
                     icon: Icon(e?.icon),
-                    title: Text(e?.title),
+                    title: Text(e?.title +
+                        ModalRoute.of(
+                                homeNavigationKey.currentContext ?? context)
+                            .settings
+                            .name),
                   ))
               .toList(),
         ],

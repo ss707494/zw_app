@@ -6,8 +6,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      child: ListView(
+    return ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),
@@ -24,7 +23,6 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }

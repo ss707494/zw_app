@@ -7,7 +7,6 @@ import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/view/main_page/main_page.dart';
 
-
 class MainLayout extends StatelessWidget {
   final Widget child;
   final automaticallyImplyLeading;
@@ -23,8 +22,6 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    print(navigationKey.currentState.canPop());
-//    print(ModalRoute.of(context).settings.name);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,6 +59,7 @@ class MainLayout extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: (active) {
           homePushName(context, navList[active].routeName);
         },
@@ -74,11 +72,7 @@ class MainLayout extends StatelessWidget {
           ...navList
               .map((e) => BottomNavigationBarItem(
                     icon: Icon(e?.icon),
-                    title: Text(e?.title +
-                        ModalRoute.of(
-                                homeNavigationKey.currentContext ?? context)
-                            .settings
-                            .name),
+                    title: Text(e?.title),
                   ))
               .toList(),
         ],

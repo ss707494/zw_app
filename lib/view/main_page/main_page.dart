@@ -8,8 +8,11 @@ import 'package:zw_app/view/main_page/home/component/header_bar/header_bar.dart'
 import 'package:zw_app/view/main_page/home/home.dart';
 
 final homeNavList = [
-  NavObj('home', 'home', widget: (context) => Home()),
-  NavObj('test', 'test', icon: Icons.ac_unit, widget: (context) => Text('123')),
+  NavObj('逛店', 'classifications', widget: Home()),
+  NavObj('拼乐', 'limited_time', icon: Icons.ac_unit, widget: Text('123')),
+  NavObj('达人专区', 'hot', widget: Text('123')),
+  NavObj('购物车', 'car', icon: Icons.add_a_photo, widget: Text('123')),
+  NavObj('我', 'me', widget: Text('123')),
 ];
 
 class MainPage extends StatelessWidget {
@@ -18,11 +21,11 @@ class MainPage extends StatelessWidget {
     return MainLayout(
       child: NestedNavigator(
         navigationKey: homeNavigationKey,
-        initialRoute: 'home',
+        initialRoute: homeNavList[0].routeName,
         routes: homeNavList.fold({}, (i, e) {
           return {
             ...i,
-            e.routeName: e.widget,
+            e.routeName: e.widgetBuilder,
           };
         }),
       ),

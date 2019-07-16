@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
               children: shopNavList
                   .map((e) => FlatButton(
                         onPressed: () {
-                          shopPushName(context, e.routeName);
+                          pushNameByType(context, 'shop', e.routeName);
                         },
                         child: Text(e.title),
                       ))
@@ -54,16 +54,18 @@ class Home extends StatelessWidget {
           ),
         ),
         SliverFillRemaining(
-          child: NestedNavigator(
-              navigationKey: shopNavigationKey,
-              initialRoute: shopNavList[0].routeName,
-              routes: shopNavList.fold({}, (i, e) {
-                return {
-                  ...i,
-                  e.routeName: e.widgetBuilder,
-                };
-              }),
-            ),
+          child: Container(
+            child: NestedNavigator(
+                navigationKey: shopNavigationKey,
+                initialRoute: shopNavList[0].routeName,
+                routes: shopNavList.fold({}, (i, e) {
+                  return {
+                    ...i,
+                    e.routeName: e.widgetBuilder,
+                  };
+                }),
+              ),
+          ),
         ),
 //        SliverList(
 //          delegate: SliverChildBuilderDelegate(

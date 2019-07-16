@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/help_obj.dart';
 import 'package:zw_app/common/router_help.dart';
-import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/router.dart';
-import 'package:zw_app/view/main_page/main_page.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -67,13 +65,14 @@ class MainLayout extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (active) {
-          homePushName(context, navList[active].routeName);
+//          homePushName(context, navList[active].routeName);
+          pushNameByType(context, 'home', navList[active].routeName);
         },
         currentIndex: max(
             0,
             navList?.indexWhere((e) => Provider.of<RouterModel>(context)
-                ?.homeCurrent
-                ?.contains(e.routeName))),
+                ?.getCurrent('home')
+                ?.contains(e.routeName) ?? false)),
         items: [
           ...navList
               .map((e) => BottomNavigationBarItem(

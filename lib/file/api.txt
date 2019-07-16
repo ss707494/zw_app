@@ -1,0 +1,218 @@
+
+（1）商品类别新增、编辑
+地址：域名/App/WS_StyleSelect
+参数：
+Int F_UID//用户ID,由于现在还没有用户注册，所以给一个任意数值即可
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": {
+        "CommodityTypeList": [  //商品类别数组
+            {
+                "ID": "31bab14a-9ee7-49da-9f58-fd823659cf8e",   //类别ID
+                "F_CTNameC": "一级类别1",                      //类别中文名称
+                "Picture": null                                //类别图片路径
+            },
+            {
+                "ID": "badfde4a-f566-4d48-a9aa-e2438416331c",
+                "F_CTNameC": "一级类别2",
+                "Picture": null
+            },
+            {
+                "ID": "b73c0e92-cf88-4bf0-bb57-758cf6e28ba6",
+                "F_CTNameC": "一级类别3",
+                "Picture": null
+            }
+        ],
+"BIsPopupMsg": 1,          //是否弹出提示
+        "AvailableVcoin": 24,     //可用达人币
+        "SurplusVcoin": 36    //剩余多少达人币可升级
+},
+    "maxCount": 3,
+    "page": 3,
+    "pagesize": 1
+}
+
+接口说明：
+（2）一级或二级商品类别详情页面数据接口
+地址：域名/App/ WS_StyleSelectSub
+参数：
+Int ParentID//商品类别ID
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": {
+        "CommodityTypeList": [
+            {
+                "ID": "f54726a7-1679-47eb-a62e-42837cf6ecd4",    //商品类别ID
+                "F_CTNameC": "二级类别1",                    //商品类别名称
+                "Picture": ""                                  //图片路径
+            },
+            {
+                "ID": "98b3d9fa-21d4-4ed8-ba1a-f039bc20c9e8",
+                "F_CTNameC": "二级类别2",
+                "Picture": ""
+            },
+            {
+                "ID": "42656a29-41cd-457d-9d20-455a4ad7dddd",
+                "F_CTNameC": "二级类别3",
+                "Picture": ""
+            }
+        ],
+        "CommodityList": [
+            {
+                "ID": "672ac75f-903f-4b57-8e9d-bd0039d37d32",      //商品ID
+                "F_CNameC": "商品11",                          //商品名称
+                "F_CWeight": 5600,                              //重量
+                "F_CPCompany": null,                            //单位
+                "F_CPUnitPriceMarket": 0,                        //画横线的价格
+                "F_CPUnitPriceOut": 240,                        //红色字体的价格
+                "Picture": [
+                    "http://localhost:57967\\images\\Commodity\\2fdb2e52-a0f2-4115-ae54-07521f911ee8\\20190621143235077.png"
+                ]
+            }
+        ]
+    },
+    "maxCount": 0,
+    "page": 0,
+    "pagesize": 0
+}
+
+接口说明：
+（3）三级商品类别详情页面数据接口
+地址：域名/App/ WS_StyleSelectLeaf
+参数：Int F_CTID//商品类别ID
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": [
+        {
+            "ID": "672ac75f-903f-4b57-8e9d-bd0039d37d32",         //商品ID
+            "F_CNameC": "商品11",                             //商品中文名称
+            "F_CWeight": 0,                                    //重量
+            "F_CPCompany": null,                               //单位
+            "F_CPUnitPriceMarket": 0,                           //画横线的价格
+            "F_CPUnitPriceOut": 0,                              //红色字体的价格
+            "Picture": [
+"http://localhost:57967\\images\\Commodity\\2fdb2e52-a0f2-4115-ae54-07521f911ee8\\20190621143235077.png"
+            ]
+        }
+    ],
+    "maxCount": 1,
+    "page": 1,
+    "pagesize": 1
+}
+
+接口说明：
+（4）商品排序
+地址：域名/App/ WS_SortCommodity
+参数：Int F_CTID//商品类别ID
+Int Type//排序类别 1：折扣，2销量最高…5:价格由高到低
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": [
+        {
+            "ID": null,
+            "F_CNameC": "商品五",         //商品中文名称
+            "F_CWeight": 500,              //重量
+            "F_CPCompany": "克",          //单位
+            "F_CPUnitPriceMarket": 1200,     //画横线价格
+            "F_CPUnitPriceOut": 780,         //卖价
+            "F_CPBrand": null,               //品牌
+            "Picture": [],                     //图片路径数组
+            "F_CAddDateTime": "/Date(-62135596800000)/",       //上架时间戳
+            "SalesCount": 0                                   //销售数量
+        },
+        {
+            "ID": null,
+            "F_CNameC": "商品二",
+            "F_CWeight": 500,
+            "F_CPCompany": "克",
+            "F_CPUnitPriceMarket": 1200,
+            "F_CPUnitPriceOut": 850,
+            "F_CPBrand": null,
+            "Picture": [],
+            "F_CAddDateTime": "/Date(-62135596800000)/",
+            "SalesCount": 0
+        }
+    ],
+    "maxCount": 5,
+    "page": 5,
+    "pagesize": 1
+}
+
+接口说明：
+（5）商品排序
+地址：域名/App/ WS_SearchCommodity
+参数：Int F_CTID//商品类别ID
+Decimal MinPrice//最低价格
+Decimal MaxPrice//最高价格
+String Brands; //品牌集合，逗号分隔
+Int DiscountType; //拆扣类别 1：低于七拆，2低于75拆…低于95拆
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": [
+        {
+            "ID": null,
+            "F_CNameC": "商品五",
+            "F_CWeight": 500,
+            "F_CPCompany": "克",
+            "F_CPUnitPriceMarket": 1200,
+            "F_CPUnitPriceOut": 780,
+            "F_CPBrand": null,
+            "Picture": [],
+            "F_CAddDateTime": "/Date(-62135596800000)/",
+            "SalesCount": 0
+        },
+        {
+            "ID": null,
+            "F_CNameC": "商品二",
+            "F_CWeight": 500,
+            "F_CPCompany": "克",
+            "F_CPUnitPriceMarket": 1200,
+            "F_CPUnitPriceOut": 850,
+            "F_CPBrand": null,
+            "Picture": [],
+            "F_CAddDateTime": "/Date(-62135596800000)/",
+            "SalesCount": 0
+        }
+    ],
+    "maxCount": 5,
+    "page": 5,
+    "pagesize": 1
+}
+
+由于部分子页面需求不是很明确，所以暂由以下一个接口来代替，但以后返回结构与参数是完全一样，只是接口名字会不同
+
+接口说明：
+（6）猜你喜欢
+地址：域名/App/WS_GuessLikeForYou
+参数：Int F_UID //没有注册，暂给任意数值
+返回结果：
+{
+    "result": true,
+    "msg": "查询成功",
+    "data": [
+        {
+            "ID": "672ac75f-903f-4b57-8e9d-bd0039d37d32",         //商品ID
+            "F_CNameC": "商品11",                             //商品中文名称
+            "F_CWeight": 0,                                    //重量
+            "F_CPCompany": null,                               //单位
+            "F_CPUnitPriceMarket": 0,                           //画横线的价格
+            "F_CPUnitPriceOut": 0,                              //红色字体的价格
+            "Picture": [
+               "http://localhost:57967\\images\\Commodity\\2fdb2e52-a0f2-4115-ae54-07521f911ee8\\20190621143235077.png"
+            ]
+        }
+    ],
+    "maxCount": 1,
+    "page": 1,
+    "pagesize": 1
+}

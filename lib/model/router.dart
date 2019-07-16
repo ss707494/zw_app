@@ -7,7 +7,6 @@ class RouterModel extends ChangeNotifier {
   get homeCurrent => _homeCurrent;
 
   set homeCurrent(data) {
-    print(data);
     _homeCurrent = data;
     notifyListeners();
   }

@@ -8,7 +8,7 @@ import 'package:zw_app/view/main_page/home/component/header_bar/header_bar.dart'
 import 'package:zw_app/view/main_page/home/home.dart';
 
 final homeNavList = [
-  NavObj('逛店', 'classifications', widget: Home()),
+  NavObj('逛店', 'home', widget: Home()),
   NavObj('拼乐', 'limited_time', icon: Icons.ac_unit, widget: Text('123')),
   NavObj('达人专区', 'hot', widget: Text('123')),
   NavObj('购物车', 'car', icon: Icons.add_a_photo, widget: Text('123')),

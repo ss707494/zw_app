@@ -65,7 +65,6 @@ class MainLayout extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (active) {
-//          homePushName(context, navList[active].routeName);
           pushNameByType(context, 'home', navList[active].routeName);
         },
         currentIndex: max(

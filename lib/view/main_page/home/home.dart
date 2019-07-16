@@ -9,8 +9,8 @@ import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
 final shopNavList = [
   NavObj('分类选择', 'classifications', widget: Classifications()),
   NavObj('限时选购', 'limitedTime', widget: LimitedTime()),
-  NavObj('限时选购', 'limitedTime2', widget: LimitedTime()),
-  NavObj('限时选购', 'limitedTime3', widget: LimitedTime()),
+//  NavObj('限时选购', 'limitedTime2', widget: LimitedTime()),
+//  NavObj('限时选购', 'limitedTime3', widget: LimitedTime()),
 ];
 
 class Home extends StatelessWidget {
@@ -44,6 +44,7 @@ class Home extends StatelessWidget {
               alignment: MainAxisAlignment.start,
               children: shopNavList
                   .map((e) => FlatButton(
+                        padding: EdgeInsets.all(0),
                         onPressed: () {
                           pushNameByType(context, 'shop', e.routeName);
                         },
@@ -53,31 +54,27 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
+//        SliverFixedExtentList(
+//          delegate: SliverChildBuilderDelegate(
+//              () {
+//
+//              }
+//          ),
+//        ),
         SliverFillRemaining(
           child: Container(
             child: NestedNavigator(
-                navigationKey: shopNavigationKey,
-                initialRoute: shopNavList[0].routeName,
-                routes: shopNavList.fold({}, (i, e) {
-                  return {
-                    ...i,
-                    e.routeName: e.widgetBuilder,
-                  };
-                }),
-              ),
+              navigationKey: shopNavigationKey,
+              initialRoute: shopNavList[0].routeName,
+              routes: shopNavList.fold({}, (i, e) {
+                return {
+                  ...i,
+                  e.routeName: e.widgetBuilder,
+                };
+              }),
+            ),
           ),
         ),
-//        SliverList(
-//          delegate: SliverChildBuilderDelegate(
-//            (BuildContext context, int index) {
-//              return Container(
-//                alignment: Alignment.center,
-//                color: Colors.lightBlue[100 * (index % 9)],
-//                child: Text('list item $index'),
-//              );
-//            },
-//          ),
-//        ),
       ],
     );
   }

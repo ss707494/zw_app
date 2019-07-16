@@ -46,12 +46,18 @@ class MainLayout extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Text('热搜:'),
-              Text('乐事薯片'),
-              Text('牛奶'),
-            ],
+          Padding(
+            padding: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: Row(
+              children: <Widget>[
+                Text('热搜:'),
+                Text('乐事薯片'),
+                Text('牛奶'),
+              ],
+            ),
           ),
           Expanded(
             child: Container(child: child),

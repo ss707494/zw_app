@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:zw_app/common/help_obj.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
-import 'package:zw_app/component/main_layout/main_layout.dart';
+import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
+import 'package:zw_app/view/main_page/home/classifications/classifications.dart';
+import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
+
+final shopNavList = [
+  NavObj('分类选择', 'classifications', widget: Classifications()),
+  NavObj('限时选购', 'limitedTime', widget: LimitedTime()),
+  NavObj('限时选购', 'limitedTime2', widget: LimitedTime()),
+  NavObj('限时选购', 'limitedTime3', widget: LimitedTime()),
+];
 
 class Home extends StatelessWidget {
   @override
@@ -25,30 +36,46 @@ class Home extends StatelessWidget {
         ),
         SliverAppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 1,
+          elevation: 0,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
+            titlePadding: EdgeInsets.all(0),
             title: ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () {},
-                  child: Text('分类选择'),
-                )
-              ],
+              alignment: MainAxisAlignment.start,
+              children: shopNavList
+                  .map((e) => FlatButton(
+                        onPressed: () {
+                          shopPushName(context, e.routeName);
+                        },
+                        child: Text(e.title),
+                      ))
+                  .toList(),
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Container(
-                alignment: Alignment.center,
-                color: Colors.lightBlue[100 * (index % 9)],
-                child: Text('list item $index'),
-              );
-            },
-          ),
+        SliverFillRemaining(
+          child: NestedNavigator(
+              navigationKey: shopNavigationKey,
+              initialRoute: shopNavList[0].routeName,
+              routes: shopNavList.fold({}, (i, e) {
+                return {
+                  ...i,
+                  e.routeName: e.widgetBuilder,
+                };
+              }),
+            ),
         ),
+//        SliverList(
+//          delegate: SliverChildBuilderDelegate(
+//            (BuildContext context, int index) {
+//              return Container(
+//                alignment: Alignment.center,
+//                color: Colors.lightBlue[100 * (index % 9)],
+//                child: Text('list item $index'),
+//              );
+//            },
+//          ),
+//        ),
       ],
     );
   }

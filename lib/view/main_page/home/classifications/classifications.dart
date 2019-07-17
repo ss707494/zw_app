@@ -18,18 +18,24 @@ class Classifications extends StatelessWidget {
     final classificationsModel = Provider.of<ClassificationsModel>(context);
     return InitHelp(
       init: () async {
+        classificationsModel.listLoading = true;
         var res = await httpPost('/App/WS_StyleSelect');
+        classificationsModel.listLoading = false;
         classificationsModel.list = res.data['data']['CommodityTypeList'] ?? [];
       },
-      child: Column(
-        children: [
-          Text('${classificationsModel.list.length}'),
-          FlatButton(
-            child: Text('add'),
-            onPressed: () {
-              getData(context);
-            },
-          ),
+      child: Container(
+        child: classificationsModel.listLoading ? Center(
+          child: CircularProgressIndicator(),
+        ) : Column(
+          children: [
+            Text('${classificationsModel.list.length}'),
+            FlatButton(
+              child: Text('add'),
+              onPressed: () {
+                getData(context);
+              },
+            ),
+
           ...classificationsModel.list
               ?.map((e) => Row(
             children: <Widget>[
@@ -38,7 +44,8 @@ class Classifications extends StatelessWidget {
             ],
                   ))
               ?.toList(),
-        ],
+          ],
+        ),
       ),
     );
   }

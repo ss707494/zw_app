@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zw_app/common/help_obj.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
-import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
+import 'package:zw_app/component/sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
+import 'package:zw_app/model/router.dart';
 import 'package:zw_app/view/main_page/home/classifications/classifications.dart';
 import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
 
@@ -54,25 +56,9 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
-//        SliverFixedExtentList(
-//          delegate: SliverChildBuilderDelegate(
-//              () {
-//
-//              }
-//          ),
-//        ),
-        SliverFillRemaining(
+        SliverFillRemainingBoxAdapter(
           child: Container(
-            child: NestedNavigator(
-              navigationKey: shopNavigationKey,
-              initialRoute: shopNavList[0].routeName,
-              routes: shopNavList.fold({}, (i, e) {
-                return {
-                  ...i,
-                  e.routeName: e.widgetBuilder,
-                };
-              }),
-            ),
+            child: shopNavList.firstWhere((e) => e.routeName == Provider.of<RouterModel>(context).getCurrent('shop'), orElse: () => shopNavList[0])?.widget,
           ),
         ),
       ],

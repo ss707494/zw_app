@@ -36,7 +36,7 @@ Int F_UID//用户ID,由于现在还没有用户注册，所以给一个任意数
 
 接口说明：
 （2）一级或二级商品类别详情页面数据接口
-地址：域名/App/ WS_StyleSelectSub
+地址：域名/App/WS_StyleSelectSub
 参数：
 Int ParentID//商品类别ID
 返回结果：

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/model/router.dart';
@@ -18,18 +17,5 @@ final helpKey = {
 pushNameByType(context, type, name) {
   if (Provider.of<RouterModel>(context).getCurrent(type) == name) return;
   Provider.of<RouterModel>(context).setCurrent(type, name);
-  helpKey[type].currentState.pushNamed(name);
+  helpKey[type].currentState.pushReplacementNamed(name);
 }
-
-homePushName(context, String name) {
-  if (Provider.of<RouterModel>(context).homeCurrent == name) return;
-  Provider.of<RouterModel>(context).homeCurrent = name;
-  homeNavigationKey.currentState.pushNamed(name);
-}
-
-shopPushName(context, String name) {
-  if (Provider.of<RouterModel>(context).shopCurrent == name) return;
-  Provider.of<RouterModel>(context).shopCurrent = name;
-  shopNavigationKey.currentState.pushNamed(name);
-}
-

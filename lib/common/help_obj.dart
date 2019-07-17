@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+Map<String, WidgetBuilder> getRouterByNavList(List<NavObj> list) => list.fold({}, (i, e) {
+      return {
+        ...i,
+        e.routeName: e.widgetBuilder,
+      };
+    });
+
 class NavObj {
   final icon;
   final String title;
@@ -9,10 +16,11 @@ class NavObj {
 
   get widgetBuilder => (BuildContext context) => widget;
 
-  const NavObj(this.title, this.routeName, {
+  const NavObj(
+    this.title,
+    this.routeName, {
     this.icon = Icons.home,
     this.routeNameRoot = '',
     this.widget,
   });
 }
-

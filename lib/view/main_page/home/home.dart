@@ -39,12 +39,6 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-//  @override
-//  void deactivate() {
-//    print('::::deactivate');
-//    super.deactivate();
-//  }
-
   @override
   Widget build(BuildContext context) {
     final routerModel = Provider.of<RouterModel>(context);
@@ -88,6 +82,7 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.all(0),
                   onPressed: () {
                     pushNameByType(context, 'shop', e.routeName);
+//                    _scrollViewController.jumpTo(0);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

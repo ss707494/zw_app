@@ -82,7 +82,7 @@ Int ParentID//商品类别ID
 
 接口说明：
 （3）三级商品类别详情页面数据接口
-地址：域名/App/ WS_StyleSelectLeaf
+地址：域名/App/WS_StyleSelectLeaf
 参数：Int F_CTID//商品类别ID
 返回结果：
 {

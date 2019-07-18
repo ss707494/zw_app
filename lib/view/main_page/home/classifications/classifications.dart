@@ -30,11 +30,13 @@ class Classifications extends StatelessWidget {
                 child: CircularProgressIndicator(),
               )
             : ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10),
                 children: [
                   ...classificationsModel.list
                       ?.map(
                         (e) => ClassificationCard(
                           item: e,
+                          level: 1,
                         ),
                       )
                       ?.toList(),

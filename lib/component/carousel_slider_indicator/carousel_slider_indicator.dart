@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class CarouselSliderIndicator extends StatefulWidget {
-  final items;
+  final List<Widget> items;
   final autoPlay;
   final onPageChanged;
   final height;
@@ -31,7 +31,7 @@ class _CarouselSliderIndicatorState extends State<CarouselSliderIndicator> {
       CarouselSlider(
         items: widget.items,
         autoPlay: widget.autoPlay ?? false,
-        height: widget.height ?? 200,
+        height: (widget.height ?? 200).toDouble(),
         viewportFraction: widget.viewportFraction ?? 1.0,
         onPageChanged: (index) {
           setState(() {

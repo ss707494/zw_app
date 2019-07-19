@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zw_app/common/router_help.dart';
+import 'package:zw_app/view/main_page/home/classifications/product_list/product_list.dart';
 import 'package:zw_app/view/main_page/home/classifications/sub_classifications/sub_classifications.dart';
 
 class ClassificationCard extends StatelessWidget {
@@ -34,7 +35,8 @@ class ClassificationCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text('${item['F_CTNameC']}',
+                    Text(
+                      '${item['F_CTNameC']}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -52,11 +54,16 @@ class ClassificationCard extends StatelessWidget {
           Positioned.fill(
             child: InkWell(
               onTap: () {
-                if (level == 3) return;
-                mainNavigationKey.currentState.push(MaterialPageRoute(builder: (BuildContext context) => SubClassifications(
-                  parentId: item['ID'],
-                  level: level + 1,
-                )));
+                if (level == 3) {
+                  mainNavigationKey.currentState.push(
+                      MaterialPageRoute(builder: (context) => ProductList(title: item['F_CTNameC'], typeId: item['ID'],)));
+                } else {
+                  mainNavigationKey.currentState.push(MaterialPageRoute(
+                      builder: (BuildContext context) => SubClassifications(
+                            parentId: item['ID'],
+                            level: level + 1,
+                          )));
+                }
               },
               splashColor: Colors.blue.withAlpha(80),
             ),

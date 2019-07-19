@@ -108,7 +108,7 @@ Int ParentID//商品类别ID
 
 接口说明：
 （4）商品排序
-地址：域名/App/ WS_SortCommodity
+地址：域名/App/WS_SortCommodity
 参数：Int F_CTID//商品类别ID
 Int Type//排序类别 1：折扣，2销量最高…5:价格由高到低
 返回结果：

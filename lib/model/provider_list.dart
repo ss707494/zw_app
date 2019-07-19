@@ -4,6 +4,7 @@ import 'package:zw_app/model/classifications.dart';
 import 'package:zw_app/model/http_loading.dart';
 import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/login.dart';
+import 'package:zw_app/model/product.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/sub_class.dart';
 
@@ -22,6 +23,7 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => ClassificationsModel()),
         ChangeNotifierProvider(builder: (_) => HttpLoadingModel()),
         ChangeNotifierProvider(builder: (_) => SubClassModel()),
+        ChangeNotifierProvider(builder: (_) => ProductModel()),
       ],
       child: child,
     );

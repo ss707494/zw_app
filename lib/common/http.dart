@@ -13,6 +13,8 @@ httpPost(context, path, {data}) async {
   httpLoadingModel.setCurrent(path, true);
   final res = await dio.post('$host$path').whenComplete(() {
     httpLoadingModel.setCurrent(path, false);
+//    Future.delayed(Duration(seconds: 2), () {
+//    });
   });
   return res;
 }

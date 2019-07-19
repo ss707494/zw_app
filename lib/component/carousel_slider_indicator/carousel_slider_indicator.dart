@@ -7,6 +7,7 @@ class CarouselSliderIndicator extends StatefulWidget {
   final onPageChanged;
   final height;
   final viewportFraction;
+  final double aspectRatio;
 
   const CarouselSliderIndicator(
       {Key key,
@@ -14,7 +15,8 @@ class CarouselSliderIndicator extends StatefulWidget {
       this.autoPlay,
       this.onPageChanged,
       this.height,
-      this.viewportFraction})
+      this.viewportFraction,
+      this.aspectRatio : 16 / 9})
       : super(key: key);
 
   @override
@@ -29,9 +31,10 @@ class _CarouselSliderIndicatorState extends State<CarouselSliderIndicator> {
   Widget build(BuildContext context) {
     return Stack(children: [
       CarouselSlider(
-        items: widget.items,
+        items: (widget.items ?? []).isEmpty ? [Container()] : widget.items,
         autoPlay: widget.autoPlay ?? false,
-        height: (widget.height ?? 200).toDouble(),
+        height: widget.height,
+        aspectRatio: widget.aspectRatio,
         viewportFraction: widget.viewportFraction ?? 1.0,
         onPageChanged: (index) {
           setState(() {
@@ -40,30 +43,33 @@ class _CarouselSliderIndicatorState extends State<CarouselSliderIndicator> {
           widget.onPageChanged(index);
         },
       ),
-      Positioned(
-          bottom: 0,
-          right: 0,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 10,
-              bottom: 10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-                  List.generate(widget.items.length, (i) => i).map((index) {
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(horizontal: 2.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color:
-                          _current == index ? Colors.red[400] : Colors.white),
-                );
-              }).toList(),
-            ),
-          ))
+      widget.items.length <= 1
+          ? Container()
+          : Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  bottom: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:
+                      List.generate(widget.items.length, (i) => i).map((index) {
+                    return Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin: EdgeInsets.symmetric(horizontal: 2.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == index
+                              ? Colors.red[400]
+                              : Colors.white),
+                    );
+                  }).toList(),
+                ),
+              ))
     ]);
   }
 }

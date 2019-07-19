@@ -8,32 +8,27 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    item['Picture'];
-    print(item['Picture']);
-    item['Picture'].forEach((e) {
-      print(e);
-    });
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
 //            Text('${item['Picture']}'),
-            Expanded(
-              flex: 5,
+            Container(
               child: CarouselSliderIndicator(
-                height: null,
-                items: [1]
-                    ?.map((e) => Container(
-//                          child: Image.network(
-//                            '$e',
-//                            fit: BoxFit.fill,
-//                            width: double.infinity,
-//                          ),
-                child: Text('123123'),
-                        ))
-                    ?.toList() ?? [Container()],
+                aspectRatio: 1/1,
+                items: [
+                  ...item['Picture']?.length != 0
+                      ? item['Picture']
+                          ?.map((e) => Container(
+                                child: Image.network(
+                                  '$e',
+                                  fit: BoxFit.fill,
+                                ),
+                              ))
+                          ?.toList()
+                      : []
+                ],
               ),
             ),
             Expanded(
@@ -46,8 +41,8 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              flex: 2,
+            Flexible(
+              fit: FlexFit.tight,
               child: Row(
                 children: <Widget>[
                   Container(
@@ -63,10 +58,7 @@ class ProductCard extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
                             '¥${item['F_CPUnitPriceOut']}',
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.red
-                            ),
+                            style: TextStyle(fontSize: 17, color: Colors.red),
                           ),
                         ),
                       ],

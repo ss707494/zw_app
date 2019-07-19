@@ -9,10 +9,10 @@ class TopSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
+      height: 36,
       child: TextField(
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 24),
+          contentPadding: EdgeInsets.symmetric(vertical: 9),
           filled: true,
           fillColor: Colors.grey[300],
           prefixIcon: Icon(Icons.search),

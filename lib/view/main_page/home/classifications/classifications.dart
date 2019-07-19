@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
+import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/model/classifications.dart';
-import 'package:zw_app/model/http_loading.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/classification_card/classification_card.dart';
 
 // classifications
@@ -18,30 +18,28 @@ class Classifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classificationsModel = Provider.of<ClassificationsModel>(context);
-    final httpLoadingModel = Provider.of<HttpLoadingModel>(context);
     return InitHelp(
       init: () {
         if (classificationsModel.list.length > 0) return;
         getData(classificationsModel, context);
       },
       child: Container(
-        child: httpLoadingModel.getOne(getHomeDataPath)
-            ? Center(
-                child: CircularProgressIndicator(),
+        child: LoadingHelp(
+          path: getHomeDataPath,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            children: [
+              ...classificationsModel.list
+                  ?.map(
+                    (e) => ClassificationCard(
+                  item: e,
+                  level: 1,
+                ),
               )
-            : ListView(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-                children: [
-                  ...classificationsModel.list
-                      ?.map(
-                        (e) => ClassificationCard(
-                          item: e,
-                          level: 1,
-                        ),
-                      )
-                      ?.toList(),
-                ],
-              ),
+                  ?.toList(),
+            ],
+          ),
+        ),
       ),
     );
   }

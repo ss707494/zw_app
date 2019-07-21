@@ -7,14 +7,16 @@ import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indic
 import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/view/main_page/home/classifications/classifications.dart';
+import 'package:zw_app/view/main_page/home/home_sales/home_sales.dart';
 import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
+import 'package:zw_app/view/main_page/home/may_like/may_like.dart';
 
-final shopNavList = [
+var shopNavList = [
   NavObj('分类选择', 'classifications', widget: Classifications()),
   NavObj('限时选购', 'limitedTime', widget: LimitedTime()),
-  NavObj('热销排行', 'sales', widget: LimitedTime()),
+  NavObj('热销排行', 'sales', widget: HomeSales()),
   NavObj('主题甄选', 'subjectSelection', widget: LimitedTime()),
-  NavObj('猜你喜欢', 'mayLike', widget: LimitedTime()),
+  NavObj('猜你喜欢', 'mayLike', widget: MayLike()),
 //  NavObj('限时选购', 'limitedTime2', widget: LimitedTime()),
 //  NavObj('限时选购', 'limitedTime3', widget: LimitedTime()),
 ];
@@ -49,79 +51,87 @@ class _HomeState extends State<Home> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: CarouselSliderIndicator(
-              items: [1, 2, 3, 4, 5]
-                  .map((i) => Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.network(
-                          'https://images.pexels.com/photos/2553409/pexels-photo-2553409.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-                          fit: BoxFit.fill,
-                        ),
-                      ))
-                  .toList(),
+              items: [
+                ...?[1, 2, 3, 4, 5]
+                    .map((i) => Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    'https://images.pexels.com/photos/2553409/pexels-photo-2553409.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+                    fit: BoxFit.fill,
+                  ),
+                ))
+                    .toList()
+              ],
             ),
           ),
         ),
-        SliverAppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          pinned: true,
-          automaticallyImplyLeading: false,
-          title: ButtonTheme(
-            padding: EdgeInsets.symmetric(
-              vertical: 3,
-              horizontal: 0,
-            ),
-            minWidth: 65,
-            child: ButtonBar(
-              alignment: MainAxisAlignment.spaceBetween,
-              children: shopNavList.map((e) {
-                bool isCurrent = e.routeName ==
-                    (routerModel.getCurrent('shop') ??
-                        shopNavList[0].routeName);
-                return FlatButton(
-                  padding: EdgeInsets.all(0),
-                  onPressed: () {
-                    pushNameByType(context, 'shop', e.routeName);
+        SliverOverlapAbsorber(
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          child: SliverAppBar(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            elevation: 0,
+            pinned: true,
+            automaticallyImplyLeading: false,
+            title: ButtonTheme(
+              padding: EdgeInsets.symmetric(
+                vertical: 0,
+                horizontal: 0,
+              ),
+              minWidth: 65,
+              child: ButtonBar(
+                alignment: MainAxisAlignment.spaceBetween,
+                children: shopNavList.map((e) {
+                  bool isCurrent = e.routeName ==
+                      (routerModel.getCurrent('shop') ??
+                          shopNavList[0].routeName);
+                  return FlatButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {
+                      pushNameByType(context, 'shop', e.routeName);
 //                    _scrollViewController.jumpTo(0);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        e.title,
-                        style: isCurrent
-                            ? TextStyle(
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          e.title,
+                          style: isCurrent
+                              ? TextStyle(
+                                  color: Colors.red[400],
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              : null,
+                        ),
+                        isCurrent
+                            ? Container(
+                                margin: EdgeInsets.only(top: 4),
+                                height: 3,
+                                width: 44,
                                 color: Colors.red[400],
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
                               )
-                            : null,
-                      ),
-                      isCurrent
-                          ? Container(
-                              margin: EdgeInsets.only(top: 4),
-                              height: 3,
-                              width: 44,
-                              color: Colors.red[400],
-                            )
-                          : Container(),
-                    ],
-                  ),
-                );
-              }).toList(),
+                            : Container(),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),
       ],
-      body: NestedNavigator(
-        initialRoute: shopNavList[0].routeName,
-        navigationKey: shopNavigationKey,
-        routes: shopNavList.fold({}, (i, e) {
-          return {
-            ...i,
-            e.routeName: e.widgetBuilder,
-          };
-        }),
+      body: Container(
+        margin: EdgeInsets.only(top: 56),
+        child: NestedNavigator(
+          initialRoute: shopNavList[0].routeName,
+          navigationKey: shopNavigationKey,
+          routes: shopNavList.fold({}, (i, e) {
+            return {
+              ...i,
+              e.routeName: e.widgetBuilder,
+            };
+          }),
+        ),
       ),
     );
   }

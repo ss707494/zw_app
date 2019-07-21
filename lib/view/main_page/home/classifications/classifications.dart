@@ -11,6 +11,7 @@ import 'package:zw_app/view/main_page/home/classifications/component/classificat
 class Classifications extends StatelessWidget {
 
   getData(classificationsModel, context) async {
+    if (classificationsModel.list.length > 0) return;
     var res = await httpPost(context, getHomeDataPath);
     classificationsModel.list = res.data['data']['CommodityTypeList'] ?? [];
   }
@@ -20,25 +21,22 @@ class Classifications extends StatelessWidget {
     final classificationsModel = Provider.of<ClassificationsModel>(context);
     return InitHelp(
       init: () {
-        if (classificationsModel.list.length > 0) return;
         getData(classificationsModel, context);
       },
-      child: Container(
-        child: LoadingHelp(
-          path: getHomeDataPath,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              ...classificationsModel.list
-                  ?.map(
-                    (e) => ClassificationCard(
-                  item: e,
-                  level: 1,
-                ),
-              )
-                  ?.toList(),
-            ],
-          ),
+      child: LoadingHelp(
+        path: getHomeDataPath,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          children: [
+            ...classificationsModel.list
+                ?.map(
+                  (e) => ClassificationCard(
+                item: e,
+                level: 1,
+              ),
+            )
+                ?.toList(),
+          ],
         ),
       ),
     );

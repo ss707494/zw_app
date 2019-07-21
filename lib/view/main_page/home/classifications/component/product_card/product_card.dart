@@ -13,7 +13,6 @@ class ProductCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-//            Text('${item['Picture']}'),
             Container(
               child: CarouselSliderIndicator(
                 aspectRatio: 1/1,
@@ -71,14 +70,12 @@ class ProductCard extends StatelessWidget {
                     elevation: 1,
                     mini: true,
                     backgroundColor: Colors.red,
-//                    fillColor: Colors.red.withAlpha(90),
                     onPressed: () {},
                     shape: CircleBorder(),
                     child: Icon(
                       Icons.shopping_cart,
                     ),
-//                    icon: Icon(Icons.shopping_cart,),
-                  )
+                  ),
                 ],
               ),
             ),

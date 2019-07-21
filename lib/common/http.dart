@@ -10,11 +10,11 @@ final host = 'http://rap2api.taobao.org/app/mock/222495';
 
 httpPost(context, path, {data}) async {
   final httpLoadingModel = Provider.of<HttpLoadingModel>(context);
-  httpLoadingModel.setCurrent(path, true);
+  Future.delayed(Duration.zero, () {
+    httpLoadingModel.setCurrent(path, true);
+  });
   final res = await dio.post('$host$path').whenComplete(() {
     httpLoadingModel.setCurrent(path, false);
-//    Future.delayed(Duration(seconds: 2), () {
-//    });
   });
   return res;
 }

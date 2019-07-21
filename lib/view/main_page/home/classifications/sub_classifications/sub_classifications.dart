@@ -25,8 +25,8 @@ class SubClassifications extends StatelessWidget {
     }
   }
 
-  getData(SubClassModel model, context) async {
-    setData(model, {});
+  getData(context) async {
+    final model = Provider.of<SubClassModel>(context);
     var res = await httpPost(
       context,
       getSubClassPath,
@@ -37,12 +37,9 @@ class SubClassifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subClassModel = Provider.of<SubClassModel>(context);
-    var data = level == 2 ? subClassModel.subData2 : subClassModel.subData3;
-    data ??= {};
     return InitHelp(
       init: () {
-        getData(subClassModel, context);
+        getData(context);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -53,50 +50,56 @@ class SubClassifications extends StatelessWidget {
           path: getSubClassPath,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      ...data['CommodityTypeList']
-                          ?.map((e) => ClassificationCard(
-                        item: e,
-                        level: level,
-                      ))
-                          ?.toList() ??
-                          [],
-                    ],
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      '热门推荐',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+            child: Consumer<SubClassModel>(
+              builder: (_, subClassModel, __) {
+                var data = level == 2 ? subClassModel.subData2 : subClassModel.subData3;
+                data ??= {};
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          ...data['CommodityTypeList']
+                              ?.map((e) => ClassificationCard(
+                            item: e,
+                            level: level,
+                          ))
+                              ?.toList() ??
+                              [],
+                        ],
                       ),
                     ),
-                  ),
-                ),
-                SliverGrid.count(
-                  childAspectRatio: 10 / 14,
-                  crossAxisCount: 2,
-                  children: [
-                    ...data['CommodityList']
-                        ?.map((e) => ProductCard(
-                      item: e,
-                    ))
-                        ?.toList() ??
-                        [],
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.all(5),
+                        child: Text(
+                          '热门推荐',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverGrid.count(
+                      childAspectRatio: 10 / 14,
+                      crossAxisCount: 2,
+                      children: [
+                        ...data['CommodityList']
+                            ?.map((e) => ProductCard(
+                          item: e,
+                        ))
+                            ?.toList() ??
+                            [],
+                      ],
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(height: 20),
+                    )
                   ],
-                ),
-                SliverToBoxAdapter(
-                  child: Container(height: 20),
-                )
-              ],
+                );
+              },
             ),
           ),
         ),

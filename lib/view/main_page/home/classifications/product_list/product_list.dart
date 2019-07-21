@@ -87,18 +87,6 @@ class ProductList extends StatelessWidget {
                       item: e,
                     ))
                         .toList(),
-                    ...productModel
-                        .getList()
-                        .map((e) => ProductCard(
-                      item: e,
-                    ))
-                        .toList(),
-                    ...productModel
-                        .getList()
-                        .map((e) => ProductCard(
-                      item: e,
-                    ))
-                        .toList(),
                   ],
                 ),
               ),

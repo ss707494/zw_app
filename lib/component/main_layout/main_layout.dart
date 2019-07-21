@@ -53,7 +53,7 @@ class MainLayout extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
               left: 20,
-              bottom: 10,
+              bottom: 2,
             ),
             child: Row(
               children: <Widget>[

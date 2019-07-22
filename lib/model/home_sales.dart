@@ -18,7 +18,7 @@ class HomeSalesModel extends ChangeNotifier {
 
   var _list;
 
-  get list => _list;
+  get list => _list ?? [];
 
   set list(data) {
     _list = data;

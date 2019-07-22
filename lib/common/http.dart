@@ -6,7 +6,8 @@ import 'package:zw_app/model/http_loading.dart';
 
 var dio = Dio();
 
-final host = 'http://rap2api.taobao.org/app/mock/222495';
+//final host = 'http://rap2api.taobao.org/app/mock/222495';
+final host = 'http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api';
 
 httpPost(context, path, {data}) async {
   final httpLoadingModel = Provider.of<HttpLoadingModel>(context);

@@ -5,29 +5,16 @@ import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/loading_help/loading_help.dart';
-import 'package:zw_app/model/limited_time.dart';
+import 'package:zw_app/model/subject_selection.dart';
+import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
 
-class LimitedTime extends StatelessWidget {
-
+class SubjectSelection extends StatelessWidget {
   getData(context) async {
-    final limitedTimeModel = Provider.of<LimitedTimeModel>(context);
-    if (limitedTimeModel.list.length > 0) return;
+    final subjectSelectionModel = Provider.of<SubjectSelectionModel>(context);
+    if (subjectSelectionModel.list.length > 0) return;
     var res = await httpPost(context, getMayLikeListPath);
-    limitedTimeModel.list = res.data['data'] ?? [];
+    subjectSelectionModel.list = res.data['data'] ?? [];
   }
-
-  buildTimerNumber(String text) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 2),
-        padding: EdgeInsets.all(4),
-        color: Colors.black.withAlpha(200),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-          ),
-        ),
-      );
 
   buildCard(item) => Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -157,41 +144,38 @@ class LimitedTime extends StatelessWidget {
       },
       child: LoadingHelp(
         path: getMayLikeListPath,
-        child: Consumer<LimitedTimeModel>(
-          builder: (_, limitedTimeModel, __) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  floating: true,
-                  titleSpacing: 0,
-                  title: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          '限时抢购: ',
-                          style: TextStyle(fontSize: 16),
+        child: Consumer<SubjectSelectionModel>(
+          builder: (_, subjectSelectionModel, __) => Container(
+//            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: ListView(
+              children: [
+                Container(
+                  height: 300,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Expanded(
+                        child: Image.network(
+                          'https://images.pexels.com/photos/1492219/pexels-photo-1492219.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                          fit: BoxFit.fill,
                         ),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                        Text(':'),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                        Text(':'),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        height: 140 * 1.5,
+                        child: ListView.builder(
+                          itemCount: subjectSelectionModel.list.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => Container(
+                            width: 100 * 1.5,
+                            child: ProductCard(
+                              item: subjectSelectionModel.list[index],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    ...?limitedTimeModel.list.map(buildCard).toList(),
-                  ]),
                 ),
               ],
             ),

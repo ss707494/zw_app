@@ -169,30 +169,58 @@ class HomeSales extends StatelessWidget {
                   pinned: true,
                   floating: true,
                   titleSpacing: 0,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      ...?[
-                        ['24小时排行', 1],
-                        ['本周排行', 2],
-                        ['本月排行', 3],
-                      ].map((e) => FlatButton(
-                            padding: EdgeInsets.symmetric(vertical: 0),
-                            child: Text(
-                              e[0],
-                              style: TextStyle(
-                                color: homeSalesModel.currentType == e[1]
-                                    ? Colors.red
-                                    : null,
+                  flexibleSpace: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        ...?[
+                          ['24小时排行', 1],
+                          ['本周排行', 2],
+                          ['本月排行', 3],
+                        ].map((e) => FlatButton(
+                              padding: EdgeInsets.symmetric(vertical: 0),
+                              child: Text(
+                                e[0],
+                                style: TextStyle(
+                                  color: homeSalesModel.currentType == e[1]
+                                      ? Colors.red
+                                      : null,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              homeSalesModel.currentType = e[1];
-                              getData(context);
-                            },
-                          )),
-                    ],
+                              onPressed: () {
+                                homeSalesModel.currentType = e[1];
+                                getData(context);
+                              },
+                            )),
+                      ],
+                    ),
                   ),
+//                  title: Container(
+//                    child: Row(
+//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                      children: <Widget>[
+//                        ...?[
+//                          ['24小时排行', 1],
+//                          ['本周排行', 2],
+//                          ['本月排行', 3],
+//                        ].map((e) => FlatButton(
+//                              padding: EdgeInsets.symmetric(vertical: 0),
+//                              child: Text(
+//                                e[0],
+//                                style: TextStyle(
+//                                  color: homeSalesModel.currentType == e[1]
+//                                      ? Colors.red
+//                                      : null,
+//                                ),
+//                              ),
+//                              onPressed: () {
+//                                homeSalesModel.currentType = e[1];
+//                                getData(context);
+//                              },
+//                            )),
+//                      ],
+//                    ),
+//                  ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(

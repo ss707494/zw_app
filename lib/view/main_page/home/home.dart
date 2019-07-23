@@ -10,12 +10,13 @@ import 'package:zw_app/view/main_page/home/classifications/classifications.dart'
 import 'package:zw_app/view/main_page/home/home_sales/home_sales.dart';
 import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
 import 'package:zw_app/view/main_page/home/may_like/may_like.dart';
+import 'package:zw_app/view/main_page/home/subject_selection/subject_selection.dart';
 
 var shopNavList = [
   NavObj('分类选择', 'classifications', widget: Classifications()),
   NavObj('限时选购', 'limitedTime', widget: LimitedTime()),
   NavObj('热销排行', 'sales', widget: HomeSales()),
-  NavObj('主题甄选', 'subjectSelection', widget: LimitedTime()),
+  NavObj('主题甄选', 'subjectSelection', widget: SubjectSelection()),
   NavObj('猜你喜欢', 'mayLike', widget: MayLike()),
 //  NavObj('限时选购', 'limitedTime2', widget: LimitedTime()),
 //  NavObj('限时选购', 'limitedTime3', widget: LimitedTime()),
@@ -121,7 +122,7 @@ class _HomeState extends State<Home> {
         ),
       ],
       body: Container(
-        margin: EdgeInsets.only(top: 56),
+        margin: EdgeInsets.only(top: 55),
         child: NestedNavigator(
           initialRoute: shopNavList[0].routeName,
           navigationKey: shopNavigationKey,

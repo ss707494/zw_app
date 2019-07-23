@@ -40,7 +40,9 @@ class _CarouselSliderIndicatorState extends State<CarouselSliderIndicator> {
           setState(() {
             _current = index;
           });
-          widget.onPageChanged(index);
+          if (widget.onPageChanged != null) {
+            widget.onPageChanged(index);
+          }
         },
       ),
       widget.items.length <= 1

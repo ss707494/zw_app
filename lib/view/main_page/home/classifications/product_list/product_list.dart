@@ -54,30 +54,35 @@ class ProductList extends StatelessWidget {
               height: 1,
               color: Colors.grey.withAlpha(150),
             ),
-            ButtonTheme(
-              layoutBehavior: ButtonBarLayoutBehavior.constrained,
-              child: ButtonBar(
-                alignment: MainAxisAlignment.spaceAround,
+            SizedBox(
+              height: 35,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  FlatButton(
-                    child: Text('排序'),
-                    onPressed: () {
-                      _scaffoldState.currentState.openDrawer();
-                    },
-                  ),
-                  FlatButton(
-                    child: Text('筛选'),
-                    onPressed: () {
-                      _scaffoldState.currentState.openEndDrawer();
-                    },
-                  ),
-                ],
+                    FlatButton(
+                      child: Text('排序'),
+                      onPressed: () {
+                        _scaffoldState.currentState.openDrawer();
+                      },
+                      padding: EdgeInsets.all(0),
+                    ),
+                    FlatButton(
+                      padding: EdgeInsets.all(0),
+                      child: Text('筛选'),
+                      onPressed: () {
+                        _scaffoldState.currentState.openEndDrawer();
+                      },
+                    ),
+                  ],
               ),
             ),
             Expanded(
               child: LoadingHelp(
                 path: getProductListPath,
                 child: GridView.count(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
                   childAspectRatio: 10 / 14,
                   crossAxisCount: 2,
                   children: <Widget>[

@@ -4,6 +4,7 @@ import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/loading_help/loading_help.dart';
+import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/model/home_sales.dart';
 
 class HomeSales extends StatelessWidget {
@@ -162,7 +163,8 @@ class HomeSales extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             child: CustomScrollView(
               slivers: [
-                SliverAppBar(
+                SliverAppBarHeight(
+                  customizeHeight: 40,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   elevation: 0,
                   automaticallyImplyLeading: false,

@@ -5,6 +5,7 @@ import 'package:zw_app/common/help_obj.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
+import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/view/main_page/home/classifications/classifications.dart';
 import 'package:zw_app/view/main_page/home/home_sales/home_sales.dart';
@@ -27,6 +28,8 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+final homeScrollable = GlobalKey<ScrollableState>();
+
 class _HomeState extends State<Home> {
   ScrollController _scrollViewController;
 
@@ -46,29 +49,27 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final routerModel = Provider.of<RouterModel>(context);
     return NestedScrollView(
+      key: homeScrollable,
       controller: _scrollViewController,
       headerSliverBuilder: (context, boxIsScrolled) => [
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: CarouselSliderIndicator(
-              items: [
-                ...?[1, 2, 3, 4, 5]
-                    .map((i) => Container(
+              items: List.generate(5, (i) => Container(
                   width: MediaQuery.of(context).size.width,
                   child: Image.network(
                     'https://images.pexels.com/photos/2553409/pexels-photo-2553409.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
                     fit: BoxFit.fill,
                   ),
-                ))
-                    .toList()
-              ],
+                )),
             ),
           ),
         ),
         SliverOverlapAbsorber(
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          child: SliverAppBar(
+          child: SliverAppBarHeight(
+            customizeHeight: 45,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             pinned: true,
@@ -122,7 +123,7 @@ class _HomeState extends State<Home> {
         ),
       ],
       body: Container(
-        margin: EdgeInsets.only(top: 55),
+        margin: EdgeInsets.only(top: 44),
         child: NestedNavigator(
           initialRoute: shopNavList[0].routeName,
           navigationKey: shopNavigationKey,

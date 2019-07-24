@@ -25,18 +25,13 @@ class Classifications extends StatelessWidget {
       },
       child: LoadingHelp(
         path: getHomeDataPath,
-        child: ListView(
+        child: ListView.builder(
+          itemCount: classificationsModel?.list?.length ?? 0,
           padding: EdgeInsets.symmetric(horizontal: 10),
-          children: [
-            ...classificationsModel.list
-                ?.map(
-                  (e) => ClassificationCard(
-                item: e,
+          itemBuilder: (context, index) => ClassificationCard(
+                item: classificationsModel.list[index],
                 level: 1,
               ),
-            )
-                ?.toList(),
-          ],
         ),
       ),
     );

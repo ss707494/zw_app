@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:zw_app/component/image_err_help.dart';
 
 class CarouselSliderIndicator extends StatefulWidget {
   final List<Widget> items;
@@ -31,7 +32,7 @@ class _CarouselSliderIndicatorState extends State<CarouselSliderIndicator> {
   Widget build(BuildContext context) {
     return Stack(children: [
       CarouselSlider(
-        items: (widget.items ?? []).isEmpty ? [Container()] : widget.items,
+        items: (widget.items ?? []).isEmpty ? [ImageErrHelp(imageUrl: '',)] : widget.items,
         autoPlay: widget.autoPlay ?? false,
         height: widget.height,
         aspectRatio: widget.aspectRatio,

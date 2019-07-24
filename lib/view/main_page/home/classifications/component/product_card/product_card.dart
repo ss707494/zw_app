@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
+import 'package:zw_app/component/image_err_help.dart';
 
 class ProductCard extends StatelessWidget {
   final item;
@@ -15,15 +16,12 @@ class ProductCard extends StatelessWidget {
           children: <Widget>[
             Container(
               child: CarouselSliderIndicator(
-                aspectRatio: 1/1,
+                aspectRatio: 1 / 1,
                 items: [
                   ...item['Picture']?.length != 0
                       ? item['Picture']
-                          ?.map((e) => Container(
-                                child: Image.network(
-                                  '$e',
-                                  fit: BoxFit.fill,
-                                ),
+                          ?.map((e) => ImageErrHelp(
+                                imageUrl: e,
                               ))
                           ?.toList()
                       : []
@@ -49,15 +47,17 @@ class ProductCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           '¥${item['F_CPUnitPriceMarket']}',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             decoration: TextDecoration.lineThrough,
+                            fontSize: 12,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
                             '¥${item['F_CPUnitPriceOut']}',
-                            style: TextStyle(fontSize: 17, color: Colors.red),
+                            style: TextStyle(fontSize: 16, color: Colors.red),
                           ),
                         ),
                       ],

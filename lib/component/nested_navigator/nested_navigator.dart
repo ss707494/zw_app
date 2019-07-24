@@ -14,31 +14,22 @@ class NestedNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Navigator(
-        key: navigationKey,
-        initialRoute: initialRoute,
-        onGenerateRoute: (RouteSettings routeSettings) {
-          WidgetBuilder builder = routes[routeSettings.name];
-          if (routeSettings.isInitialRoute) {
-            return PageRouteBuilder(
-              pageBuilder: (context, __, ___) => builder(context),
-              settings: routeSettings,
-            );
-          } else {
-            return MaterialPageRoute(
-              builder: builder,
-              settings: routeSettings,
-            );
-          }
-        },
-      ),
-      onWillPop: () {
-        if(navigationKey.currentState.canPop()) {
-          navigationKey.currentState.pop();
-          return Future<bool>.value(false);
+    return Navigator(
+      key: navigationKey,
+      initialRoute: initialRoute,
+      onGenerateRoute: (RouteSettings routeSettings) {
+        WidgetBuilder builder = routes[routeSettings.name];
+        if (routeSettings.isInitialRoute) {
+          return PageRouteBuilder(
+            pageBuilder: (context, __, ___) => builder(context),
+            settings: routeSettings,
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: builder,
+            settings: routeSettings,
+          );
         }
-        return Future<bool>.value(true);
       },
     );
   }

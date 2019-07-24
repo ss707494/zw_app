@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zw_app/common/router_help.dart';
+import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/view/main_page/home/classifications/product_list/product_list.dart';
 import 'package:zw_app/view/main_page/home/classifications/sub_classifications/sub_classifications.dart';
 
@@ -24,10 +25,11 @@ class ClassificationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Expanded(
-                child: Image.network(
-                  item['Picture'] ?? '',
+                child: Container(
                   height: 80,
-                  fit: BoxFit.fill,
+                  child: ImageErrHelp(
+                    imageUrl: item['Picture'],
+                  ),
                 ),
                 flex: 5,
               ),
@@ -55,8 +57,11 @@ class ClassificationCard extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 if (level == 3) {
-                  mainNavigationKey.currentState.push(
-                      MaterialPageRoute(builder: (context) => ProductList(title: item['F_CTNameC'], typeId: item['ID'],)));
+                  mainNavigationKey.currentState.push(MaterialPageRoute(
+                      builder: (context) => ProductList(
+                            title: item['F_CTNameC'],
+                            typeId: item['ID'],
+                          )));
                 } else {
                   mainNavigationKey.currentState.push(MaterialPageRoute(
                       builder: (BuildContext context) => SubClassifications(

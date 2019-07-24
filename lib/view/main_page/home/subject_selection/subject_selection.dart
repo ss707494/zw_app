@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
+import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/model/subject_selection.dart';
@@ -150,24 +151,23 @@ class SubjectSelection extends StatelessWidget {
             child: ListView(
               children: [
                 Container(
-                  height: 300,
+                  height: 350,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Expanded(
-                        child: Image.network(
-                          'https://images.pexels.com/photos/1492219/pexels-photo-1492219.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                          fit: BoxFit.fill,
+                        child: ImageErrHelp(
+                          imageUrl: 'https://images.pexels.com/photos/1492219/pexels-photo-1492219.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
                         ),
                       ),
                       Container(
+                        height: 140 * 1.8,
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                        height: 140 * 1.5,
                         child: ListView.builder(
                           itemCount: subjectSelectionModel.list.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => Container(
-                            width: 100 * 1.5,
+                            width: 100 * 1.8,
                             child: ProductCard(
                               item: subjectSelectionModel.list[index],
                             ),

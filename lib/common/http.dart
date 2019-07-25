@@ -8,11 +8,11 @@ import 'package:zw_app/model/http_loading.dart';
 var dio = Dio();
 
 //final host = 'http://rap2api.taobao.org/app/mock/222495';
-//final host = 'http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api';
-final host = 'http://www.marketpayless.com';
+final host = 'http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api';
+//final host = 'http://www.marketpayless.com';
 
 httpPost(context, path, {data}) async {
-  final httpLoadingModel = Provider.of<HttpLoadingModel>(context);
+  final httpLoadingModel = Provider.of<HttpLoadingModel>(context, listen: false);
   Future.delayed(Duration.zero, () {
     httpLoadingModel.setCurrent(path, true);
   });
@@ -25,6 +25,7 @@ httpPost(context, path, {data}) async {
       .whenComplete(() {
     httpLoadingModel.setCurrent(path, false);
   });
+//  await Future.delayed(Duration(seconds: 2));
 
   String logInfo = '''
 sslog: path: $path

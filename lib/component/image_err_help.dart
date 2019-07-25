@@ -8,7 +8,7 @@ class ImageErrHelp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
+    return (imageUrl == null || imageUrl.isEmpty || imageUrl.contains('localhost:')) ? Container() : CachedNetworkImage(
       imageUrl: imageUrl ?? 'http://',
       fit: BoxFit.fill,
       placeholder: (context, url) => Column(

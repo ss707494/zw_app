@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
+import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/model/limited_time.dart';
 
 class LimitedTime extends StatelessWidget {
+  final ScrollController scrollViewController;
 
-  getData(context) async {
-    final limitedTimeModel = Provider.of<LimitedTimeModel>(context);
-    if (limitedTimeModel.list.length > 0) return;
-    var res = await httpPost(context, getMayLikeListPath);
-    limitedTimeModel.list = res.data['data'] ?? [];
-  }
+  const LimitedTime({Key key, this.scrollViewController}) : super(key: key);
 
   buildTimerNumber(String text) => Container(
         margin: EdgeInsets.symmetric(horizontal: 2),
@@ -154,48 +149,54 @@ class LimitedTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return InitHelp(
       init: () {
-        getData(context);
       },
       child: LoadingHelp(
-        path: getMayLikeListPath,
+        path: null,
         child: Consumer<LimitedTimeModel>(
           builder: (_, limitedTimeModel, __) => Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBarHeight(
-                  customizeHeight: 40,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  floating: true,
-                  titleSpacing: 0,
-                  title: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          '限时抢购: ',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                        Text(':'),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                        Text(':'),
-                        buildTimerNumber('1'),
-                        buildTimerNumber('1'),
-                      ],
+            child: EasyRefreshCus(
+              outerController: scrollViewController,
+              firstRefresh: limitedTimeModel.isInit,
+              onRefresh: () async {
+                limitedTimeModel.getListData(context);
+              },
+              child: CustomScrollView(
+                slivers: [
+                  SliverAppBarHeight(
+                    customizeHeight: 40,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    elevation: 0,
+                    automaticallyImplyLeading: false,
+                    pinned: true,
+                    floating: true,
+                    titleSpacing: 0,
+                    title: Container(
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            '限时抢购: ',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          buildTimerNumber('1'),
+                          buildTimerNumber('1'),
+                          Text(':'),
+                          buildTimerNumber('1'),
+                          buildTimerNumber('1'),
+                          Text(':'),
+                          buildTimerNumber('1'),
+                          buildTimerNumber('1'),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    ...?limitedTimeModel.list.map(buildCard).toList(),
-                  ]),
-                ),
-              ],
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      ...?limitedTimeModel.list.map(buildCard).toList(),
+                    ]),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
+import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
+import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/model/home_sales.dart';
 
 class HomeSales extends StatelessWidget {
+  final ScrollController scrollViewController;
+
+  const HomeSales({Key key, this.scrollViewController}) : super(key: key);
+
   getData(context) async {
     final homeSalesModel = Provider.of<HomeSalesModel>(context);
 //    if (homeSalesModel.list.length > 0) return;
@@ -44,9 +49,8 @@ class HomeSales extends StatelessWidget {
                         ...item['Picture']?.length != 0
                             ? item['Picture']
                                 ?.map((e) => Container(
-                                      child: Image.network(
-                                        '$e',
-                                        fit: BoxFit.fill,
+                                      child: ImageErrHelp(
+                                        imageUrl: '$e',
                                       ),
                                     ))
                                 ?.toList()
@@ -154,49 +158,55 @@ class HomeSales extends StatelessWidget {
   Widget build(BuildContext context) {
     return InitHelp(
       init: () {
-        getData(context);
+//        getData(context);
       },
       child: LoadingHelp(
-        path: getMayLikeListPath,
+        path: null,
         child: Consumer<HomeSalesModel>(
           builder: (_, homeSalesModel, __) => Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBarHeight(
-                  customizeHeight: 40,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  floating: true,
-                  titleSpacing: 0,
-                  flexibleSpace: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        ...?[
-                          ['24小时排行', 1],
-                          ['本周排行', 2],
-                          ['本月排行', 3],
-                        ].map((e) => FlatButton(
-                              padding: EdgeInsets.symmetric(vertical: 0),
-                              child: Text(
-                                e[0],
-                                style: TextStyle(
-                                  color: homeSalesModel.currentType == e[1]
-                                      ? Colors.red
-                                      : null,
+            child: EasyRefreshCus(
+              outerController: scrollViewController,
+              firstRefresh: homeSalesModel.isInit,
+              onRefresh: () async {
+                homeSalesModel.getListData(context);
+              },
+              child: CustomScrollView(
+                slivers: [
+                  SliverAppBarHeight(
+                    customizeHeight: 40,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    elevation: 0,
+                    automaticallyImplyLeading: false,
+                    pinned: true,
+                    floating: true,
+                    titleSpacing: 0,
+                    flexibleSpace: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          ...?[
+                            ['24小时排行', 1],
+                            ['本周排行', 2],
+                            ['本月排行', 3],
+                          ].map((e) => FlatButton(
+                                padding: EdgeInsets.symmetric(vertical: 0),
+                                child: Text(
+                                  e[0],
+                                  style: TextStyle(
+                                    color: homeSalesModel.currentType == e[1]
+                                        ? Colors.red
+                                        : null,
+                                  ),
                                 ),
-                              ),
-                              onPressed: () {
-                                homeSalesModel.currentType = e[1];
-                                getData(context);
-                              },
-                            )),
-                      ],
+                                onPressed: () {
+                                  homeSalesModel.currentType = e[1];
+                                  getData(context);
+                                },
+                              )),
+                        ],
+                      ),
                     ),
-                  ),
 //                  title: Container(
 //                    child: Row(
 //                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,14 +233,15 @@ class HomeSales extends StatelessWidget {
 //                      ],
 //                    ),
 //                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (_, index) =>
-                          buildCard(homeSalesModel.list[index], index: index),
-                      childCount: homeSalesModel.list.length),
-                ),
-              ],
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (_, index) =>
+                            buildCard(homeSalesModel.list[index], index: index),
+                        childCount: homeSalesModel.list.length),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

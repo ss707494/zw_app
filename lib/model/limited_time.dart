@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:zw_app/common/apiPath.dart';
+import 'package:zw_app/common/http.dart';
+import 'package:zw_app/model/base_model.dart';
 
-class LimitedTimeModel extends ChangeNotifier {
+class LimitedTimeModel extends BaseModel {
 
   var _list;
 
@@ -8,6 +10,13 @@ class LimitedTimeModel extends ChangeNotifier {
 
   set list(data) {
     _list = data;
+    notifyListeners();
+  }
+
+  getListData(context, {data}) async {
+    handleInit();
+    var res = await httpPost(context, getMayLikeListPath, data: data);
+    _list = res.data['data'] ?? [];
     notifyListeners();
   }
 

@@ -8,6 +8,10 @@ import 'package:zw_app/model/may_like.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
 
 class MayLike extends StatelessWidget {
+  final ScrollController scrollViewController;
+
+  const MayLike({Key key, this.scrollViewController}) : super(key: key);
+
   getData(context) async {
     final mayLikeModel = Provider.of<MayLikeModel>(context);
     if (mayLikeModel.list.length > 0) return;

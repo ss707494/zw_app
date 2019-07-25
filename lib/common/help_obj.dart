@@ -17,7 +17,6 @@ class NavObj {
   final clazz;
 
   get widgetBuilder => (BuildContext context) => widget;
-//  get widgetBuilderByClassData => (BuildContext context) => clazz();
 
   const NavObj(
     this.title,

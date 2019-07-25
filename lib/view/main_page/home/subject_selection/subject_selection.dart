@@ -10,6 +10,10 @@ import 'package:zw_app/model/subject_selection.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
 
 class SubjectSelection extends StatelessWidget {
+  final ScrollController scrollViewController;
+
+  const SubjectSelection({Key key, this.scrollViewController}) : super(key: key);
+
   getData(context) async {
     final subjectSelectionModel = Provider.of<SubjectSelectionModel>(context);
     if (subjectSelectionModel.list.length > 0) return;

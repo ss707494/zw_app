@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
+import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/image_err_help.dart';
-import 'package:zw_app/component/init_help/init_help.dart';
-import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/model/subject_selection.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
 
@@ -13,13 +10,6 @@ class SubjectSelection extends StatelessWidget {
   final ScrollController scrollViewController;
 
   const SubjectSelection({Key key, this.scrollViewController}) : super(key: key);
-
-  getData(context) async {
-    final subjectSelectionModel = Provider.of<SubjectSelectionModel>(context);
-    if (subjectSelectionModel.list.length > 0) return;
-    var res = await httpPost(context, getMayLikeListPath);
-    subjectSelectionModel.list = res.data['data'] ?? [];
-  }
 
   buildCard(item) => Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -143,46 +133,45 @@ class SubjectSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitHelp(
-      init: () {
-        getData(context);
-      },
-      child: LoadingHelp(
-        path: getMayLikeListPath,
-        child: Consumer<SubjectSelectionModel>(
-          builder: (_, subjectSelectionModel, __) => Container(
+    return Consumer<SubjectSelectionModel>(
+      builder: (_, subjectSelectionModel, __) => Container(
 //            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: ListView(
-              children: [
-                Container(
-                  height: 350,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Expanded(
-                        child: ImageErrHelp(
-                          imageUrl: 'https://images.pexels.com/photos/1492219/pexels-photo-1492219.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                        ),
+        child: EasyRefreshCus(
+          outerController: scrollViewController,
+          firstRefresh: subjectSelectionModel.isInit,
+          onRefresh: () async {
+            await subjectSelectionModel.getList(context);
+          },
+          child: ListView(
+            children: [
+              Container(
+                height: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      child: ImageErrHelp(
+                        imageUrl: 'https://images.pexels.com/photos/1492219/pexels-photo-1492219.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
                       ),
-                      Container(
-                        height: 140 * 1.8,
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                        child: ListView.builder(
-                          itemCount: subjectSelectionModel.list.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) => Container(
-                            width: 100 * 1.8,
-                            child: ProductCard(
-                              item: subjectSelectionModel.list[index],
-                            ),
+                    ),
+                    Container(
+                      height: 140 * 1.8,
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      child: ListView.builder(
+                        itemCount: subjectSelectionModel.list.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => Container(
+                          width: 100 * 1.8,
+                          child: ProductCard(
+                            item: subjectSelectionModel.list[index],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

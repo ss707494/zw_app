@@ -13,9 +13,9 @@ class HomeSalesModel extends BaseModel {
   }
 
   getListData(context, {params}) async {
-    handleInit();
     var res = await httpPost(context, getHomeSalesListPath, data: params);
     _list = res.data['data'] ?? [];
+    handleInit();
     notifyListeners();
   }
 

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
-import 'package:zw_app/component/init_help/init_help.dart';
-import 'package:zw_app/component/loading_help/loading_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/model/limited_time.dart';
 
@@ -147,57 +145,50 @@ class LimitedTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitHelp(
-      init: () {
-      },
-      child: LoadingHelp(
-        path: null,
-        child: Consumer<LimitedTimeModel>(
-          builder: (_, limitedTimeModel, __) => Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: EasyRefreshCus(
-              outerController: scrollViewController,
-              firstRefresh: limitedTimeModel.isInit,
-              onRefresh: () async {
-                limitedTimeModel.getListData(context);
-              },
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBarHeight(
-                    customizeHeight: 40,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    elevation: 0,
-                    automaticallyImplyLeading: false,
-                    pinned: true,
-                    floating: true,
-                    titleSpacing: 0,
-                    title: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            '限时抢购: ',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          buildTimerNumber('1'),
-                          buildTimerNumber('1'),
-                          Text(':'),
-                          buildTimerNumber('1'),
-                          buildTimerNumber('1'),
-                          Text(':'),
-                          buildTimerNumber('1'),
-                          buildTimerNumber('1'),
-                        ],
+    return Consumer<LimitedTimeModel>(
+      builder: (_, limitedTimeModel, __) => Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        child: EasyRefreshCus(
+          outerController: scrollViewController,
+          firstRefresh: limitedTimeModel.isInit,
+          onRefresh: () async {
+            await limitedTimeModel.getListData(context);
+          },
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBarHeight(
+                customizeHeight: 40,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                titleSpacing: 0,
+                title: Container(
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        '限时抢购: ',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
+                      buildTimerNumber('1'),
+                      buildTimerNumber('1'),
+                      Text(':'),
+                      buildTimerNumber('1'),
+                      buildTimerNumber('1'),
+                      Text(':'),
+                      buildTimerNumber('1'),
+                      buildTimerNumber('1'),
+                    ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      ...?limitedTimeModel.list.map(buildCard).toList(),
-                    ]),
-                  ),
-                ],
+                ),
               ),
-            ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  ...?limitedTimeModel.list.map(buildCard).toList(),
+                ]),
+              ),
+            ],
           ),
         ),
       ),

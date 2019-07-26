@@ -9,5 +9,6 @@ class BaseModel extends ChangeNotifier {
     if (_isInit) {
       _isInit = false;
     }
+//    notifyListeners();
   }
 }

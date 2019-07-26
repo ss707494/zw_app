@@ -17,10 +17,10 @@ class ClassificationsModel extends BaseModel {
     notifyListeners();
   }
   getListData(context, {data}) async {
-    handleInit();
     var res = await httpPost(context, getHomeDataPath, data: data);
     _list = res.data['data']['CommodityTypeList'] ?? [];
     _popData = res.data['data'] ?? {};
+    handleInit();
     notifyListeners();
   }
 

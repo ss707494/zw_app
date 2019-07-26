@@ -14,9 +14,9 @@ class LimitedTimeModel extends BaseModel {
   }
 
   getListData(context, {data}) async {
-    handleInit();
     var res = await httpPost(context, getMayLikeListPath, data: data);
     _list = res.data['data'] ?? [];
+    handleInit();
     notifyListeners();
   }
 

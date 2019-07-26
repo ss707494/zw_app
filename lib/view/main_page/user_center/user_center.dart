@@ -1,21 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/ball_pulse_header.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:zw_app/model/limited_time.dart';
-import 'package:zw_app/view/main_page/home/classifications/component/classification_card/classification_card.dart';
+import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
+import 'package:zw_app/view/main_page/user_center/nested_scroll_view.dart' as prefix0;
 
 class UserCenter extends StatefulWidget {
   @override
   _UserCenter createState() => _UserCenter();
 }
 
+final GlobalKey<EasyRefreshState> refreshKey = GlobalKey<EasyRefreshState>();
 
 class _UserCenter extends State<UserCenter> {
   List<String> addStr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
   List<String> str = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-  GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
 
   ScrollController _scrollViewController;
   RefreshController _refreshController;
@@ -36,49 +34,71 @@ class _UserCenter extends State<UserCenter> {
 
   @override
   Widget build(BuildContext context) {
-    final classificationsModel = Provider.of<LimitedTimeModel>(context);
+//    final classificationsModel = Provider.of<LimitedTimeModel>(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Swiper"),
-        ),
-        body: NestedScrollView(
-          controller: _scrollViewController,
-          headerSliverBuilder: (_, __) {
-            return [
-              SliverToBoxAdapter(
-                child: Container(
-                  color: Colors.grey,
-                  height: 100,
-                ),
-              ),
-              SliverAppBar(
-                pinned: true,
-                title: Text('2222'),
-              ),
-            ];
-          },
-          body: Container(
-            child: EasyRefresh(
-              firstRefresh: classificationsModel.isInit,
-              outerController: _scrollViewController,
-              refreshHeader:
-                  BallPulseHeader(key: _headerKey),
-              onRefresh: () async {
-                  classificationsModel.getListData(context);
-              },
-//              loadMore: () async {
-//              },
-              child: ListView.builder(
-                itemCount: classificationsModel?.list?.length ?? 0,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                itemBuilder: (context, index) => ClassificationCard(
-                  item: classificationsModel.list[index],
-                  level: 1,
-                ),
+      appBar: AppBar(
+        title: Text("Swiper"),
+      ),
+      body: prefix0.NestedScrollView(
+          refreshWidgetBuild: ({child}) => EasyRefresh(
+            key: refreshKey,
+            onRefresh: () async {
+              await Future.delayed(Duration(seconds: 2));
+            },
+            child: child,
+          ),
+        headerSliverBuilder: (_, __) => [
+          SliverToBoxAdapter(
+            child: Container(
+              height: 100,
+              color: Colors.grey,
+            ),
+          ),
+          SliverAppBar(
+            title: Text('333title'),
+            pinned: true,
+          ),
+        ],
+        body: Container(
+          child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (_, __) => Container(
+              height: 100,
+              color: Colors.grey,
+              child: RaisedButton(
+                onPressed: () {
+                  refreshKey.currentState.callRefresh();
+                },
+                child: Text('refresh'),
               ),
             ),
           ),
-        ));
+        ),
+//        slivers: <Widget>[
+//          SliverFillRemaining(
+//            child: Container(
+//              child: Column(
+//                children: List.generate(
+//                    10,
+//                    (index) => Container(
+//                          height: 100,
+//                          color: Colors.grey,
+//                        )),
+//              ),
+//            ),
+//          ),
+////          SliverList(
+////            delegate: SliverChildBuilderDelegate(
+////                  (context, index) => Container(
+////                height: 100,
+////                color: Colors.grey,
+////              ),
+////              childCount: 10,
+////            ),
+////          ),
+//        ],
+      ),
+    );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:zw_app/common/apiPath.dart';
+import 'package:zw_app/common/http.dart';
 
 class SubClassModel extends ChangeNotifier {
 
@@ -24,6 +26,28 @@ class SubClassModel extends ChangeNotifier {
 
   set list(data) {
     _list = data;
+    notifyListeners();
+  }
+
+  getList(context, {data, level = 2}) async {
+    if (level == 2) {
+      _subData2 = {};
+    }
+    if (level == 3) {
+      _subData3 = {};
+    }
+//    notifyListeners();
+    var res = await httpPost(
+      context,
+      getSubClassPath,
+      data: data,
+    );
+    if (level == 2) {
+      _subData2 = res.data['data'] ?? {};
+    }
+    if (level == 3) {
+      _subData3 = res.data['data'] ?? {};
+    }
     notifyListeners();
   }
 

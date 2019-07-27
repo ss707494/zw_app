@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:zw_app/common/apiPath.dart';
+import 'package:zw_app/common/http.dart';
 
 enum ProductOrderType {
   e,
@@ -18,6 +20,16 @@ class ProductModel extends ChangeNotifier {
 
   set order(ProductOrderType v) {
     _order = v;
+    notifyListeners();
+  }
+
+  getListData(context, {data}) async {
+    var res = await httpPost(
+      context,
+      getProductListPath,
+      data: data,
+    );
+    _list = res.data['data'];
     notifyListeners();
   }
 

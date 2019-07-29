@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/model/classifications.dart';
 import 'package:zw_app/model/home_sales.dart';
-import 'package:zw_app/model/http_loading.dart';
+import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/limited_time.dart';
 import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/login.dart';
@@ -25,7 +25,7 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => LogInfoModel()),
         ChangeNotifierProvider(builder: (_) => RouterModel()),
         ChangeNotifierProvider(builder: (_) => ClassificationsModel()),
-        ChangeNotifierProvider(builder: (_) => HttpLoadingModel()),
+        ChangeNotifierProvider(builder: (_) => HttpModel()),
         ChangeNotifierProvider(builder: (_) => SubClassModel()),
         ChangeNotifierProvider(builder: (_) => ProductModel()),
         ChangeNotifierProvider(builder: (_) => MayLikeModel()),

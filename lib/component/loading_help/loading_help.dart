@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/model/http_loading.dart';
+import 'package:zw_app/model/http.dart';
 
 class LoadingHelp extends StatelessWidget {
   final Widget child;
@@ -11,7 +11,7 @@ class LoadingHelp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final httpLoadingModel = Provider.of<HttpLoadingModel>(context);
+    final httpLoadingModel = Provider.of<HttpModel>(context);
     return path != null && httpLoadingModel.getOne(path)
         ? Center(
             child: CircularProgressIndicator(),

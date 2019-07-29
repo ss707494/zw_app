@@ -3,23 +3,19 @@ library ss_dio;
 import 'package:dio/dio.dart';
 //import 'package:flushbar/flushbar.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/model/http_loading.dart';
+import 'package:zw_app/model/http.dart';
 
 var dio = Dio();
 
-//final host = 'http://rap2api.taobao.org/app/mock/222495';
-final host = 'http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api';
-//final host = 'http://www.marketpayless.com';
-
 httpPost(context, path, {data}) async {
-  final httpLoadingModel = Provider.of<HttpLoadingModel>(context, listen: false);
+  final httpLoadingModel = Provider.of<HttpModel>(context, listen: false);
   Future.delayed(Duration.zero, () {
     httpLoadingModel.setCurrent(path, true);
   });
   FormData formData = new FormData.from(data ?? {});
   final res = await dio
       .post(
-    '$host$path',
+    '${httpLoadingModel.hostStr}$path',
     data: formData,
   )
       .whenComplete(() {

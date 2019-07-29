@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
-import 'package:zw_app/view/main_page/user_center/nested_scroll_view.dart' as prefix0;
+import 'package:zw_app/model/http.dart';
+import 'package:zw_app/view/main_page/user_center/nested_scroll_view.dart'
+    as prefix0;
 
 class UserCenter extends StatefulWidget {
   @override
@@ -35,24 +38,38 @@ class _UserCenter extends State<UserCenter> {
   @override
   Widget build(BuildContext context) {
 //    final classificationsModel = Provider.of<LimitedTimeModel>(context);
+    final httpModel = Provider.of<HttpModel>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Swiper"),
-      ),
+      appBar: AppBar(),
       body: prefix0.NestedScrollView(
-          refreshWidgetBuild: ({child}) => EasyRefresh(
-            key: refreshKey,
-            onRefresh: () async {
-              await Future.delayed(Duration(seconds: 2));
-            },
-            child: child,
-          ),
+        refreshWidgetBuild: ({child}) => EasyRefresh(
+          key: refreshKey,
+          onRefresh: () async {
+            await Future.delayed(Duration(seconds: 2));
+          },
+          child: child,
+        ),
         headerSliverBuilder: (_, __) => [
           SliverToBoxAdapter(
-            child: Container(
-              height: 100,
-              color: Colors.grey,
+            child: DropdownButtonFormField(
+              decoration: InputDecoration(labelText: '接口地址'),
+              value: httpModel.host,
+              onChanged: (v) {
+                httpModel.host = v;
+              },
+              items: List.generate(
+                  httpModel.hostObj.length,
+                  (index) => DropdownMenuItem(
+                        value: index,
+                        child: SizedBox(
+                          width: 300,
+                          child: Text(
+                            httpModel.hostObj[index],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )),
             ),
           ),
           SliverAppBar(

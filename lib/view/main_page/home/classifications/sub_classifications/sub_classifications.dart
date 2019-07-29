@@ -22,22 +22,22 @@ class SubClassifications extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: EasyRefreshCus(
-          firstRefresh: true,
-          onRefresh: () async {
-            await Provider.of<SubClassModel>(context).getList(
-              context,
-              level: level,
-              data: {'ParentID': parentId},
-            );
-          },
-          child: Consumer<SubClassModel>(
-            builder: (_, subClassModel, __) {
-              var data = level == 2
-                  ? subClassModel.subData2
-                  : subClassModel.subData3;
-              data ??= {};
-              return CustomScrollView(
+        child: Consumer<SubClassModel>(
+          builder: (_, subClassModel, __) {
+            var data = level == 2
+                ? subClassModel.subData2
+                : subClassModel.subData3;
+            data ??= {};
+            return EasyRefreshCus(
+              firstRefresh: true,
+              onRefresh: () async {
+                await Provider.of<SubClassModel>(context).getList(
+                  context,
+                  level: level,
+                  data: {'ParentID': parentId},
+                );
+              },
+              child: CustomScrollView(
                 slivers: <Widget>[
                   SliverList(
                     delegate: SliverChildListDelegate(
@@ -81,9 +81,9 @@ class SubClassifications extends StatelessWidget {
                     child: Container(height: 20),
                   )
                 ],
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

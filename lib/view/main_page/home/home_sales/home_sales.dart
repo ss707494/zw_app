@@ -164,11 +164,11 @@ class HomeSales extends StatelessWidget {
             slivers: [
               SliverAppBarHeight(
                 customizeHeight: 40,
+                primary: false,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                elevation: 0,
+                elevation: 1,
                 automaticallyImplyLeading: false,
                 pinned: true,
-                floating: true,
                 titleSpacing: 0,
                 flexibleSpace: Container(
                   child: Row(

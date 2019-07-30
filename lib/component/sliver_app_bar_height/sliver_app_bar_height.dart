@@ -25,7 +25,7 @@ class SliverAppBarHeight extends StatefulWidget {
     this.iconTheme,
     this.actionsIconTheme,
     this.textTheme,
-    this.primary = true,
+    this.primary = false,
     this.centerTitle,
     this.titleSpacing = NavigationToolbar.kMiddleSpacing,
     this.expandedHeight,
@@ -423,7 +423,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => collapsedHeight ?? (topPadding + customizeHeight + _bottomHeight);
 
   @override
-  double get maxExtent => math.max(topPadding + (expandedHeight ?? customizeHeight + _bottomHeight), minExtent);
+  double get maxExtent {
+    print('maxExtent::topPadding::$topPadding expandedHeight::$expandedHeight _bottomHeight::$_bottomHeight');
+    return math.max(topPadding + (expandedHeight ?? customizeHeight + _bottomHeight), minExtent);
+  }
 
   @override
   final FloatingHeaderSnapConfiguration snapConfiguration;

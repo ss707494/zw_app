@@ -424,7 +424,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent {
-    print('maxExtent::topPadding::$topPadding expandedHeight::$expandedHeight _bottomHeight::$_bottomHeight');
     return math.max(topPadding + (expandedHeight ?? customizeHeight + _bottomHeight), minExtent);
   }
 

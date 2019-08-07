@@ -1,7 +1,7 @@
 library ss_dio;
 
 import 'package:dio/dio.dart';
-//import 'package:flushbar/flushbar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/model/http.dart';
 
@@ -13,16 +13,20 @@ httpPost(context, path, {data}) async {
     httpLoadingModel.setCurrent(path, true);
   });
   FormData formData = new FormData.from(data ?? {});
-  final res = await dio
+  var res;
+  res = await dio
       .post(
     '${httpLoadingModel.hostStr}$path',
     data: formData,
   )
+      .catchError((err) {
+    print(err);
+    Fluttertoast.showToast(msg: err.toString());
+//    Flushbar(message: err).show(context);
+  })
       .whenComplete(() {
     httpLoadingModel.setCurrent(path, false);
   });
-//  await Future.delayed(Duration(seconds: 2));
-
   String logInfo = '''
 sslog: path: $path
 sslog: data: $data

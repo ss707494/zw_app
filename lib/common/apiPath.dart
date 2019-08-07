@@ -13,4 +13,8 @@ final getLimitedTimePath = '/App/WS_GuessLikeForYou';
 final getSubjectSelectionPath = '/App/WS_GuessLikeForYou';
 // 热销列表
 final getHomeSalesListPath = '/App/WS_GuessLikeForYou';
+// 热销列表 http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api/App/shoppingCart/indexInfo
+final getCartIndexInfo = '/App/shoppingCart/indexInfo';
+// 验证优惠码
+final checkPromoCode = '/App/shoppingCart/checkPromoCode';
 

@@ -131,8 +131,48 @@ class ShoppingCartModel extends ChangeNotifier {
     _cardCodeController = TextEditingController(text: '');
   }
 
+  double _discountPrise = 0;
+
+  double get discountPrise => _discountPrise ?? 0;
+
+  set discountPrise(double discountPrise) {
+    _discountPrise = discountPrise;
+    notifyListeners();
+  }
+
   checkCardCode(context) async {
-    await httpPost(context, checkPromoCode);
+    var data = (await httpPost(context, checkPromoCodePath, data: {
+      'code': _cardCodeController.text
+    })).data['data'];
+    if (data['checkState'] == 1) {
+      _isUseOffer = true;
+      _discountPrise = double.parse(data['discount'].toString());
+    } else {
+      _isUseOffer = false;
+      _discountPrise = 0.0;
+    }
+    notifyListeners();
+    return data;
+  }
+
+  cancelCardCode() {
+    _cardCodeController.text = '';
+    _isUseOffer = false;
+    _discountPrise = 0.0;
+    notifyListeners();
+  }
+
+  double _shipPrice = 0.0;
+
+  double get shipPrice => _shipPrice;
+
+  set shipPrice(double shipPrice) {
+    _shipPrice = shipPrice;
+    notifyListeners();
+  }
+
+  getFinalPrice() {
+    return getProductTotal() - _discountPrise + _shipPrice;
   }
 
   @override

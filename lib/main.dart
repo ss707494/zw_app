@@ -6,6 +6,7 @@ import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
 import 'package:zw_app/component/will_pop_scope_help/will_pop_scope_help.dart';
 import 'package:zw_app/model/provider_list.dart';
 import 'package:zw_app/view/main_page/main_page.dart';
+import 'package:zw_app/view/main_page/shopping_cart/confirm_order.dart';
 
 void main() => runApp(App());
 
@@ -20,9 +21,10 @@ class App extends StatelessWidget {
           child: WillPopScopeHelp(
             child: NestedNavigator(
               navigationKey: mainNavigationKey,
-              initialRoute: 'main',
+              initialRoute: 'test',
               routes: {
                 'main': (context) => MainPage(),
+                'test': (context) => ConfirmOrder(),
               },
             ),
           ),

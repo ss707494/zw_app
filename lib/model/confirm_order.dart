@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/http.dart';
+import 'package:zw_app/model/base_model.dart';
 
-class ConfirmOrderModel extends ChangeNotifier {
+class ConfirmOrderModel extends BaseModel {
   Map _allData = {};
 
   Map get allData => _allData;
@@ -30,6 +31,7 @@ class ConfirmOrderModel extends ChangeNotifier {
       notifyListeners();
     });
 
+    handleInit();
     notifyListeners();
   }
 
@@ -57,7 +59,9 @@ class ConfirmOrderModel extends ChangeNotifier {
 
   set isUseCreditCoins(bool isUseCreditCoins) {
     _isUseCreditCoins = isUseCreditCoins;
-    _creditCoinsController.text = '';
+    if (isUseCreditCoins) {
+      _creditCoinsController.text = '0';
+    }
     notifyListeners();
   }
 
@@ -91,8 +95,6 @@ class ConfirmOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get finalPrice => (double.tryParse('${_allData['totalCartAmount']}') ?? 0) + _tax - getCreditCoinsDeduction();
-
   String _activeAddressId;
 
   String get activeAddressId => _activeAddressId;
@@ -122,5 +124,11 @@ class ConfirmOrderModel extends ChangeNotifier {
   }
 
   double get nextMonthCredit => 0;
+
+  @override
+  void dispose() {
+    _creditCoinsController.dispose();
+    super.dispose();
+  }
 
 }

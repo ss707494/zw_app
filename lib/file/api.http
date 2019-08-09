@@ -30,6 +30,7 @@ Content-Disposition: form-data; name="page"
 ###
 ###
 POST http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api/App/shoppingCart/getConfirmOrderInfo
+
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -38,5 +39,16 @@ Content-Disposition: form-data; name="page"
 11
 --WebAppBoundary--
 
+###
+
+POST http://128.14.236.90:4433/mock/5d347e552b71b967c8c62b82/api/App/shoppingCart/getConfirmOrderInfo
+
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="page"
+
+11
+--WebAppBoundary--
 ###
 

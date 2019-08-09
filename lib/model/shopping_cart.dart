@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/http.dart';
+import 'package:zw_app/model/base_model.dart';
 
 enum ShipType { self, service }
 
-class ShoppingCartModel extends ChangeNotifier {
+class ShoppingCartModel extends BaseModel {
   var _data;
 
   List _productList;
@@ -49,6 +50,7 @@ class ShoppingCartModel extends ChangeNotifier {
     _productList.forEach((e) {
       addOneProductForNumber(e);
     });
+    handleInit();
     notifyListeners();
   }
 
@@ -122,7 +124,7 @@ class ShoppingCartModel extends ChangeNotifier {
             (pre, e) =>
                 pre +
                 double.parse('${e['sellPrice']}') *
-                    double.parse(_productNumbers[e['id']].text));
+                    double.tryParse(_productNumbers[e['id']].text) ?? 0);
   }
 
   TextEditingController _cardCodeController;
@@ -175,11 +177,17 @@ class ShoppingCartModel extends ChangeNotifier {
     return getProductTotal() - _discountPrise + _shipPrice;
   }
 
+  TextEditingController _numberInputController = TextEditingController();
+
+  TextEditingController get numberInputController => _numberInputController;
+
   @override
   void dispose() {
     _productNumbers.forEach((key, e) {
       e.dispose();
     });
+    _numberInputController.dispose();
+    _cardCodeController.dispose();
     super.dispose();
   }
 }

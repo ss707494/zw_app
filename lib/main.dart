@@ -21,7 +21,7 @@ class App extends StatelessWidget {
           child: WillPopScopeHelp(
             child: NestedNavigator(
               navigationKey: mainNavigationKey,
-              initialRoute: 'test',
+              initialRoute: 'main',
               routes: {
                 'main': (context) => MainPage(),
                 'test': (context) => ConfirmOrder(),

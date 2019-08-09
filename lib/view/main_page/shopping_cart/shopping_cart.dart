@@ -79,6 +79,45 @@ class ShoppingCart extends StatelessWidget {
         ),
       );
 
+  buildNumberInputDialog(context, id, ShoppingCartModel shoppingCartModel) {
+    shoppingCartModel.numberInputController.text =
+        shoppingCartModel.productNumbers[id].text;
+    return SimpleDialog(
+      title: Text('输入数量'),
+      contentPadding: EdgeInsets.all(15),
+      children: <Widget>[
+        Form(
+          child: TextFormField(
+            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            controller: shoppingCartModel.numberInputController,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            validator: (v) {
+              if (v.isEmpty) {
+                return 'not empty';
+              }
+              return '';
+            },
+            autovalidate: true,
+          ),
+        ),
+        FlatButton(
+          onPressed: () {
+            var num = shoppingCartModel.numberInputController.text;
+            if (num.isEmpty || num == '0') {
+              Fluttertoast.showToast(msg: '请输入数量');
+              return;
+            }
+            shoppingCartModel.productNumbers[id].text =
+                num.isNotEmpty ? num : '0';
+            Navigator.of(context).pop();
+          },
+          child: Text('确认'),
+        ),
+      ],
+    );
+  }
+
   buildProductForCart(
           context, productList, ShoppingCartModel shoppingCartModel) =>
       List.generate(productList.length ?? 0, (index) {
@@ -137,12 +176,19 @@ class ShoppingCart extends StatelessWidget {
                   height: 25,
                   width: 45,
                   child: TextField(
+                    readOnly: true,
                     controller: shoppingCartModel.productNumbers[item['id']],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 2),
                     ),
                     textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => buildNumberInputDialog(
+                            context, item['id'], shoppingCartModel),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
@@ -236,7 +282,7 @@ class ShoppingCart extends StatelessWidget {
                 Expanded(
                   child: EasyRefresh(
                     header: MaterialHeader(),
-                    firstRefresh: true,
+                    firstRefresh: shoppingCartModel.isInit,
                     onRefresh: () async {
                       shoppingCartModel.getData(context);
                     },
@@ -253,7 +299,8 @@ class ShoppingCart extends StatelessWidget {
                           ),
                         ),
                         Center(
-                          child: Text('小计: \$9.9'),
+                          child: Text(
+                              '小计: \$${shoppingCartModel.getProductTotal()}'),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -300,58 +347,84 @@ class ShoppingCart extends StatelessWidget {
                           child: Row(
                             children: <Widget>[
                               Expanded(
-                                child: CupertinoTextField(
-                                  controller:
-                                      shoppingCartModel.cardCodeController,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  color: Colors.grey.withAlpha(50),
+                                  child: TextField(
+                                    controller:
+                                        shoppingCartModel.cardCodeController,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 8),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
                                 ),
                               ),
                               Consumer<HttpModel>(
                                 builder: (context, httpModel, _) => FlatButton(
                                   child: Text(
                                       '${shoppingCartModel.isUseOffer ? '取消' : '使用'}'),
-                                  onPressed: httpModel.getOne(checkPromoCodePath) ? null : () async {
-                                    if (shoppingCartModel
-                                            .cardCodeController.text ==
-                                        '') {
-                                      Fluttertoast.showToast(msg: '请输入优惠码');
-                                      return;
-                                    }
-                                    if (shoppingCartModel.isUseOffer) {
-                                      shoppingCartModel.cancelCardCode();
-                                    } else {
-                                      var data = await shoppingCartModel
-                                          .checkCardCode(context);
-                                      if (data['checkState'] != 1) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => SimpleDialog(
-                                              title: Center(
-                                                  child: Text('达人卡和优惠券')),
-                                              contentPadding:
-                                              EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 10),
-                                              children: <Widget>[
-                                                Icon(
-                                                  Icons.error_outline,
-                                                  color: Colors.red,
-                                                  size: 40,
-                                                ),
-                                                Container(height: 10),
-                                                Text('您输入的号码不正确或已过期'),
-                                                Text('请重新输入'),
-                                                SizedBox(height: 10),
-                                                FlatButton(
-                                                  color: Colors.red,
-                                                  child: Text('知道了', style: TextStyle(color: Colors.white),),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            ));
-                                      }
-                                    }
-                                  },
+                                  onPressed: httpModel
+                                          .getOne(checkPromoCodePath)
+                                      ? null
+                                      : () async {
+                                          if (shoppingCartModel
+                                                  .cardCodeController.text ==
+                                              '') {
+                                            Fluttertoast.showToast(
+                                                msg: '请输入优惠码');
+                                            return;
+                                          }
+                                          if (shoppingCartModel.isUseOffer) {
+                                            shoppingCartModel.cancelCardCode();
+                                          } else {
+                                            var data = await shoppingCartModel
+                                                .checkCardCode(context);
+                                            if (data['checkState'] != 1) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      SimpleDialog(
+                                                        title: Center(
+                                                            child: Text(
+                                                                '达人卡和优惠券')),
+                                                        contentPadding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                    vertical:
+                                                                        10),
+                                                        children: <Widget>[
+                                                          Icon(
+                                                            Icons.error_outline,
+                                                            color: Colors.red,
+                                                            size: 40,
+                                                          ),
+                                                          Container(height: 10),
+                                                          Text('您输入的号码不正确或已过期'),
+                                                          Text('请重新输入'),
+                                                          SizedBox(height: 10),
+                                                          FlatButton(
+                                                            color: Colors.red,
+                                                            child: Text(
+                                                              '知道了',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ));
+                                            }
+                                          }
+                                        },
                                   color: Colors.grey.withAlpha(100),
                                 ),
                               ),
@@ -372,28 +445,35 @@ class ShoppingCart extends StatelessWidget {
                                       '\$${shoppingCartModel.getProductTotal()}'),
                                 ],
                               ),
-                              shoppingCartModel.discountPrise > 0 ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text('优惠券折扣'),
-                                  Text('\$${shoppingCartModel.discountPrise}'),
-                                ],
-                              ) : Container(),
-                              shoppingCartModel.shipType == ShipType.self ? Container() : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text('运费'),
-                                  Text('\$${shoppingCartModel.shipPrice}'),
-                                ],
-                              ),
+                              shoppingCartModel.discountPrise > 0
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text('优惠券折扣'),
+                                        Text(
+                                            '\$${shoppingCartModel.discountPrise}'),
+                                      ],
+                                    )
+                                  : Container(),
+                              shoppingCartModel.shipType == ShipType.self
+                                  ? Container()
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text('运费'),
+                                        Text(
+                                            '\$${shoppingCartModel.shipPrice}'),
+                                      ],
+                                    ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text('总计'),
-                                  Text('\$${shoppingCartModel.getFinalPrice()}'),
+                                  Text(
+                                      '\$${shoppingCartModel.getFinalPrice()}'),
                                 ],
                               ),
                             ],
@@ -424,9 +504,16 @@ class ShoppingCart extends StatelessWidget {
                     ),
                     color: Colors.red,
                     onPressed: () {
+                      if (shoppingCartModel.getFinalPrice() <= 0) {
+                        return;
+                      }
                       mainNavigationKey.currentState.push(MaterialPageRoute(
-                          builder: (context) => ConfirmOrder())); },
-                    child: Text('结算', style: TextStyle(color: Colors.white)),
+                          builder: (context) => ConfirmOrder()));
+                    },
+                    child: Text(
+                      '共计 \$${shoppingCartModel.getFinalPrice()}, 去结算',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ],

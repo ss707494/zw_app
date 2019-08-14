@@ -28,7 +28,6 @@ class _InitHelpState extends State<InitHelp> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return widget.child;

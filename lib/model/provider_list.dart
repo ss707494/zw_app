@@ -12,7 +12,9 @@ import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/sub_class.dart';
 import 'package:zw_app/model/subject_selection.dart';
+import 'package:zw_app/model/user_center.dart';
 import 'confirm_order.dart';
+import 'order_history.dart';
 
 class ProviderHelp extends StatelessWidget {
   final Widget child;
@@ -36,6 +38,8 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => HomeSalesModel()),
         ChangeNotifierProvider(builder: (_) => ShoppingCartModel()),
         ChangeNotifierProvider(builder: (_) => ConfirmOrderModel()),
+        ChangeNotifierProvider(builder: (_) => UserCenterModel()),
+        ChangeNotifierProvider(builder: (_) => OrderHistoryModel()),
       ],
       child: child,
     );

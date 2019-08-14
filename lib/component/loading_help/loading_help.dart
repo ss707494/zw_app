@@ -14,7 +14,7 @@ class LoadingHelp extends StatelessWidget {
     final httpLoadingModel = Provider.of<HttpModel>(context);
     return path != null && httpLoadingModel.getOne(path)
         ? Center(
-            child: CircularProgressIndicator(),
+            child: RefreshProgressIndicator(),
           )
         : child;
   }

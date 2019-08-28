@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/image_err_help.dart';
+import 'package:zw_app/entity/product_item_entity.dart';
 
 class ProductCard extends StatelessWidget {
-  final item;
+  final ProductItemEntity item;
 
   const ProductCard({Key key, @required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(item);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -18,10 +20,10 @@ class ProductCard extends StatelessWidget {
               child: CarouselSliderIndicator(
                 aspectRatio: 1 / 1,
                 items: [
-                  ...item['Picture']?.length != 0
-                      ? item['Picture']
+                  ...(item.imgs?.length ?? 0) > 0
+                      ? item.imgs
                           ?.map((e) => ImageErrHelp(
-                                imageUrl: e,
+                                imageUrl: e.url,
                               ))
                           ?.toList()
                       : []
@@ -32,9 +34,9 @@ class ProductCard extends StatelessWidget {
               flex: 1,
               child: Row(
                 children: <Widget>[
-                  Text(item['F_CNameC']),
+                  Text(item.name),
                   Spacer(),
-                  Text('${item['F_CWeight']}${item['F_CPCompany']}'),
+                  Text('${item.weight}${item.unit}'),
                 ],
               ),
             ),
@@ -46,7 +48,7 @@ class ProductCard extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          '¥${item['F_CPUnitPriceMarket']}',
+                          '¥${item.priceMarket}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             decoration: TextDecoration.lineThrough,
@@ -56,7 +58,7 @@ class ProductCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            '¥${item['F_CPUnitPriceOut']}',
+                            '¥${item.priceOut}',
                             style: TextStyle(fontSize: 16, color: Colors.red),
                           ),
                         ),

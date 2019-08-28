@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/model/product.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
@@ -15,15 +13,6 @@ class ProductList extends StatelessWidget {
   final typeId;
 
   const ProductList({Key key, this.title, this.typeId}) : super(key: key);
-
-  getData(ProductModel model, context) async {
-    var res = await httpPost(
-      context,
-      getProductListPath,
-      data: {'F_CTID': typeId},
-    );
-    model.setList(res.data['data']);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +66,11 @@ class ProductList extends StatelessWidget {
               onRefresh: () async {
                 await productModel.getListData(
                   context,
-                  data: {'F_CTID': typeId},
+                  data: {
+                    "data": {
+                      "category_id": typeId
+                    }
+                  },
                 );
               },
               child: GridView.count(

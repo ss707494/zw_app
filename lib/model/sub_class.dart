@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
+import 'package:graphql/client.dart';
+import 'package:zw_app/common/graphql_client.dart';
+import 'package:zw_app/entity/sub_category_with_product_entity.dart';
+import 'package:zw_app/graphql_document/category_graphql.dart';
 
 class SubClassModel extends ChangeNotifier {
-
-  var _subData2;
-  var _subData3;
+  SubCategoryWithProductEntity _subData2;
+  SubCategoryWithProductEntity _subData3;
 
   get subData2 => _subData2;
 
@@ -13,6 +14,7 @@ class SubClassModel extends ChangeNotifier {
     _subData2 = data;
     notifyListeners();
   }
+
   get subData3 => _subData3;
 
   set subData3(data) {
@@ -31,24 +33,25 @@ class SubClassModel extends ChangeNotifier {
 
   getList(context, {data, level = 2}) async {
     if (level == 2) {
-      _subData2 = {};
+      _subData2 = SubCategoryWithProductEntity();
     }
     if (level == 3) {
-      _subData3 = {};
+      _subData3 = SubCategoryWithProductEntity();
     }
-//    notifyListeners();
-    var res = await httpPost(
-      context,
-      getSubClassPath,
-      data: data,
-    );
+    QueryResult res = await graphqlQuery(context, getSubClassDoc, data: data);
+    SubCategoryWithProductEntity subCategoryWithProductEntity =
+    SubCategoryWithProductEntity.fromJson(res.data ?? {});
+//    var res = await httpPost(
+//      context,
+//      getSubClassPath,
+//      data: data,
+//    );
     if (level == 2) {
-      _subData2 = res.data['data'] ?? {};
+      _subData2 = subCategoryWithProductEntity ?? {};
     }
     if (level == 3) {
-      _subData3 = res.data['data'] ?? {};
+      _subData3 = subCategoryWithProductEntity ?? {};
     }
     notifyListeners();
   }
-
 }

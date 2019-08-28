@@ -10,6 +10,7 @@ import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/view/main_page/home/home.dart';
 import 'package:zw_app/view/main_page/shopping_cart/shopping_cart.dart';
+import 'package:zw_app/view/main_page/sys_dev/sys_dev.dart';
 import 'package:zw_app/view/main_page/user_center/user_center.dart';
 
 final homeNavList = [
@@ -84,6 +85,15 @@ class MainPage extends StatelessWidget {
             }).toList(),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.ac_unit),
+        onPressed: () {
+          // 调试测试
+          mainNavigationKey.currentState.push(MaterialPageRoute(
+            builder: (context) => SysDev()
+          ));
+        },
       ),
     );
   }

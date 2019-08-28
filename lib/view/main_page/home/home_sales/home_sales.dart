@@ -5,6 +5,7 @@ import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
+import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/home_sales.dart';
 
 class HomeSales extends StatelessWidget {
@@ -26,7 +27,7 @@ class HomeSales extends StatelessWidget {
         ),
       );
 
-  buildCard(item, {index}) => Card(
+  buildCard(ProductItemEntity item, {index}) => Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -40,11 +41,11 @@ class HomeSales extends StatelessWidget {
                     child: CarouselSliderIndicator(
                       aspectRatio: 1 / 1,
                       items: [
-                        ...item['Picture']?.length != 0
-                            ? item['Picture']
+                        ...(item.imgs?.length ?? 0) > 0
+                            ? item.imgs
                                 ?.map((e) => Container(
                                       child: ImageErrHelp(
-                                        imageUrl: '$e',
+                                        imageUrl: e.url,
                                       ),
                                     ))
                                 ?.toList()
@@ -64,19 +65,19 @@ class HomeSales extends StatelessWidget {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                Text(item['F_CNameC']),
+                                Text(item.name),
                                 Container(
                                   width: 10,
                                 ),
                                 Text(
-                                    '${item['F_CWeight']}${item['F_CPCompany']}'),
+                                    '${item.weight}${item.unit}'),
                               ],
                             ),
                             Container(
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                    '¥${item['F_CPUnitPriceMarket']}',
+                                    '¥${item.priceMarket}',
                                     style: TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                     ),
@@ -84,7 +85,7 @@ class HomeSales extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Text(
-                                      '¥${item['F_CPUnitPriceOut']}',
+                                      '¥${item.priceOut}',
                                       style: TextStyle(
                                           fontSize: 17, color: Colors.red),
                                     ),

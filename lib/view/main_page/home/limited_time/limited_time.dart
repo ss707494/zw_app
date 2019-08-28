@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
+import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/limited_time.dart';
 
 class LimitedTime extends StatelessWidget {
@@ -23,7 +24,7 @@ class LimitedTime extends StatelessWidget {
         ),
       );
 
-  buildCard(item) => Card(
+  buildCard(ProductItemEntity item) => Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -35,8 +36,8 @@ class LimitedTime extends StatelessWidget {
                 child: CarouselSliderIndicator(
                   aspectRatio: 1 / 1,
                   items: [
-                    ...item['Picture']?.length != 0
-                        ? item['Picture']
+                    ...(item.imgs?.length ?? 0) > 0
+                        ? item.imgs
                             ?.map((e) => Container(
                                   child: Image.network(
                                     '$e',
@@ -60,11 +61,11 @@ class LimitedTime extends StatelessWidget {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text(item['F_CNameC']),
+                            Text(item.name),
                             Container(
                               width: 10,
                             ),
-                            Text('${item['F_CWeight']}${item['F_CPCompany']}'),
+                            Text('${item.weight}${item.unit}'),
                           ],
                         ),
                         Container(
@@ -90,7 +91,7 @@ class LimitedTime extends StatelessWidget {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                '¥${item['F_CPUnitPriceMarket']}',
+                                '¥${item.priceMarket}',
                                 style: TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                 ),
@@ -98,7 +99,7 @@ class LimitedTime extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8),
                                 child: Text(
-                                  '¥${item['F_CPUnitPriceOut']}',
+                                  '¥${item.priceOut}',
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.red),
                                 ),

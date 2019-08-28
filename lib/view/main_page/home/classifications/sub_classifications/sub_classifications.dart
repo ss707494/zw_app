@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/main_layout/main_layout.dart';
+import 'package:zw_app/entity/sub_category_with_product_entity.dart';
 import 'package:zw_app/model/sub_class.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/classification_card/classification_card.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
@@ -24,17 +25,24 @@ class SubClassifications extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Consumer<SubClassModel>(
           builder: (_, subClassModel, __) {
-            var data = level == 2
+            SubCategoryWithProductEntity data = level == 2
                 ? subClassModel.subData2
                 : subClassModel.subData3;
-            data ??= {};
+            data ??= SubCategoryWithProductEntity();
             return EasyRefreshCus(
               firstRefresh: true,
               onRefresh: () async {
                 await Provider.of<SubClassModel>(context).getList(
                   context,
                   level: level,
-                  data: {'ParentID': parentId},
+                  data: {
+                    "data": {
+                      "parent_id": parentId
+                    },
+                    "proData": {
+                      "origin_category_id": parentId
+                    }
+                  },
                 );
               },
               child: CustomScrollView(
@@ -42,7 +50,7 @@ class SubClassifications extends StatelessWidget {
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        ...data['CommodityTypeList']
+                        ...data.categoryList
                                 ?.map((e) => ClassificationCard(
                                       item: e,
                                       level: level,
@@ -69,7 +77,7 @@ class SubClassifications extends StatelessWidget {
                     childAspectRatio: 10 / 14,
                     crossAxisCount: 2,
                     children: [
-                      ...data['CommodityList']
+                      ...data.productList
                               ?.map((e) => ProductCard(
                                     item: e,
                                   ))

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
+import 'package:graphql/client.dart';
+import 'package:zw_app/common/graphql_client.dart';
+import 'package:zw_app/entity/product_item_entity.dart';
+import 'package:zw_app/graphql_document/product_graphql.dart';
 
 enum ProductOrderType {
   e,
@@ -12,7 +14,7 @@ enum ProductOrderType {
 }
 
 class ProductModel extends ChangeNotifier {
-  List _list;
+  List<ProductItemEntity> _list;
 
   ProductOrderType _order;
 
@@ -24,12 +26,9 @@ class ProductModel extends ChangeNotifier {
   }
 
   getListData(context, {data}) async {
-    var res = await httpPost(
-      context,
-      getProductListPath,
-      data: data,
-    );
-    _list = res.data['data'];
+    QueryResult res = await graphqlQuery(context, getProductListDoc, data: data);
+    _list = List<ProductItemEntity>()..addAll((res.data['product_list'] as List ?? []).map((e) => ProductItemEntity.fromJson(e)));
+//    _list = res.data['product_list'];
     notifyListeners();
   }
 

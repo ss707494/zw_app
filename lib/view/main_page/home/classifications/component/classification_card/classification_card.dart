@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/image_err_help.dart';
+import 'package:zw_app/entity/Category_item_entity.dart';
 import 'package:zw_app/view/main_page/home/classifications/product_list/product_list.dart';
 import 'package:zw_app/view/main_page/home/classifications/sub_classifications/sub_classifications.dart';
 
 class ClassificationCard extends StatelessWidget {
-  final item;
+  final CategoryItemEntity item;
   final int level;
 
   const ClassificationCard({Key key, this.item, this.level = 2})
@@ -28,7 +29,7 @@ class ClassificationCard extends StatelessWidget {
                 child: Container(
                   height: 80,
                   child: ImageErrHelp(
-                    imageUrl: item['Picture'],
+                    imageUrl: item.imgUrl,
                   ),
                 ),
                 flex: 5,
@@ -38,7 +39,7 @@ class ClassificationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      '${item['F_CTNameC']}',
+                      '${item.name}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -59,13 +60,13 @@ class ClassificationCard extends StatelessWidget {
                 if (level == 3) {
                   mainNavigationKey.currentState.push(MaterialPageRoute(
                       builder: (context) => ProductList(
-                            title: item['F_CTNameC'],
-                            typeId: item['ID'],
+                            title: item.name,
+                            typeId: item.id,
                           )));
                 } else {
                   mainNavigationKey.currentState.push(MaterialPageRoute(
                       builder: (BuildContext context) => SubClassifications(
-                            parentId: item['ID'],
+                            parentId: item.id,
                             level: level + 1,
                           )));
                 }

@@ -1,5 +1,7 @@
 library ss_dio;
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -7,17 +9,20 @@ import 'package:zw_app/model/http.dart';
 
 var dio = Dio();
 
-httpPost(context, path, {data}) async {
+httpPost(context, String path, {data}) async {
   final httpLoadingModel = Provider.of<HttpModel>(context, listen: false);
   Future.delayed(Duration.zero, () {
     httpLoadingModel.setCurrent(path, true);
   });
-  FormData formData = new FormData.from(data ?? {});
+//  FormData formData = new FormData.from(data ?? {});
   var res;
   res = await dio
       .post(
     '${httpLoadingModel.hostStr}$path',
-    data: formData,
+    data: data,
+    options: Options(
+      contentType: ContentType.json,
+    )
   )
       .catchError((err) {
     print(err);
@@ -28,7 +33,7 @@ httpPost(context, path, {data}) async {
     httpLoadingModel.setCurrent(path, false);
   });
   String logInfo = '''
-sslog: path: $path
+sslog: path: ${httpLoadingModel.hostStr}$path
 sslog: data: $data
 sslog: res: $res''';
   print(logInfo);

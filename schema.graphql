@@ -37,6 +37,7 @@ type Category {
 }
 
 type Mutation {
+    addToShopCart(ShopCartInput: ShopCartInput): result
     changePassword(data: ChangePassword!): String
     deleteOneUser(id: String!): String
     importAllUser(data: String!): String
@@ -71,6 +72,7 @@ type Product {
     price_market: Float
     price_out: Float
     remark: String
+    sort: Int
     stock: Float
     unit: String
     update_time: Date
@@ -95,15 +97,27 @@ type Query {
     oneUser(id: String!): User
     product_list(ListInput: ProductInput): [Product]
     product_total(ListInput: ProductInput): Int
+    shop_cart_list(ShopCartInput: ShopCartInput): [ShopCart]
     totalUser(data: UserInput): Int
     user: [User]
+    userInfo: User
+}
+
+type ShopCart {
+    create_time: Date
+    id: String
+    name: String
+    product: Product
+    product_id: String
+    update_time: Date
 }
 
 type User {
-    auth: String
+    create_time: Date
     id: String
-    message: String
     name: String
+    type: String
+    update_time: Date
 }
 
 type result {
@@ -111,6 +125,7 @@ type result {
     flag: Int
     msg: String
     product: Product
+    shopCart: ShopCart
 }
 
 input CategoryInput {
@@ -130,6 +145,7 @@ input CategoryInput {
     sort: Int
     sort_type: String
     update_time: Date
+    user_id: String
 }
 
 input ChangePassword {
@@ -169,7 +185,14 @@ input ProductInput {
     stock: Float
     unit: String
     update_time: Date
+    user_id: String
     weight: Float
+}
+
+input ShopCartInput {
+    id: String
+    number: Int
+    product_id: String
 }
 
 input UserInput {

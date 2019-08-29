@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
+import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/login.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -60,8 +63,16 @@ class _LoginState extends State<Login> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       autovalidate = false;
-                      var res = await loginModel.login(context);
-                      print(res);
+                      var _res = await loginModel.login(context);
+                      var res = _res.data;
+                      if (res['data'] == 1) {
+                        HttpModel httpModel = Provider.of<HttpModel>(context);
+                        await httpModel.setTokenAsync(res['token']);
+                        await httpModel.setRefreshTokenAsync(res['refreshtoken']);
+                        mainNavigationKey.currentState.pushNamedAndRemoveUntil('main', (r) => false);
+                      } else {
+                        Fluttertoast.showToast(msg: res['message'] ?? '登录出错');
+                      }
                     } else {
                       setState(() {
                         autovalidate = true;

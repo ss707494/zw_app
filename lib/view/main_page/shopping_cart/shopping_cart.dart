@@ -9,12 +9,13 @@ import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/confirm_dialog/confirm_dialog.dart';
 import 'package:zw_app/component/image_err_help.dart';
+import 'package:zw_app/entity/shop_cart_item_entity.dart';
 import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/view/main_page/shopping_cart/confirm_order.dart';
 
 class ShoppingCart extends StatelessWidget {
-  buildProductCard(context, item, ShoppingCartModel shoppingCartModel,
+  buildProductCard(context, ShopCartItemEntity item, ShoppingCartModel shoppingCartModel,
           {actionsWidgets}) =>
       Container(
         child: Container(
@@ -27,7 +28,7 @@ class ShoppingCart extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: ImageErrHelp(
-                    imageUrl: item['imgUrl'],
+                    imageUrl: item.product?.imgs == null ? '' : item.product?.imgs[0]?.url,
                   ),
                 ),
               ),
@@ -38,19 +39,19 @@ class ShoppingCart extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text(item['title']),
+                        Text(item.product.name),
                         SizedBox(
                           width: 10,
                         ),
-                        Text('${item['weight']}${item['unit']}'),
+                        Text('${item.product.weight}${item.product.unit}'),
                       ],
                     ),
-                    Expanded(child: Text('${item['remark']}')),
+                    Expanded(child: Text('${item.product.remark}')),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          '\$${item['originalPrice']}',
+                          '\$${item.product.priceMarket}',
                           style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontSize: 12,
@@ -58,7 +59,7 @@ class ShoppingCart extends StatelessWidget {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          '\$${item['sellPrice']}',
+                          '\$${item.product.priceOut}',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.red,
@@ -119,7 +120,7 @@ class ShoppingCart extends StatelessWidget {
   }
 
   buildProductForCart(
-          context, productList, ShoppingCartModel shoppingCartModel) =>
+          context, List<ShopCartItemEntity> productList, ShoppingCartModel shoppingCartModel) =>
       List.generate(productList.length ?? 0, (index) {
         var item = productList[index];
         return Container(
@@ -154,7 +155,7 @@ class ShoppingCart extends StatelessWidget {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       var control =
-                          shoppingCartModel.productNumbers[item['id']];
+                          shoppingCartModel.productNumbers[item.id];
                       if (control.text == '1') {
                         showConfirmDialog(
                           context: context,
@@ -177,7 +178,7 @@ class ShoppingCart extends StatelessWidget {
                   width: 45,
                   child: TextField(
                     readOnly: true,
-                    controller: shoppingCartModel.productNumbers[item['id']],
+                    controller: shoppingCartModel.productNumbers[item.id],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 2),
                     ),
@@ -186,7 +187,7 @@ class ShoppingCart extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => buildNumberInputDialog(
-                            context, item['id'], shoppingCartModel),
+                            context, item.id, shoppingCartModel),
                       );
                     },
                   ),
@@ -198,7 +199,7 @@ class ShoppingCart extends StatelessWidget {
                     padding: EdgeInsets.all(0),
                     onPressed: () {
                       var control =
-                          shoppingCartModel.productNumbers[item['id']];
+                          shoppingCartModel.productNumbers[item.id];
                       control.text = '${int.parse(control.text) + 1}';
                     },
                     icon: Icon(Icons.add),
@@ -209,7 +210,7 @@ class ShoppingCart extends StatelessWidget {
       });
 
   buildProductForNext(
-          context, productList, ShoppingCartModel shoppingCartModel) =>
+          context, List<ShopCartItemEntity> productList, ShoppingCartModel shoppingCartModel) =>
       List.generate(productList.length ?? 0, (index) {
         var item = productList[index];
         return Container(
@@ -276,7 +277,7 @@ class ShoppingCart extends StatelessWidget {
       child: Scaffold(
         body: Consumer<ShoppingCartModel>(
           builder: (BuildContext context, shoppingCartModel, Widget child) {
-            var products = shoppingCartModel.productList;
+            List<ShopCartItemEntity> products = shoppingCartModel.productList;
             return Column(
               children: <Widget>[
                 Expanded(

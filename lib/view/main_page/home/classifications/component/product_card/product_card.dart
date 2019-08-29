@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
+import 'package:zw_app/model/shopping_cart.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductItemEntity item;
@@ -10,7 +12,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(item);
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+//    print(item);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -72,7 +75,9 @@ class ProductCard extends StatelessWidget {
                     elevation: 1,
                     mini: true,
                     backgroundColor: Colors.red,
-                    onPressed: () {},
+                    onPressed: () async {
+                      await shoppingCartModel.addToShopCart(context, productId: item.id);
+                    },
                     shape: CircleBorder(),
                     child: Icon(
                       Icons.shopping_cart,

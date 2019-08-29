@@ -18,7 +18,7 @@ final GraphQLClient graphQLClient = GraphQLClient(
     })
         .concat(HttpLink(uri: '${serverHost}api')));
 
-Future<QueryResult> graphqlQuery(context, document, {data = const {}}) async {
+Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynamic>{}}) async {
   QueryResult res = await _queryGraphql(context, document, data: data);
   if (res.hasErrors) {
     String errMsg = res.errors.map((e) => e.message).join('');

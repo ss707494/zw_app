@@ -25,7 +25,8 @@ class ShoppingCartModel extends BaseModel {
 
   List<ShopCartItemEntity> _productList;
 
-  List<ShopCartItemEntity> get productList => _productList ?? [];
+  List<ShopCartItemEntity> get productList =>
+      _productList?.where((e) => e.isNext == 0)?.toList() ?? [];
 
   set productList(v) {
     _productList = v;
@@ -48,7 +49,7 @@ class ShoppingCartModel extends BaseModel {
       _productNumbers = {};
     }
     if (_productNumbers[item.id] == null) {
-      final con = TextEditingController(text: '1');
+      final con = TextEditingController(text: item.number.toString());
       con.addListener(() {
         notifyListeners();
       });
@@ -57,12 +58,15 @@ class ShoppingCartModel extends BaseModel {
   }
 
   getData(context) async {
-    QueryResult res = await graphqlQuery(context, shopCartListDoc);
+    QueryResult res = await graphqlQuery(context, shopCartListDoc,
+        fetchPolicy: FetchPolicy.cacheAndNetwork);
 //    var res = await httpPost(context, getCartIndexInfo);
     initAllData();
     if (res == null) return;
     _data = res.data;
-    _productList = List<ShopCartItemEntity>()..addAll((res.data['shop_cart_list'] as List ?? []).map((e) => ShopCartItemEntity.fromJson(e)));
+    _productList = List<ShopCartItemEntity>()
+      ..addAll((res.data['shop_cart_list'] as List ?? [])
+          .map((e) => ShopCartItemEntity.fromJson(e)));
     _productList.forEach((e) {
       addOneProductForNumber(e);
     });
@@ -94,41 +98,45 @@ class ShoppingCartModel extends BaseModel {
     notifyListeners();
   }
 
-  List<ShopCartItemEntity> _nextProductList;
+//  List<ShopCartItemEntity> _nextProductList;
 
-  List<ShopCartItemEntity> get nextProductList => _nextProductList ?? [];
+  List<ShopCartItemEntity> get nextProductList =>
+      _productList?.where((e) => e.isNext != 0)?.toList() ?? [];
 
-  set nextProductList(v) {
-    _nextProductList = v;
-    notifyListeners();
-  }
+//  set nextProductList(v) {
+//    _nextProductList = v;
+//    notifyListeners();
+//  }
 
-  removeProductItem(item) {
+  removeProductItem(context, ShopCartItemEntity item) async {
     _productList = _productList.where((e) => e != item).toList();
+    QueryResult res =await graphqlQuery(context, removeShopCartDoc, data: {
+      "id": item.id
+    });
+    if (res.data['flag'] == 0) {
+      getData(context);
+    }
     notifyListeners();
   }
 
-  moveToNext(item) {
-    _productList = _productList.where((e) => e != item).toList();
-    _nextProductList = [
-      item,
-      ..._nextProductList ?? [],
-    ];
+  moveToNext(ShopCartItemEntity item) {
+    item.isNext = 1;
+//    _productList = _productList.where((e) => e != item).toList();
+//    _nextProductList = [
+//      item,
+//      ..._nextProductList ?? [],
+//    ];
     notifyListeners();
   }
 
-  moveToProductList(item) {
-    _nextProductList = _nextProductList.where((e) => e != item).toList();
-    _productList = [
-      item,
-      ..._productList ?? [],
-    ];
+  moveToProductList(ShopCartItemEntity item) {
+    item.isNext = 0;
+//    _nextProductList = _nextProductList.where((e) => e != item).toList();
+//    _productList = [
+//      item,
+//      ..._productList ?? [],
+//    ];
     addOneProductForNumber(item);
-    notifyListeners();
-  }
-
-  removeNextItem(item) {
-    _nextProductList = _nextProductList.where((e) => e != item).toList();
     notifyListeners();
   }
 
@@ -139,7 +147,7 @@ class ShoppingCartModel extends BaseModel {
             0,
             (pre, e) =>
                 pre +
-                    double.parse('${e.product.priceOut}') *
+                    double.tryParse('${e.product.priceOut}') *
                         double.tryParse(_productNumbers[e.id].text) ??
                 0);
   }
@@ -213,4 +221,18 @@ class ShoppingCartModel extends BaseModel {
     return res?.data['addToShopCart'];
   }
 
+  saveShopCart(context, {@required ShopCartItemEntity item}) async {
+    int number = int.parse(_productNumbers[item.id].text);
+    QueryResult res = await graphqlQuery(context, saveShopCartDoc, data: {
+      "data": {
+        "id": item.id,
+        "number": number,
+        "is_next": item.isNext
+      }
+    });
+//    if (res?.data['addToShopCart']['flag'] == 1) {
+//      Fluttertoast.showToast(msg: '操作成功');
+//    }
+    return res.data['flag'];
+  }
 }

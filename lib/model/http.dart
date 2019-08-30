@@ -64,7 +64,7 @@ class HttpModel extends ChangeNotifier {
 
   setRefreshTokenAsync(String refreshToken) async {
     _refreshToken = refreshToken;
-    await setStorage(key: 'refreshToken', value: refreshToken);
+    await setStorage(key: 'refreshtoken', value: refreshToken);
     notifyListeners();
   }
 

@@ -14,12 +14,19 @@ import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/view/main_page/shopping_cart/confirm_order.dart';
 
-class ShoppingCart extends StatelessWidget {
+class ShoppingCart extends StatefulWidget {
+  @override
+  _ShoppingCartState createState() => _ShoppingCartState();
+}
+
+class _ShoppingCartState extends State<ShoppingCart> {
+
   buildProductCard(context, ShopCartItemEntity item, ShoppingCartModel shoppingCartModel,
           {actionsWidgets}) =>
       Container(
         child: Container(
           height: 90,
+          margin: EdgeInsets.only(bottom: 10),
           child: Row(
             children: <Widget>[
               Container(
@@ -80,9 +87,9 @@ class ShoppingCart extends StatelessWidget {
         ),
       );
 
-  buildNumberInputDialog(context, id, ShoppingCartModel shoppingCartModel) {
+  buildNumberInputDialog(context, ShopCartItemEntity item, ShoppingCartModel shoppingCartModel) {
     shoppingCartModel.numberInputController.text =
-        shoppingCartModel.productNumbers[id].text;
+        shoppingCartModel.productNumbers[item.id].text;
     return SimpleDialog(
       title: Text('输入数量'),
       contentPadding: EdgeInsets.all(15),
@@ -109,8 +116,9 @@ class ShoppingCart extends StatelessWidget {
               Fluttertoast.showToast(msg: '请输入数量');
               return;
             }
-            shoppingCartModel.productNumbers[id].text =
+            shoppingCartModel.productNumbers[item.id].text =
                 num.isNotEmpty ? num : '0';
+            shoppingCartModel.saveShopCart(context, item: item);
             Navigator.of(context).pop();
           },
           child: Text('确认'),
@@ -141,6 +149,7 @@ class ShoppingCart extends StatelessWidget {
                         content: Text('确认移动至下次购买'),
                         handleOk: () async {
                           shoppingCartModel.moveToNext(item);
+                          shoppingCartModel.saveShopCart(context, item: item);
                           return true;
                         },
                       );
@@ -161,13 +170,14 @@ class ShoppingCart extends StatelessWidget {
                           context: context,
                           content: Text('确认删除吗'),
                           handleOk: () async {
-                            shoppingCartModel.removeProductItem(item);
+                            shoppingCartModel.removeProductItem(context, item);
                             return true;
                           },
                         );
                         return;
                       }
                       control.text = '${int.parse(control.text) - 1}';
+                      shoppingCartModel.saveShopCart(context, item: item);
                     },
                     icon: Icon(Icons.remove),
                   ),
@@ -187,7 +197,7 @@ class ShoppingCart extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => buildNumberInputDialog(
-                            context, item.id, shoppingCartModel),
+                            context, item, shoppingCartModel),
                       );
                     },
                   ),
@@ -201,6 +211,7 @@ class ShoppingCart extends StatelessWidget {
                       var control =
                           shoppingCartModel.productNumbers[item.id];
                       control.text = '${int.parse(control.text) + 1}';
+                      shoppingCartModel.saveShopCart(context, item: item);
                     },
                     icon: Icon(Icons.add),
                   ),
@@ -230,7 +241,7 @@ class ShoppingCart extends StatelessWidget {
                         context: context,
                         content: Text('确认删除吗'),
                         handleOk: () async {
-                          shoppingCartModel.removeNextItem(item);
+                          shoppingCartModel.removeProductItem(context, item);
                         },
                       );
                     },
@@ -251,6 +262,7 @@ class ShoppingCart extends StatelessWidget {
                         content: Text('确认加入购物车'),
                         handleOk: () async {
                           shoppingCartModel.moveToProductList(item);
+                          shoppingCartModel.saveShopCart(context, item: item);
                         },
                       );
                     },

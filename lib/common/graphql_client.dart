@@ -18,8 +18,8 @@ final GraphQLClient graphQLClient = GraphQLClient(
     })
         .concat(HttpLink(uri: '${serverHost}api')));
 
-Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynamic>{}}) async {
-  QueryResult res = await _queryGraphql(context, document, data: data);
+Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynamic>{}, fetchPolicy = FetchPolicy.cacheFirst}) async {
+  QueryResult res = await _queryGraphql(context, document, data: data, fetchPolicy: fetchPolicy);
   if (res.hasErrors) {
     String errMsg = res.errors.map((e) => e.message).join('');
     if (errMsg.contains('401')) {
@@ -54,13 +54,13 @@ Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynam
   return res;
 }
 
-Future<QueryResult> _queryGraphql (context, document, {data = const {}}) async {
+Future<QueryResult> _queryGraphql (context, document, {data, fetchPolicy}) async {
   final httpLoadingModel = Provider.of<HttpModel>(context, listen: false);
   Future.delayed(Duration.zero, () {
     httpLoadingModel.setCurrent(document, true);
   });
   QueryResult res = await graphQLClient
-      .query(QueryOptions(document: document, variables: data))
+      .query(QueryOptions(document: document, variables: data, fetchPolicy: fetchPolicy))
       .catchError((err) {
     print(err);
     Fluttertoast.showToast(msg: err.toString());

@@ -41,10 +41,19 @@ type Mutation {
     changePassword(data: ChangePassword!): String
     deleteOneUser(id: String!): String
     importAllUser(data: String!): String
+    remove_shop_cart(id: String!): result
     save_category(Category: CategoryInput): result
     save_product(ProductInput: ProductInput): result
+    save_shop_cart(SaveShopCartInput: SaveShopCartInput): result
     updateUser(data: UserInput!): User
     updateUserAuth(auth: String!, id: String!): String
+}
+
+type Order {
+    create_time: Date
+    id: String
+    name: String
+    update_time: Date
 }
 
 type Product {
@@ -95,18 +104,22 @@ type Query {
     category_total(CategoryInput: CategoryInput): Int
     getPassCode(pass: String!): String
     oneUser(id: String!): User
+    order_list(id: String): [Order]
     product_list(ListInput: ProductInput): [Product]
     product_total(ListInput: ProductInput): Int
     shop_cart_list(ShopCartInput: ShopCartInput): [ShopCart]
     totalUser(data: UserInput): Int
     user: [User]
-    userInfo: User
+    user_coin: UserCoin
+    user_info: User
 }
 
 type ShopCart {
     create_time: Date
     id: String
+    is_next: Int
     name: String
+    number: Int
     product: Product
     product_id: String
     update_time: Date
@@ -114,10 +127,19 @@ type ShopCart {
 
 type User {
     create_time: Date
+    email: String
     id: String
     name: String
+    phone: String
     type: String
     update_time: Date
+    user_name: String
+}
+
+type UserCoin {
+    card_number: Int
+    current_mouth_icons: Float
+    next_mouth_icons: Float
 }
 
 type result {
@@ -152,6 +174,10 @@ input ChangePassword {
     id: String
     newPass: String
     verification: String
+}
+
+input OrderListInput {
+    id: String
 }
 
 input ProductImgInput {
@@ -189,8 +215,16 @@ input ProductInput {
     weight: Float
 }
 
+input SaveShopCartInput {
+    id: String!
+    is_next: Int!
+    number: Int!
+    product_id: String
+}
+
 input ShopCartInput {
     id: String
+    is_next: Int
     number: Int
     product_id: String
 }

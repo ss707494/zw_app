@@ -17,6 +17,8 @@ query ($data: ShopCartInput) {
     create_time
     update_time
     product_id
+    is_next
+    number
     product {
       brand
       c1_id
@@ -53,6 +55,26 @@ query ($data: ShopCartInput) {
         url
       }
     }
+  }
+}
+''';
+
+// language=GraphQL
+String saveShopCartDoc = r'''
+mutation ($data: SaveShopCartInput) {
+  save_shop_cart(SaveShopCartInput: $data) {
+    flag
+    msg
+  }
+}
+''';
+
+// language=GraphQL
+String removeShopCartDoc = r'''
+mutation ($id: String!) {
+  remove_shop_cart(id: $id) {
+    flag
+    msg
   }
 }
 ''';

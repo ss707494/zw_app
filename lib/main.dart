@@ -10,6 +10,7 @@ import 'package:zw_app/model/provider_list.dart';
 import 'package:zw_app/view/login/login.dart';
 import 'package:zw_app/view/main_page/main_page.dart';
 import 'package:zw_app/view/main_page/shopping_cart/confirm_order.dart';
+import 'package:zw_app/view/test_page/first_page/first_page.dart';
 
 import 'model/http.dart';
 
@@ -31,18 +32,16 @@ class App extends StatelessWidget {
                   init: () async {
                     await httpModel.initToken();
                     if (httpModel.token != null) {
-                      mainNavigationKey.currentState.popAndPushNamed('main');
+                      mainNavigationKey.currentState.pushNamedAndRemoveUntil('main', (r) => false);
                     } else {
-                      mainNavigationKey.currentState.popAndPushNamed('login');
+                      mainNavigationKey.currentState.pushNamedAndRemoveUntil('login', (r) => false);
                     }
                   },
                   child: NestedNavigator(
                     navigationKey: mainNavigationKey,
                     initialRoute: 'empty',
                     routes: {
-                      'empty': (context) => Container(
-                        color: Colors.white,
-                      ),
+                      'empty': (context) => FirstPage(),
                       'main': (context) => MainPage(),
                       'login': (context) => Login(),
                       'test': (context) => ConfirmOrder(),

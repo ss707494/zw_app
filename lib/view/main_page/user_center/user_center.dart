@@ -4,6 +4,9 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/router_help.dart';
+import 'package:zw_app/entity/user_coin_entity.dart';
+import 'package:zw_app/entity/user_info_entity.dart';
+import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/user_center.dart';
 import 'package:zw_app/view/main_page/user_center/order_history.dart';
 
@@ -11,7 +14,9 @@ class UserCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserCenterModel userCenterModel = Provider.of<UserCenterModel>(context);
-    Map userInfo = userCenterModel.userInfo;
+    UserInfoEntity userInfo = userCenterModel.userInfo;
+    UserCoinEntity userCoin = userCenterModel.userCoin;
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
 
     const mainPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 10);
 
@@ -30,9 +35,9 @@ class UserCenter extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(height: 30),
-        Text('你好, ${userInfo['name']}'),
-        Text('${userInfo['phone']}'),
-        Text('${userInfo['email']}')
+        Text('你好, ${userInfo.userName ?? ''}'),
+        Text('${userInfo.phone ?? ''}'),
+        Text('${userInfo.email ?? ''}')
       ],
     ));
 
@@ -43,22 +48,22 @@ class UserCenter extends StatelessWidget {
         Column(
           children: <Widget>[
             Icon(Icons.local_atm),
-            Text('\$${userInfo['currentMouthIcons']}'),
+            Text('\$${userCoin.currentMouthIcons}'),
             Text('当月达人币'),
           ],
         ),
         Column(
           children: <Widget>[
             Icon(Icons.local_atm),
-            Text('\$${userInfo['nextMouthIcons']}'),
-            Text('当月达人币'),
+            Text('\$${userCoin.nextMouthIcons}'),
+            Text('下月达人币'),
           ],
         ),
         Column(
           children: <Widget>[
             Icon(Icons.credit_card),
-            Text('${userInfo['cardNumber']}'),
-            Text('当月达人币'),
+            Text('${userCoin.cardNumber}'),
+            Text('达人卡'),
           ],
         ),
       ],
@@ -68,7 +73,7 @@ class UserCenter extends StatelessWidget {
       children: <Widget>[
         ListTile(
           title: Text('我的订单历史'),
-          subtitle: Text('${userInfo['pendingOrderNumber']}个订单待取货'),
+          subtitle: Text('${userCenterModel.orderList.length ?? 0}个订单待取货'),
           trailing: Icon(Icons.keyboard_arrow_right),
           onTap: () {
             mainNavigationKey.currentState.push(MaterialPageRoute(
@@ -79,7 +84,7 @@ class UserCenter extends StatelessWidget {
         Divider(),
         ListTile(
           title: Text('下次买清单'),
-          subtitle: Text('${userInfo['nextBuyNumber']}件商品'),
+          subtitle: Text('${shoppingCartModel.nextProductList.length ?? 0}件商品'),
           trailing: Icon(Icons.keyboard_arrow_right),
         ),
       ],

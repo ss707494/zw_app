@@ -73,4 +73,12 @@ class HttpModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  deleteToken () async {
+    _token = null;
+    _refreshToken = null;
+    await deleteStorage(key: 'token');
+    await deleteStorage(key: 'refreshtoken');
+    notifyListeners();
+  }
+
 }

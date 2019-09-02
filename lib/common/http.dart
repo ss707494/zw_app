@@ -9,13 +9,13 @@ import 'package:zw_app/model/http.dart';
 
 var dio = Dio();
 
-httpPost(context, String path, {data}) async {
+Future<Response> httpPost(context, String path, {data}) async {
   final httpLoadingModel = Provider.of<HttpModel>(context, listen: false);
   Future.delayed(Duration.zero, () {
     httpLoadingModel.setCurrent(path, true);
   });
 //  FormData formData = new FormData.from(data ?? {});
-  var res;
+  Response res;
   res = await dio
       .post(
     '${httpLoadingModel.hostStr}$path',

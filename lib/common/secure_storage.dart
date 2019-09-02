@@ -10,3 +10,8 @@ Future getStorageByKey (String key) async {
 setStorage ({String key, String value}) async {
   await storage.write(key: key, value: value);
 }
+
+deleteStorage ({String key}) async {
+  await storage.delete(key: key);
+}
+

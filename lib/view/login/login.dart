@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/common/router_help.dart';
-import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/login.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -14,7 +11,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  bool autovalidate = false;
+  bool autoValidate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,7 @@ class _LoginState extends State<Login> {
                   ),
                   controller: loginModel.nameController,
                   validator: (v) => v == '' ? '必填项' : null,
-                  autovalidate: autovalidate,
+                  autovalidate: autoValidate,
                 ),
                 Container(height: 20),
                 TextFormField(
@@ -55,27 +52,18 @@ class _LoginState extends State<Login> {
                   ),
                   controller: loginModel.passwordController,
                   validator: (v) => v == '' ? '必填项' : null,
-                  autovalidate: autovalidate,
+                  autovalidate: autoValidate,
                 ),
                 Container(height: 20),
                 RaisedButton(
                   child: Text('登录'),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      autovalidate = false;
-                      var _res = await loginModel.login(context);
-                      var res = _res.data;
-                      if (res['data'] == 1) {
-                        HttpModel httpModel = Provider.of<HttpModel>(context);
-                        await httpModel.setTokenAsync(res['token']);
-                        await httpModel.setRefreshTokenAsync(res['refreshtoken']);
-                        mainNavigationKey.currentState.pushNamedAndRemoveUntil('main', (r) => false);
-                      } else {
-                        Fluttertoast.showToast(msg: res['message'] ?? '登录出错');
-                      }
+                      autoValidate = false;
+                      await loginModel.login(context);
                     } else {
                       setState(() {
-                        autovalidate = true;
+                        autoValidate = true;
                       });
                     }
                   },

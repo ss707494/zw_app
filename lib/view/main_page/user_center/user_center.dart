@@ -9,6 +9,7 @@ import 'package:zw_app/entity/user_info_entity.dart';
 import 'package:zw_app/model/login.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/user_center.dart';
+import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
 import 'package:zw_app/view/main_page/user_center/order_history.dart';
 
 class UserCenter extends StatelessWidget {
@@ -173,7 +174,11 @@ class UserCenter extends StatelessWidget {
             ListTile(
               title: Text('我的地址'),
               trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                  builder: (context) => MyAddressList()
+                ));
+              },
             ),
             Divider(),
             ListTile(

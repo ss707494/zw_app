@@ -83,7 +83,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('\$${userCoin.currentMouthIcons}'),
+                  Text('\$${userCoin.currentMouthIcons ?? 0}'),
                   Text('当月达人币'),
                 ],
               ),
@@ -96,7 +96,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('\$${userCoin.nextMouthIcons}'),
+                  Text('\$${userCoin.nextMouthIcons ?? 0}'),
                   Text('下月达人币'),
                 ],
               ),
@@ -109,7 +109,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${userCoin.cardNumber}'),
+                  Text('${userCoin.cardNumber ?? 0}'),
                   Text('达人卡'),
                 ],
               ),

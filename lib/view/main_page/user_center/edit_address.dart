@@ -1,30 +1,24 @@
 
 import 'package:flutter/material.dart';
-import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
-import 'package:zw_app/view/main_page/user_center/edit_address.dart';
 
-class MyAddressList extends StatelessWidget {
+class EditAddress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('我的地址'),
+        title: Text('地址详情'),
         actions: <Widget>[
           FlatButton(
-            child: Text('添加地址'),
-            onPressed: () {
-              mainNavigationKey.currentState.push(MaterialPageRoute(
-                builder: (context) => EditAddress(),
-              ));
-            },
+            child: Text('保存'),
+            onPressed: () {},
           ),
         ],
       ),
       body: InitHasLoadingHelp(
-        init: () async {},
+        init: () async {Future.delayed(Duration(seconds: 1));},
         child: ListView(
           children: <Widget>[
             ListTile(

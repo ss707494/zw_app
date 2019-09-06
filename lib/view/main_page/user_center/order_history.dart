@@ -21,8 +21,7 @@ List orderStateName = ['', '配货中', '待取货', '订单已完成'];
 class OrderHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    OrderHistoryModel orderHistoryModel =
-    Provider.of<OrderHistoryModel>(context);
+    OrderHistoryModel orderHistoryModel = Provider.of<OrderHistoryModel>(context);
     List orderList = orderHistoryModel.orderList;
 
     return Scaffold(

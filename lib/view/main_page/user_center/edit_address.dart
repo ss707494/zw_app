@@ -1,11 +1,16 @@
-
 import 'package:flutter/material.dart';
-import 'package:zw_app/component/image_err_help.dart';
+import 'package:provider/provider.dart';
+import 'package:zw_app/common/validator_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
+import 'package:zw_app/model/address_edit.dart';
 
 class EditAddress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AddressEditModel addressEditModel = Provider.of<AddressEditModel>(context);
+    FormTextEditingController formController =
+        addressEditModel.formTextEditingController;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -18,34 +23,26 @@ class EditAddress extends StatelessWidget {
         ],
       ),
       body: InitHasLoadingHelp(
-        init: () async {Future.delayed(Duration(seconds: 1));},
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: Container(
-                width: 100,
-                child: Row(
-                  children: <Widget>[
-                    Radio(
-                      onChanged: (v) {},
-                      value: '',
-                      groupValue: '',
-                    ),
-                    ImageErrHelp(
-                      imageUrl: '',
-                    ),
-                  ],
-                ),
+        init: () async {
+          Future.delayed(Duration(seconds: 1));
+        },
+        child: Form(
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: '姓名'),
+                controller: formController.name,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                    type: HelpValidatorType.require,
+                    dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: true,
               ),
-              title: Text('伤害'),
-              subtitle: Text('静安'),
-              trailing: FlatButton(
-                child: Text('修改'),
-                onPressed: () {},
-              ),
-            ),
-
-          ],
+            ],
+          ),
         ),
       ),
     );

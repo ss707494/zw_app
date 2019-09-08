@@ -34,6 +34,7 @@ class MyAddressList extends StatelessWidget {
           await addressModel.getListData(context);
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: ListView.builder(
@@ -60,19 +61,39 @@ class MyAddressList extends StatelessWidget {
                     ),
                     title: Text(item.address),
                     subtitle: Text('${item.province} ${item.city} ${item.district}'),
-                    trailing: FlatButton(
-                      child: Text('修改'),
-                      onPressed: () {},
+                    trailing: Container(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.edit),
+                            iconSize: 14,
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.delete),
+                            iconSize: 14,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
               ),
             ),
-            FlatButton(
-              child: Text('设置默认地址'),
-              onPressed: () async {
-                addressModel.setDefaultId(context, addressModel.defaultId);
-              },
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                color: Colors.red,
+                child: Text('设置默认地址', style: TextStyle(color: Colors.white)),
+                onPressed: () async {
+                  addressModel.setDefaultId(context, addressModel.defaultId);
+                },
+              ),
             )
           ],
         ),

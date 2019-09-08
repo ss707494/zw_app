@@ -5,6 +5,11 @@ import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dar
 import 'package:zw_app/model/address.dart';
 
 class EditAddress extends StatelessWidget {
+
+  final String id;
+
+  const EditAddress({Key key, this.id}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     AddressModel addressModel = Provider.of<AddressModel>(context);

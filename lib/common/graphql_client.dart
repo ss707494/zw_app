@@ -19,6 +19,7 @@ final GraphQLClient graphQLClient = GraphQLClient(
         .concat(HttpLink(uri: '${serverHost}api')));
 
 Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynamic>{}, fetchPolicy = FetchPolicy.cacheAndNetwork}) async {
+  print('token:::::::::: ${await getStorageByKey('token')}');
   QueryResult res = await _queryGraphql(context, document, data: data, fetchPolicy: fetchPolicy);
   if (res.hasErrors) {
     String errMsg = res.errors.map((e) => e.message).join('');

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zw_app/model/http.dart';
 
 class InitHasLoadingHelp extends StatefulWidget {
   final Widget child;
   final Function init;
   final Function didChangeDependencies;
+  final String path;
 
-  const InitHasLoadingHelp({Key key, this.child, this.init, this.didChangeDependencies}) : super(key: key);
+  const InitHasLoadingHelp({Key key, this.child, this.init, this.didChangeDependencies, this.path}) : super(key: key);
 
   @override
   _InitHasLoadingHelpState createState() => _InitHasLoadingHelpState();
@@ -42,6 +45,11 @@ class _InitHasLoadingHelpState extends State<InitHasLoadingHelp> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = _isLoading;
+    if (widget.path != null) {
+      final httpLoadingModel = Provider.of<HttpModel>(context);
+      isLoading = isLoading || httpLoadingModel.getOne(widget.path);
+    }
     return Stack(
       children: <Widget>[
         ..._isLoading ? [Align(

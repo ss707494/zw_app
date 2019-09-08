@@ -1,13 +1,18 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
+import 'package:zw_app/entity/address_item_entity.dart';
+import 'package:zw_app/graphql_document/address.dart';
+import 'package:zw_app/model/address.dart';
 import 'package:zw_app/view/main_page/user_center/edit_address.dart';
 
 class MyAddressList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AddressModel addressModel = Provider.of<AddressModel>(context);
+//    FormTextEditingController addressController = addressModel.formTextEditingController;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -24,33 +29,51 @@ class MyAddressList extends StatelessWidget {
         ],
       ),
       body: InitHasLoadingHelp(
-        init: () async {},
-        child: ListView(
+        path: getAddressList,
+        init: () async {
+          await addressModel.getListData(context);
+        },
+        child: Column(
           children: <Widget>[
-            ListTile(
-              leading: Container(
-                width: 100,
-                child: Row(
-                  children: <Widget>[
-                    Radio(
-                      onChanged: (v) {},
-                      value: '',
-                      groupValue: '',
+            Expanded(
+              child: ListView.builder(
+                itemCount: addressModel.list.length,
+                itemBuilder: (context, index) {
+                  AddressItemEntity item = addressModel.list[index];
+                  return ListTile(
+                    leading: Container(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            onChanged: (v) {
+                              addressModel.defaultId = item.id;
+                            },
+                            value: item.id,
+                            groupValue: addressModel.defaultId,
+                          ),
+                          ImageErrHelp(
+                            imageUrl: '',
+                          ),
+                        ],
+                      ),
                     ),
-                    ImageErrHelp(
-                      imageUrl: '',
+                    title: Text(item.address),
+                    subtitle: Text('${item.province} ${item.city} ${item.district}'),
+                    trailing: FlatButton(
+                      child: Text('修改'),
+                      onPressed: () {},
                     ),
-                  ],
-                ),
-              ),
-              title: Text('伤害'),
-              subtitle: Text('静安'),
-              trailing: FlatButton(
-                child: Text('修改'),
-                onPressed: () {},
+                  );
+                },
               ),
             ),
-
+            FlatButton(
+              child: Text('设置默认地址'),
+              onPressed: () async {
+                addressModel.setDefaultId(context, addressModel.defaultId);
+              },
+            )
           ],
         ),
       ),

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/validator_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
-import 'package:zw_app/model/address_edit.dart';
+import 'package:zw_app/model/address.dart';
 
 class EditAddress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AddressEditModel addressEditModel = Provider.of<AddressEditModel>(context);
+    AddressModel addressModel = Provider.of<AddressModel>(context);
     FormTextEditingController formController =
-        addressEditModel.formTextEditingController;
+        addressModel.formTextEditingController;
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +18,14 @@ class EditAddress extends StatelessWidget {
         actions: <Widget>[
           FlatButton(
             child: Text('保存'),
-            onPressed: () {},
+            onPressed: () async {
+              var res = await addressModel.submit(context);
+              print(res);
+              if (res['flag'] == 1) {
+                addressModel.getListData(context);
+                Navigator.of(context).pop();
+              }
+            },
           ),
         ],
       ),
@@ -27,6 +34,7 @@ class EditAddress extends StatelessWidget {
           Future.delayed(Duration(seconds: 1));
         },
         child: Form(
+          key: addressModel.formKey,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 20),
             children: <Widget>[
@@ -39,8 +47,75 @@ class EditAddress extends StatelessWidget {
                     dealMsg: () => '必填'
                   )
                 ]),
-                autovalidate: true,
+                autovalidate: addressModel.isAutoValidate,
               ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '详细地址'),
+                controller: formController.address,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '州'),
+                controller: formController.province,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '城市'),
+                controller: formController.city,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '地区'),
+                controller: formController.district,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '邮编'),
+                controller: formController.zip,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: '联系方式'),
+                controller: formController.contactInformation,
+                validator: helpValidator(types: [
+                  HelpValidatorDescription(
+                      type: HelpValidatorType.require,
+                      dealMsg: () => '必填'
+                  )
+                ]),
+                autovalidate: addressModel.isAutoValidate,
+              ),
+              Container(height: 20),
             ],
           ),
         ),

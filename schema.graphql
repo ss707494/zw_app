@@ -11,6 +11,22 @@ interface listSearch {
     sort_type: String
 }
 
+type Address {
+    address: String
+    city: String
+    contact_information: String
+    create_time: String
+    district: String
+    id: String
+    is_default: Int
+    is_delete: Int
+    name: String
+    province: String
+    update_time: Date
+    user_id: String
+    zip: String
+}
+
 type Category {
     c2_id: String
     c2_name: String
@@ -22,7 +38,7 @@ type Category {
     full_parent_id: String
     id: String
     img_url: String
-    is_delete: Boolean
+    is_delete: Int
     is_enable: Int
     name: String
     number: Int
@@ -42,9 +58,11 @@ type Mutation {
     deleteOneUser(id: String!): String
     importAllUser(data: String!): String
     remove_shop_cart(id: String!): result
+    save_address(editAddressInput: EditAddressInput): result
     save_category(Category: CategoryInput): result
     save_product(ProductInput: ProductInput): result
     save_shop_cart(SaveShopCartInput: SaveShopCartInput): result
+    set_default_address(defaultId: String!): result
     updateUser(data: UserInput!): User
     updateUserAuth(auth: String!, id: String!): String
 }
@@ -71,7 +89,7 @@ type Product {
     create_time: Date
     id: String
     imgs: [ProductImg]
-    is_delete: Boolean
+    is_delete: Int
     is_enable: Int
     is_hot: Int
     is_new: Int
@@ -97,6 +115,7 @@ type ProductImg {
 }
 
 type Query {
+    address_list(addressInput: AddressInput): [Address]
     allDataUser: String
     allUser(data: UserInput): [User]
     category_list(CategoryInput: CategoryInput): [Category]
@@ -143,11 +162,28 @@ type UserCoin {
 }
 
 type result {
+    address: Address
     category: Category
     flag: Int
     msg: String
     product: Product
     shopCart: ShopCart
+}
+
+input AddressInput {
+    address: String
+    city: String
+    contact_information: String
+    create_time: String
+    district: String
+    id: String
+    is_default: Int
+    is_delete: Int
+    name: String
+    province: String
+    update_time: Date
+    user_id: String
+    zip: String
 }
 
 input CategoryInput {
@@ -174,6 +210,22 @@ input ChangePassword {
     id: String
     newPass: String
     verification: String
+}
+
+input EditAddressInput {
+    address: String
+    city: String
+    contact_information: String
+    create_time: String
+    district: String
+    id: String
+    is_default: Int
+    is_delete: Int
+    name: String!
+    province: String
+    update_time: Date
+    user_id: String
+    zip: String
 }
 
 input OrderListInput {

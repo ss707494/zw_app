@@ -12,10 +12,18 @@ class LoadingHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final httpLoadingModel = Provider.of<HttpModel>(context);
-    return path != null && httpLoadingModel.getOne(path)
-        ? Center(
+    bool _isLoading = httpLoadingModel.getOne(path);
+    return Stack(
+      children: <Widget>[
+        ..._isLoading ? [Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
             child: RefreshProgressIndicator(),
-          )
-        : child;
+          ),
+        )] : [],
+        Container(child: child),
+      ],
+    );
   }
 }

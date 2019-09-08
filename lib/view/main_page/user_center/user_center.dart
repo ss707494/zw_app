@@ -7,6 +7,7 @@ import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/entity/user_coin_entity.dart';
 import 'package:zw_app/entity/user_info_entity.dart';
 import 'package:zw_app/model/login.dart';
+import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/user_center.dart';
 import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
@@ -61,6 +62,8 @@ class UserCenter extends StatelessWidget {
                   )),
               child: Text('登出'),
               onPressed: () async {
+                Provider.of<RouterModel>(context)
+                    ?.setCurrent('home', 'home');
                 LoginModel loginModel = Provider.of<LoginModel>(context);
                 await loginModel.loginOut(context);
               },

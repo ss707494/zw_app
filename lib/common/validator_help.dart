@@ -18,16 +18,16 @@ FormFieldValidator<String> helpValidator({
 }) {
 
   return (String value) {
-    return types.fold('', (pre, HelpValidatorDescription e) {
-      if (pre != '') {
+    return types.fold(null, (pre, HelpValidatorDescription e) {
+      if (pre != null) {
         return pre;
       }
       if (e.type == HelpValidatorType.require) {
         if (value == '' || value?.trim() == '') {
-          return pre + e.dealMsg();
+          return (pre ?? '') + e.dealMsg();
         }
       }
-      return '';
+      return pre;
     });
   };
 }

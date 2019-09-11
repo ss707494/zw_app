@@ -5,44 +5,44 @@ import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/confirm_dialog/confirm_dialog.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
-import 'package:zw_app/entity/address_item_entity.dart';
-import 'package:zw_app/graphql_document/address.dart';
-import 'package:zw_app/model/address.dart';
-import 'package:zw_app/view/main_page/user_center/edit_address.dart';
+import 'package:zw_app/entity/pay_card_entity.dart';
+import 'package:zw_app/graphql_document/pay_card.dart';
+import 'package:zw_app/model/pay_card.dart';
+import 'package:zw_app/view/main_page/user_center/edit_pay_card.dart';
 
-class MyAddressList extends StatelessWidget {
+class MyPayCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AddressModel addressModel = Provider.of<AddressModel>(context);
-//    FormTextEditingController addressController = addressModel.formTextEditingController;
+    PayCardModel payCardModel = Provider.of<PayCardModel>(context);
+//    FormTextEditingController addressController = payCardModel.formTextEditingController;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('我的地址'),
+        title: Text('我的信用卡'),
         actions: <Widget>[
           FlatButton(
-            child: Text('添加地址'),
+            child: Text('添加信用卡'),
             onPressed: () {
               mainNavigationKey.currentState.push(MaterialPageRoute(
-                builder: (context) => EditAddress(),
+                builder: (context) => EditPayCard(),
               ));
             },
           ),
         ],
       ),
       body: InitHasLoadingHelp(
-        path: getAddressList,
+        path: getPayCardList,
         init: () async {
-          await addressModel.getListData(context);
+          await payCardModel.getListData(context);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                itemCount: addressModel.list.length,
+                itemCount: payCardModel.list.length,
                 itemBuilder: (context, index) {
-                  AddressItemEntity item = addressModel.list[index];
+                  PayCardEntity item = payCardModel.list[index];
                   return ListTile(
                     leading: Container(
                       width: 100,
@@ -50,10 +50,10 @@ class MyAddressList extends StatelessWidget {
                         children: <Widget>[
                           Radio(
                             onChanged: (v) {
-                              addressModel.defaultId = item.id;
+                              payCardModel.defaultId = item.id;
                             },
                             value: item.id,
-                            groupValue: addressModel.defaultId,
+                            groupValue: payCardModel.defaultId,
                           ),
                           ImageErrHelp(
                             imageUrl: '',
@@ -61,9 +61,9 @@ class MyAddressList extends StatelessWidget {
                         ],
                       ),
                     ),
-                    title: Text(item.address),
+                    title: Text(item.userName),
                     subtitle:
-                        Text('${item.province} ${item.city} ${item.district}'),
+                        Text('${item.number}'),
                     trailing: Container(
                       width: 70,
                       child: Row(
@@ -72,11 +72,11 @@ class MyAddressList extends StatelessWidget {
                             width: 35,
                             child: IconButton(
                               onPressed: () {
-                                addressModel.setDetailItem(context, item: item);
+                                payCardModel.setDetailItem(context, item: item);
                                 mainNavigationKey.currentState.push(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            EditAddress(id: item.id)));
+                                            EditPayCard(id: item.id)));
                               },
                               icon: Icon(Icons.edit),
                               iconSize: 18,
@@ -90,13 +90,13 @@ class MyAddressList extends StatelessWidget {
                                     context: context,
                                     content: Text('确认删除吗?'),
                                     handleOk: () async {
-                                      var res = await addressModel.deleteItem(
+                                      var res = await payCardModel.deleteItem(
                                         context,
                                         id: item.id,
                                       );
                                       if (res['flag'] == 1) {
                                         Fluttertoast.showToast(msg: '操作成功');
-                                        addressModel.getListData(context);
+                                        payCardModel.getListData(context);
                                       }
                                       return res['flag'] == 1;
                                     });
@@ -119,9 +119,9 @@ class MyAddressList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 color: Colors.red,
-                child: Text('设置默认地址', style: TextStyle(color: Colors.white)),
+                child: Text('设置信用卡', style: TextStyle(color: Colors.white)),
                 onPressed: () async {
-                  addressModel.setDefaultId(context, addressModel.defaultId);
+                  payCardModel.setDefaultId(context, payCardModel.defaultId);
                 },
               ),
             )

@@ -15,6 +15,7 @@ type Address {
     address: String
     city: String
     contact_information: String
+    contact_user_name: String
     create_time: String
     district: String
     id: String
@@ -60,18 +61,49 @@ type Mutation {
     remove_shop_cart(id: String!): result
     save_address(editAddressInput: EditAddressInput): result
     save_category(Category: CategoryInput): result
+    save_order(saveOrderInput: SaveOrderInput): result
+    save_pay_card(editPayCardInput: EditPayCardInput): result
     save_product(ProductInput: ProductInput): result
     save_shop_cart(SaveShopCartInput: SaveShopCartInput): result
     set_default_address(defaultId: String!): result
+    set_default_pay_card(defaultId: String!): result
     updateUser(data: UserInput!): User
     updateUserAuth(auth: String!, id: String!): String
 }
 
 type Order {
+    actually_paid: Float
+    address_id: String
+    coupon_discount: Float
     create_time: Date
     id: String
+    is_delete: Int
     name: String
+    number: String
+    payment_method_card_id: String
+    sale_tax: Float
+    state: Int
+    subtotal: Float
+    transportation_costs: Float
     update_time: Date
+    vip_discount: Float
+}
+
+type PayCard {
+    address_detail: String
+    city: String
+    code: String
+    contact: String
+    create_time: String
+    id: String
+    is_default: Int
+    is_delete: Int
+    name: String
+    number: String
+    update_time: Date
+    user_id: String
+    user_name: String
+    zip_code: String
 }
 
 type Product {
@@ -124,6 +156,7 @@ type Query {
     getPassCode(pass: String!): String
     oneUser(id: String!): User
     order_list(id: String): [Order]
+    pay_card_list(payCardInput: PayCardInput): [PayCard]
     product_list(ListInput: ProductInput): [Product]
     product_total(ListInput: ProductInput): Int
     shop_cart_list(ShopCartInput: ShopCartInput): [ShopCart]
@@ -166,6 +199,8 @@ type result {
     category: Category
     flag: Int
     msg: String
+    order: Order
+    payCard: PayCard
     product: Product
     shopCart: ShopCart
 }
@@ -174,6 +209,7 @@ input AddressInput {
     address: String
     city: String
     contact_information: String
+    contact_user_name: String
     create_time: String
     district: String
     id: String
@@ -216,20 +252,72 @@ input EditAddressInput {
     address: String
     city: String
     contact_information: String
+    contact_user_name: String
     create_time: String
     district: String
     id: String
     is_default: Int
     is_delete: Int
-    name: String!
+    name: String
     province: String
     update_time: Date
     user_id: String
     zip: String
 }
 
-input OrderListInput {
+input EditPayCardInput {
+    address_detail: String
+    city: String
+    code: String
+    contact: String
+    create_time: String
     id: String
+    is_default: Int
+    is_delete: Int
+    name: String
+    number: String
+    update_time: Date
+    user_id: String
+    user_name: String
+    zip_code: String
+}
+
+input OrderProduct {
+    count: Float
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    order_id: String
+    product_id: String
+    update_time: Date
+}
+
+input OrderUser {
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    order_id: String
+    update_time: Date
+    user_id: String
+}
+
+input PayCardInput {
+    address_detail: String
+    city: String
+    code: String
+    contact: String
+    create_time: String
+    id: String
+    is_default: Int
+    is_delete: Int
+    name: String
+    number: String
+    update_time: Date
+    user_id: String
+    user_name: String
+    zip_code: String
 }
 
 input ProductImgInput {
@@ -265,6 +353,27 @@ input ProductInput {
     update_time: Date
     user_id: String
     weight: Float
+}
+
+input SaveOrderInput {
+    actually_paid: Float
+    address_id: String
+    coupon_discount: Float
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    number: String
+    order_id: String
+    payment_method_card_id: String
+    product: [OrderProduct]
+    sale_tax: Float
+    state: Int
+    subtotal: Float
+    transportation_costs: Float
+    update_time: Date
+    user: [OrderUser]
+    vip_discount: Float
 }
 
 input SaveShopCartInput {

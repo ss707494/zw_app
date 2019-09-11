@@ -11,6 +11,7 @@ import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/user_center.dart';
 import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
+import 'package:zw_app/view/main_page/user_center/my_pay_card_list.dart';
 import 'package:zw_app/view/main_page/user_center/order_history.dart';
 
 class UserCenter extends StatelessWidget {
@@ -165,7 +166,11 @@ class UserCenter extends StatelessWidget {
             ListTile(
               title: Text('我的信用卡'),
               trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                    builder: (context) => MyPayCardList()
+                ));
+              },
             ),
             Divider(),
             ListTile(

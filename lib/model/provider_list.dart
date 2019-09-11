@@ -8,6 +8,7 @@ import 'package:zw_app/model/limited_time.dart';
 import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/login.dart';
 import 'package:zw_app/model/may_like.dart';
+import 'package:zw_app/model/pay_card.dart';
 import 'package:zw_app/model/product.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
@@ -42,6 +43,7 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => UserCenterModel()),
         ChangeNotifierProvider(builder: (_) => OrderHistoryModel()),
         ChangeNotifierProvider(builder: (_) => AddressModel()),
+        ChangeNotifierProvider(builder: (_) => PayCardModel()),
       ],
       child: child,
     );

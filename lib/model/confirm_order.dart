@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:zw_app/common/apiPath.dart';
-import 'package:zw_app/common/http.dart';
 import 'package:zw_app/model/base_model.dart';
 
 class ConfirmOrderModel extends BaseModel {
@@ -14,25 +12,25 @@ class ConfirmOrderModel extends BaseModel {
   }
 
   getData(context) async {
-    var data = (await httpPost(context, getConfirmOrderInfo)).data['data'];
-    if (data == null) return;
-    _allData = data;
-    _addressList = data['addressList'];
-    if (_addressList.length > 0) {
-      _activeAddressId = _addressList[0]['id'];
-    }
-    _paymentTypeList = data['paymentTypeList'];
-    if (_paymentTypeList.length > 0) {
-      _activePaymentTypeId = _paymentTypeList[0]['id'];
-    }
-    _creditCoinsOver = double.parse('${data['creditCoinsOver']}');
+//    var data = (await httpPost(context, getConfirmOrderInfo)).data['data'];
+//    if (data == null) return;
+//    _allData = data;
+//    _addressList = data['addressList'];
+//    if (_addressList.length > 0) {
+//      _activeAddressId = _addressList[0]['id'];
+//    }
+//    _paymentTypeList = data['paymentTypeList'];
+//    if (_paymentTypeList.length > 0) {
+//      _activePaymentTypeId = _paymentTypeList[0]['id'];
+//    }
+//    _creditCoinsOver = double.parse('${data['creditCoinsOver']}');
     _creditCoinsController = TextEditingController(text: '');
     _creditCoinsController.addListener(() {
       notifyListeners();
     });
-
-    handleInit();
-    notifyListeners();
+//
+//    handleInit();
+//    notifyListeners();
   }
 
   List _addressList = [];

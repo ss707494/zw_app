@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/component/image_err_help.dart';
+import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
+import 'package:zw_app/entity/address_item_entity.dart';
+import 'package:zw_app/entity/pay_card_entity.dart';
+import 'package:zw_app/model/address.dart';
 import 'package:zw_app/model/confirm_order.dart';
+import 'package:zw_app/model/pay_card.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 
 class ConfirmOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var confirmOrderModel = Provider.of<ConfirmOrderModel>(context);
+    ConfirmOrderModel confirmOrderModel =
+        Provider.of<ConfirmOrderModel>(context);
     var shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+    AddressModel addressModel = Provider.of<AddressModel>(context);
+    PayCardModel payCardModel = Provider.of<PayCardModel>(context);
 
     blobText(text) => Text(text, style: TextStyle(fontWeight: FontWeight.bold));
 
@@ -22,28 +28,27 @@ class ConfirmOrder extends StatelessWidget {
         title: Text('地址选择'),
         children: <Widget>[
           Column(
-            children:
-                List.generate(confirmOrderModel.addressList.length, (index) {
-              var item = confirmOrderModel.addressList[index];
+            children: List.generate(addressModel.list.length, (index) {
+              AddressItemEntity item = addressModel.list[index];
               return RadioListTile(
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(item['detail']),
+                    Text(item.address),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: <Widget>[
-                          Text(item['name']),
-                          Text(item['phone']),
+                          Text(item.contactUserName),
+                          Text(item.contactInformation),
                         ],
                       ),
                     ),
                   ],
                 ),
                 groupValue: confirmOrderModel.activeAddressId,
-                value: item['id'],
+                value: item.id,
                 onChanged: (v) {
                   confirmOrderModel.activeAddressId = v;
                   Navigator.of(context).pop();
@@ -55,6 +60,8 @@ class ConfirmOrder extends StatelessWidget {
       );
     }
 
+    AddressItemEntity activeAddress =
+        addressModel.getAddressById(confirmOrderModel.activeAddressId);
     addressBox() => Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
@@ -64,42 +71,56 @@ class ConfirmOrder extends StatelessWidget {
                 shoppingCartModel.shipType == ShipType.self ? '自取地址' : '送货地址',
               ),
               Container(height: 10),
-              confirmOrderModel.addressList.length == 0
-                  ? Container()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              addressModel.list.length == 0
+                  ? Container(
+                      child: Text('请先添加地址'),
+                    )
+                  : activeAddress.id == null
+                      ? Container(
+                          child: FlatButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => addressChose(context));
+                            },
+                            child: Text('请选择地址'),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              confirmOrderModel.activeAddress['detail'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Container(height: 6),
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(confirmOrderModel.activeAddress['name'],
-                                    style: TextStyle(color: Colors.grey)),
-                                Text(confirmOrderModel.activeAddress['phone'],
-                                    style: TextStyle(color: Colors.grey)),
+                                Text(
+                                  activeAddress.address ?? '',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Container(height: 6),
+                                Row(
+                                  children: <Widget>[
+                                    Text(activeAddress.contactUserName ?? '',
+                                        style: TextStyle(color: Colors.grey)),
+                                    Text(activeAddress.contactInformation ?? '',
+                                        style: TextStyle(color: Colors.grey)),
+                                  ],
+                                ),
                               ],
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.chevron_right),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        addressChose(context));
+                              },
                             ),
                           ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.chevron_right),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => addressChose(context));
-                          },
-                        ),
-                      ],
-                    ),
             ],
           ),
         );
@@ -110,20 +131,19 @@ class ConfirmOrder extends StatelessWidget {
         title: Text('支付方式选择'),
         children: [
           Column(
-            children:
-                List.generate(confirmOrderModel.paymentTypeList.length, (index) {
-              var item = confirmOrderModel.paymentTypeList[index];
+            children: List.generate(payCardModel.list.length, (index) {
+              PayCardEntity item = payCardModel.list[index];
               return RadioListTile(
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(item['detail']),
-                    Text(item['number']),
+                    Text(item.addressDetail),
+                    Text(item.number),
                   ],
                 ),
                 groupValue: confirmOrderModel.activePaymentTypeId,
-                value: item['id'],
+                value: item.id,
                 onChanged: (v) {
                   confirmOrderModel.activePaymentTypeId = v;
                   Navigator.of(context).pop();
@@ -135,6 +155,8 @@ class ConfirmOrder extends StatelessWidget {
       );
     }
 
+    PayCardEntity activePayCard =
+        payCardModel.getPayCardById(confirmOrderModel.activePaymentTypeId);
     Widget paymentType = Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(
@@ -142,44 +164,57 @@ class ConfirmOrder extends StatelessWidget {
         children: <Widget>[
           blobText('付款方式'),
           Container(height: 10),
-          confirmOrderModel.paymentTypeList.length == 0
-              ? Container()
-              : Row(
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      width: 50,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: ImageErrHelp(
-                          imageUrl:
-                              confirmOrderModel.activePaymentType['imgUrl'],
-                        ),
+          payCardModel.list.length == 0
+              ? Container(
+                  child: Text('请先添加付款方式'),
+                )
+              : activePayCard.id == null
+                  ? Container(
+                      child: FlatButton(
+                        onPressed: () {
+                          showDialog(
+                            builder: (context) => paymentTypeChose(context),
+                            context: context,
+                          );
+                        },
+                        child: Text('请选择付款方式'),
                       ),
-                    ),
-                    Container(width: 9),
-                    Column(
-                      children: [
-                        Text(
-                          confirmOrderModel.activePaymentType['detail'],
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                    )
+                  : Row(
+                      children: <Widget>[
+                        Container(
+                          height: 50,
+                          width: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ImageErrHelp(
+                              imageUrl: '',
+                            ),
+                          ),
                         ),
-                        Text(confirmOrderModel.activePaymentType['number']),
+                        Container(width: 9),
+                        Column(
+                          children: [
+                            Text(
+                              activePayCard.userName ?? '',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(activePayCard.number ?? ''),
+                          ],
+                        ),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.chevron_right),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => paymentTypeChose(context),
+                            );
+                          },
+                        ),
                       ],
                     ),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.chevron_right),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => paymentTypeChose(context),
-                        );
-                      },
-                    ),
-                  ],
-                ),
         ],
       ),
     );
@@ -214,44 +249,55 @@ class ConfirmOrder extends StatelessWidget {
                     readOnly: true,
                     controller: confirmOrderModel.creditCoinsController,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                       border: InputBorder.none,
                       prefixText: '\$',
                     ),
                     onTap: () {
-                      showDialog(context: context, builder: (context) => SimpleDialog(
-                        contentPadding: EdgeInsets.all(15),
-                        title: Text('修改使用数量'),
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text('当月可用余额:'),
-                              Text(
-                                '\$${confirmOrderModel.creditCoinsOver}',
-                                style: TextStyle(fontSize: 16, color: Colors.red),
-                              ),
-                            ],
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: confirmOrderModel.creditCoinsController,
-                            decoration: InputDecoration(
-                              prefixText: '\$',
-                            ),
-                          ),
-                          FlatButton(
-                            child: Text('确认'),
-                            onPressed: () {
-                              var num = double.tryParse(confirmOrderModel.creditCoinsController.text);
-                              if (num == null || num < 0 || num > confirmOrderModel.creditCoinsOver) {
-                                Fluttertoast.showToast(msg: '请输入正确数量');
-                                return;
-                              }
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ));
+                      showDialog(
+                          context: context,
+                          builder: (context) => SimpleDialog(
+                                contentPadding: EdgeInsets.all(15),
+                                title: Text('修改使用数量'),
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Text('当月可用余额:'),
+                                      Text(
+                                        '\$${confirmOrderModel.creditCoinsOver}',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    controller:
+                                        confirmOrderModel.creditCoinsController,
+                                    decoration: InputDecoration(
+                                      prefixText: '\$',
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    child: Text('确认'),
+                                    onPressed: () {
+                                      var num = double.tryParse(
+                                          confirmOrderModel
+                                              .creditCoinsController.text);
+                                      if (num == null ||
+                                          num < 0 ||
+                                          num >
+                                              confirmOrderModel
+                                                  .creditCoinsOver) {
+                                        Fluttertoast.showToast(msg: '请输入正确数量');
+                                        return;
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              ));
                     },
                   ),
                 ),
@@ -299,7 +345,8 @@ class ConfirmOrder extends StatelessWidget {
               Text('订单总额',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               Spacer(),
-              Text('\$${shoppingCartModel.getFinalPrice() + confirmOrderModel.tax - confirmOrderModel.getCreditCoinsDeduction()}',
+              Text(
+                  '\$${shoppingCartModel.getFinalPrice() + confirmOrderModel.tax - confirmOrderModel.getCreditCoinsDeduction()}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             ],
           ),
@@ -383,11 +430,11 @@ class ConfirmOrder extends StatelessWidget {
         centerTitle: true,
         title: Text('确认订单'),
       ),
-      body: EasyRefresh(
-        firstRefresh: true,
-        header: MaterialHeader(),
-        onRefresh: /*!confirmOrderModel.isInit ? null : */() async {
+      body: InitHasLoadingHelp(
+        init: /*!confirmOrderModel.isInit ? null : */ () async {
           await confirmOrderModel.getData(context);
+          await addressModel.getListDataIfNull(context);
+          await payCardModel.getListDataIfNull(context);
         },
         child: ListView(
           children: <Widget>[

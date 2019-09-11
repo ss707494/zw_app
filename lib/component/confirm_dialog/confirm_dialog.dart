@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 showConfirmDialog({
   context,
-  content,
+  Widget content,
   handleOk,
   handleCancel,
 }) {

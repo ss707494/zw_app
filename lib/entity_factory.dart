@@ -1,6 +1,7 @@
 import 'package:zw_app/entity/address_item_entity.dart';
 import 'package:zw_app/entity/category_item_entity.dart';
 import 'package:zw_app/entity/category_list_entity.dart';
+import 'package:zw_app/entity/pay_card_entity.dart';
 import 'package:zw_app/entity/product_img_entity.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/entity/shop_cart_item_entity.dart';
@@ -18,6 +19,8 @@ class EntityFactory {
       return CategoryItemEntity.fromJson(json) as T;
     } else if (T.toString() == "CategoryListEntity") {
       return CategoryListEntity.fromJson(json) as T;
+    } else if (T.toString() == "PayCardEntity") {
+      return PayCardEntity.fromJson(json) as T;
     } else if (T.toString() == "ProductImgEntity") {
       return ProductImgEntity.fromJson(json) as T;
     } else if (T.toString() == "ProductItemEntity") {

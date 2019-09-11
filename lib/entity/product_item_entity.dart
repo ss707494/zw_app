@@ -26,7 +26,7 @@ class ProductItemEntity {
 	int isNew;
 	String c1Name;
   dynamic weight;
-	bool isDelete;
+	int isDelete;
 	String unit;
 	String name;
 

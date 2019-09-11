@@ -28,6 +28,7 @@ query ($data: AddressInput) {
         is_default
         user_id
         contact_information
+        contact_user_name
     }
 }
 ''';

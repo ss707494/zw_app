@@ -2,21 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
 import 'package:zw_app/entity/address_item_entity.dart';
 import 'package:zw_app/entity/pay_card_entity.dart';
+import 'package:zw_app/graphql_document/order.dart';
 import 'package:zw_app/model/address.dart';
 import 'package:zw_app/model/confirm_order.dart';
 import 'package:zw_app/model/pay_card.dart';
 import 'package:zw_app/model/shopping_cart.dart';
+import 'package:zw_app/view/main_page/shopping_cart/pay_completed.dart';
 
 class ConfirmOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ConfirmOrderModel confirmOrderModel =
-        Provider.of<ConfirmOrderModel>(context);
-    var shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+    ConfirmOrderModel confirmOrderModel = Provider.of<ConfirmOrderModel>(context);
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
     AddressModel addressModel = Provider.of<AddressModel>(context);
     PayCardModel payCardModel = Provider.of<PayCardModel>(context);
 
@@ -413,7 +415,13 @@ class ConfirmOrder extends StatelessWidget {
                       '提交订单',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      var res = await confirmOrderModel.saveOrder(context);
+                      print(res);
+                      if (res['order'] != null) {
+                        mainNavigationKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => PayCompleted(orderId: res['order']['id'])));
+                      }
+                    },
                     color: Colors.red,
                   ),
                 ),
@@ -431,6 +439,7 @@ class ConfirmOrder extends StatelessWidget {
         title: Text('确认订单'),
       ),
       body: InitHasLoadingHelp(
+        path: saveOrderDoc,
         init: /*!confirmOrderModel.isInit ? null : */ () async {
           await confirmOrderModel.getData(context);
           await addressModel.getListDataIfNull(context);

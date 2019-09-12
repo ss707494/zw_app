@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:graphql/client.dart';
+import 'package:provider/provider.dart';
+import 'package:zw_app/common/graphql_client.dart';
+import 'package:zw_app/graphql_document/order.dart';
 import 'package:zw_app/model/base_model.dart';
+import 'package:zw_app/model/shopping_cart.dart';
 
 class ConfirmOrderModel extends BaseModel {
   Map _allData = {};
@@ -28,27 +34,8 @@ class ConfirmOrderModel extends BaseModel {
     _creditCoinsController.addListener(() {
       notifyListeners();
     });
-//
 //    handleInit();
 //    notifyListeners();
-  }
-
-  List _addressList = [];
-
-  List get addressList => _addressList;
-
-  set addressList(List addressList) {
-    _addressList = addressList;
-    notifyListeners();
-  }
-
-  List _paymentTypeList = [];
-
-  List get paymentTypeList => _paymentTypeList;
-
-  set paymentTypeList(List paymentTypeList) {
-    _paymentTypeList = paymentTypeList;
-    notifyListeners();
   }
 
   bool _isUseCreditCoins = false;
@@ -102,10 +89,6 @@ class ConfirmOrderModel extends BaseModel {
     notifyListeners();
   }
 
-  get activeAddress {
-    return addressList.firstWhere((e) => e['id'] == _activeAddressId);
-  }
-
   String _activePaymentTypeId;
 
   String get activePaymentTypeId => _activePaymentTypeId;
@@ -115,18 +98,38 @@ class ConfirmOrderModel extends BaseModel {
     notifyListeners();
   }
 
-
-  get activePaymentType {
-    if (_activePaymentTypeId.isEmpty) return {};
-    return paymentTypeList.firstWhere((e) => e['id'] == _activePaymentTypeId);
-  }
-
   double get nextMonthCredit => 0;
 
   @override
   void dispose() {
     _creditCoinsController.dispose();
     super.dispose();
+  }
+
+  saveOrder(context) async {
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+    ConfirmOrderModel confirmOrderModel = Provider.of<ConfirmOrderModel>(context);
+    QueryResult res = await graphqlQuery(context, saveOrderDoc, data: {
+      'data': {
+        'actually_paid': shoppingCartModel.getFinalPrice() + confirmOrderModel.tax - confirmOrderModel.getCreditCoinsDeduction(),
+        'address_id': activeAddressId,
+        'coupon_discount': 0,
+        'payment_method_card_id': activePaymentTypeId,
+        'product': shoppingCartModel.productList.map((e) => {
+          'product_id': e.productId,
+          'count': double.tryParse(shoppingCartModel?.productNumbers[e.id]?.text) ?? 1,
+        }).toList(),
+        'sale_tax': tax,
+        'state': 1,
+        'subtotal': shoppingCartModel.getProductTotal(),
+        'transportation_costs': shoppingCartModel.shipPrice,
+        'vip_discount': confirmOrderModel.getCreditCoinsDeduction(),
+      }
+    });
+    if (res.data['save_order']['flag'] == 1) {
+      Fluttertoast.showToast(msg: '操作成功');
+    }
+    return res.data['save_order'];
   }
 
 }

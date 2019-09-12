@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql/client.dart';
+import 'package:provider/provider.dart';
 import 'package:zw_app/common/graphql_client.dart';
 import 'package:zw_app/entity/address_item_entity.dart';
 import 'package:zw_app/graphql_document/address.dart';
+
+import 'confirm_order.dart';
 
 class FormTextEditingController {
   TextEditingController name = TextEditingController();
@@ -125,6 +128,10 @@ class AddressModel extends ChangeNotifier {
     _defaultId =
         _list?.firstWhere((e) => e.isDefault == 1, orElse: () => null)?.id ??
             '';
+    if (_defaultId != '') {
+      ConfirmOrderModel confirmOrderModel = Provider.of<ConfirmOrderModel>(context);
+      confirmOrderModel.activeAddressId = _defaultId;
+    }
     notifyListeners();
   }
 

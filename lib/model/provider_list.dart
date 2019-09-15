@@ -8,6 +8,7 @@ import 'package:zw_app/model/limited_time.dart';
 import 'package:zw_app/model/log.dart';
 import 'package:zw_app/model/login.dart';
 import 'package:zw_app/model/may_like.dart';
+import 'package:zw_app/model/order.dart';
 import 'package:zw_app/model/pay_card.dart';
 import 'package:zw_app/model/product.dart';
 import 'package:zw_app/model/router.dart';
@@ -16,7 +17,6 @@ import 'package:zw_app/model/sub_class.dart';
 import 'package:zw_app/model/subject_selection.dart';
 import 'package:zw_app/model/user_center.dart';
 import 'confirm_order.dart';
-import 'order_history.dart';
 
 class ProviderHelp extends StatelessWidget {
   final Widget child;
@@ -41,7 +41,7 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => ShoppingCartModel()),
         ChangeNotifierProvider(builder: (_) => ConfirmOrderModel()),
         ChangeNotifierProvider(builder: (_) => UserCenterModel()),
-        ChangeNotifierProvider(builder: (_) => OrderHistoryModel()),
+        ChangeNotifierProvider(builder: (_) => OrderModel()),
         ChangeNotifierProvider(builder: (_) => AddressModel()),
         ChangeNotifierProvider(builder: (_) => PayCardModel()),
       ],

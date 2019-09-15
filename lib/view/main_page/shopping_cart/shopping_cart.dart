@@ -24,66 +24,64 @@ class _ShoppingCartState extends State<ShoppingCart> {
   buildProductCard(context, ShopCartItemEntity item, ShoppingCartModel shoppingCartModel,
           {actionsWidgets}) =>
       Container(
-        child: Container(
-          height: 90,
-          margin: EdgeInsets.only(bottom: 10),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 90,
-                height: 90,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: ImageErrHelp(
-                    imageUrl: item.product?.imgs == null ? '' : item.product?.imgs[0]?.url,
+        height: 90,
+        margin: EdgeInsets.only(bottom: 10),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 90,
+              height: 90,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: ImageErrHelp(
+                  imageUrl: item.product?.imgs == null ? '' : item.product?.imgs[0]?.url,
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(item.product.name),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('${item.product.weight}${item.product.unit}'),
+                    ],
                   ),
-                ),
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(item.product.name),
-                        SizedBox(
-                          width: 10,
+                  Expanded(child: Text('${item.product.remark}')),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        '\$${item.product.priceMarket}',
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 12,
                         ),
-                        Text('${item.product.weight}${item.product.unit}'),
-                      ],
-                    ),
-                    Expanded(child: Text('${item.product.remark}')),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          '\$${item.product.priceMarket}',
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: 12,
-                          ),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        '\$${item.product.priceOut}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.red,
                         ),
-                        SizedBox(width: 4),
-                        Text(
-                          '\$${item.product.priceOut}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.red,
-                          ),
-                        ),
-                        Spacer(),
-                        Row(
-                          children: actionsWidgets,
-                        ),
+                      ),
+                      Spacer(),
+                      Row(
+                        children: actionsWidgets,
+                      ),
 //                      ...actionsWidgets,
-                      ],
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 

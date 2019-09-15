@@ -78,3 +78,14 @@ mutation ($id: String!) {
   }
 }
 ''';
+
+// language=GraphQL
+String removeAllShopCartDoc = r'''
+mutation ($ids: [String!]!) {
+  remove_all_shop_cart(ids: $ids) {
+    flag
+    msg
+  }
+}
+''';
+

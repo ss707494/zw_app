@@ -417,7 +417,6 @@ class ConfirmOrder extends StatelessWidget {
                     ),
                     onPressed: () async {
                       var res = await confirmOrderModel.saveOrder(context);
-                      print(res);
                       if (res['order'] != null) {
                         mainNavigationKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => PayCompleted(orderId: res['order']['id'])));
                       }

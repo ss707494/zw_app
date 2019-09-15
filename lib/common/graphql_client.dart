@@ -21,7 +21,7 @@ final GraphQLClient graphQLClient = GraphQLClient(
 
 Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynamic>{}, fetchPolicy = FetchPolicy.cacheAndNetwork}) async {
 //  print('token:::::::::: ${await getStorageByKey('token')}');
-  print(data);
+  print('sslog::: graphqlQuery::$data');
   QueryResult res = await _queryGraphql(context, document, data: data, fetchPolicy: fetchPolicy);
   if (res.hasErrors) {
     String errMsg = res.errors.map((e) => e.message).join('');
@@ -49,7 +49,7 @@ Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynam
       mainNavigationKey.currentState.pushNamedAndRemoveUntil('login', (r) => false);
       return null;
     } else {
-      print(res.errors);
+      print('sslog::: graphql err:: ${res.errors}');
       Fluttertoast.showToast(msg: res.errors.toString());
       return res;
     }
@@ -66,13 +66,13 @@ Future<QueryResult> _queryGraphql (context, document, {data, fetchPolicy}) async
   QueryResult res = await graphQLClient
       .query(QueryOptions(document: document, variables: data, fetchPolicy: fetchPolicy))
       .catchError((err) {
-    print(err);
+    print('sslog::: graphql err:: ${err}');
     Fluttertoast.showToast(msg: err.toString());
   }).whenComplete(() {
     httpLoadingModel.setCurrent(document, false);
   });
+//  sslog: path: $document
   String logInfo = '''
-sslog: path: $document
 sslog: data: $data
 sslog: res: ${res.data}
 ''';

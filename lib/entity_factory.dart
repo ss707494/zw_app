@@ -8,6 +8,7 @@ import 'package:zw_app/entity/shop_cart_item_entity.dart';
 import 'package:zw_app/entity/sub_category_with_product_entity.dart';
 import 'package:zw_app/entity/user_coin_entity.dart';
 import 'package:zw_app/entity/user_info_entity.dart';
+import 'package:zw_app/entity/order_item_entity.dart';
 
 class EntityFactory {
   static T generateOBJ<T>(json) {
@@ -33,6 +34,8 @@ class EntityFactory {
       return UserCoinEntity.fromJson(json) as T;
     } else if (T.toString() == "UserInfoEntity") {
       return UserInfoEntity.fromJson(json) as T;
+    } else if (T.toString() == "OrderItemEntity") {
+      return OrderItemEntity.fromJson(json) as T;
     } else {
       return null;
     }

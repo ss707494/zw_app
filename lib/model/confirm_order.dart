@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/graphql_client.dart';
 import 'package:zw_app/graphql_document/order.dart';
+import 'package:zw_app/graphql_document/shopping_cart_graphql.dart';
 import 'package:zw_app/model/base_model.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 
@@ -127,6 +128,10 @@ class ConfirmOrderModel extends BaseModel {
       }
     });
     if (res.data['save_order']['flag'] == 1) {
+      await graphqlQuery(context, removeAllShopCartDoc, data: {
+        'ids': shoppingCartModel.productList.map((e) => e.id).toList(),
+      });
+      await shoppingCartModel.getData(context);
       Fluttertoast.showToast(msg: '操作成功');
     }
     return res.data['save_order'];

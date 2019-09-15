@@ -58,6 +58,7 @@ type Mutation {
     changePassword(data: ChangePassword!): String
     deleteOneUser(id: String!): String
     importAllUser(data: String!): String
+    remove_all_shop_cart(ids: [String!]!): result
     remove_shop_cart(id: String!): result
     save_address(editAddressInput: EditAddressInput): result
     save_category(Category: CategoryInput): result
@@ -73,6 +74,7 @@ type Mutation {
 
 type Order {
     actually_paid: Float
+    address: Address
     address_id: String
     coupon_discount: Float
     create_time: Date
@@ -80,7 +82,9 @@ type Order {
     is_delete: Int
     name: String
     number: String
+    payment_method: PayCard
     payment_method_card_id: String
+    product: [Product]
     sale_tax: Float
     state: Int
     subtotal: Float
@@ -127,6 +131,7 @@ type Product {
     is_new: Int
     name: String
     number: Int
+    oneImgUrl: String
     price_in: Float
     price_market: Float
     price_out: Float
@@ -155,11 +160,13 @@ type Query {
     category_total(CategoryInput: CategoryInput): Int
     getPassCode(pass: String!): String
     oneUser(id: String!): User
+    order_detail(id: String!): Order
     order_list(id: String): [Order]
     pay_card_list(payCardInput: PayCardInput): [PayCard]
     product_list(ListInput: ProductInput): [Product]
     product_total(ListInput: ProductInput): Int
     shop_cart_list(ShopCartInput: ShopCartInput): [ShopCart]
+    test: String
     totalUser(data: UserInput): Int
     user: [User]
     user_coin: UserCoin
@@ -282,7 +289,7 @@ input EditPayCardInput {
     zip_code: String
 }
 
-input OrderProduct {
+input OrderProductInput {
     count: Float
     create_time: Date
     id: String
@@ -366,7 +373,7 @@ input SaveOrderInput {
     number: String
     order_id: String
     payment_method_card_id: String
-    product: [OrderProduct]
+    product: [OrderProductInput]
     sale_tax: Float
     state: Int
     subtotal: Float

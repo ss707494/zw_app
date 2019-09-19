@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/config.dart';
 import 'package:zw_app/common/secure_storage.dart';
 import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
 import 'package:zw_app/model/http.dart';
@@ -12,9 +13,17 @@ class SysDev extends StatefulWidget {
 
 final GlobalKey<EasyRefreshState> refreshKey = GlobalKey<EasyRefreshState>();
 
+_dealIp(url) {
+  return url.substring(url.indexOf('//') + 2, url.lastIndexOf(':'));
+}
+
 class _SysDev extends State<SysDev> {
   String token = '';
   String refreshToken = '';
+  TextEditingController serverHostController =
+      TextEditingController(text: _dealIp(serverHost));
+  TextEditingController imgServerHostController =
+      TextEditingController(text: _dealIp(imgServerHost));
 
   @override
   void initState() {
@@ -34,6 +43,37 @@ class _SysDev extends State<SysDev> {
       appBar: AppBar(),
       body: ListView(
         children: <Widget>[
+          Row(
+            children: <Widget>[
+              ...helpServerList.map((e) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FlatButton(
+                  color: Colors.grey.withOpacity(0.2),
+                  child: Text(e),
+                  onPressed: () {
+                    serverHostController.text = e;
+                  },
+                ),
+              )).toList(),
+            ],
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: '服务器ip地址'),
+            controller: serverHostController,
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: '服务器图片ip地址'),
+            controller: imgServerHostController,
+          ),
+          RaisedButton(
+            child: Text('修改ip地址'),
+            onPressed: () {
+              setServerHost(
+                server: serverHostController.text,
+                imgServer: imgServerHostController.text,
+              );
+            },
+          ),
           DropdownButtonFormField(
             decoration: InputDecoration(labelText: '接口地址'),
             value: httpModel.host,
@@ -41,17 +81,18 @@ class _SysDev extends State<SysDev> {
               httpModel.host = v;
             },
             items: List.generate(
-                httpModel.hostObj.length,
-                    (index) => DropdownMenuItem(
-                  value: index,
-                  child: SizedBox(
-                    width: 300,
-                    child: Text(
-                      httpModel.hostObj[index],
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              httpModel.hostObj.length,
+              (index) => DropdownMenuItem(
+                value: index,
+                child: SizedBox(
+                  width: 300,
+                  child: Text(
+                    httpModel.hostObj[index],
+                    overflow: TextOverflow.ellipsis,
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
           Text(token),
           Text(refreshToken),

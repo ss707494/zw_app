@@ -70,6 +70,8 @@ type Mutation {
     set_default_pay_card(defaultId: String!): result
     updateUser(data: UserInput!): User
     updateUserAuth(auth: String!, id: String!): String
+    update_password(changePasswordInput: ChangePasswordInput!): result
+    update_user_info(updateUserInfo: UpdateUserInfoInput): result
 }
 
 type Order {
@@ -210,6 +212,13 @@ type result {
     payCard: PayCard
     product: Product
     shopCart: ShopCart
+    token: token
+    user: User
+}
+
+type token {
+    refreshtoken: String
+    token: String
 }
 
 input AddressInput {
@@ -253,6 +262,12 @@ input ChangePassword {
     id: String
     newPass: String
     verification: String
+}
+
+input ChangePasswordInput {
+    confirmation_password: String
+    new_password: String!
+    old_password: String!
 }
 
 input EditAddressInput {
@@ -395,6 +410,14 @@ input ShopCartInput {
     is_next: Int
     number: Int
     product_id: String
+}
+
+input UpdateUserInfoInput {
+    email: String
+    id: String
+    name: String
+    phone: String
+    user_name: String
 }
 
 input UserInput {

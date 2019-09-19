@@ -10,9 +10,13 @@ import 'package:zw_app/model/login.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/user_center.dart';
+import 'package:zw_app/view/main_page/sys_dev/sys_dev.dart';
+import 'package:zw_app/view/main_page/user_center/help_info.dart';
 import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
 import 'package:zw_app/view/main_page/user_center/my_pay_card_list.dart';
 import 'package:zw_app/view/main_page/user_center/order_history.dart';
+
+import 'my_user_info.dart';
 
 class UserCenter extends StatelessWidget {
   @override
@@ -160,7 +164,11 @@ class UserCenter extends StatelessWidget {
             ListTile(
               title: Text('我的达人卡'),
               trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                    builder: (context) => MyUserInfo()
+                ));
+              },
             ),
             Divider(),
             ListTile(
@@ -192,7 +200,20 @@ class UserCenter extends StatelessWidget {
             ListTile(
               title: Text('帮助中心'),
               trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                    builder: (context) => HelpInfo()
+                ));
+              },
+            ),
+            ListTile(
+              title: Text('开发者设置'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                    builder: (context) => SysDev()
+                ));
+              },
             ),
           ],
         ),

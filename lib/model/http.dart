@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:zw_app/common/graphql_client.dart';
+import 'package:zw_app/common/config.dart';
 import 'package:zw_app/common/secure_storage.dart';
 
 

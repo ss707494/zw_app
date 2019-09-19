@@ -3,14 +3,12 @@ library graphql_client;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/config.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/common/secure_storage.dart';
 import 'package:zw_app/model/http.dart';
 
 import 'http.dart';
-
-final String serverHost = 'http://10.0.2.2:4464/';
-//final String serverHost = 'http://47.75.145.121:4464/';
 
 final GraphQLClient graphQLClient = GraphQLClient(
     cache: InMemoryCache(),
@@ -50,7 +48,7 @@ Future<QueryResult> graphqlQuery(context, document, {data = const <String, dynam
       return null;
     } else {
       print('sslog::: graphql err:: ${res.errors}');
-      Fluttertoast.showToast(msg: res.errors.toString());
+      Fluttertoast.showToast(msg: errMsg);
       return res;
     }
   }
@@ -66,7 +64,7 @@ Future<QueryResult> _queryGraphql (context, document, {data, fetchPolicy}) async
   QueryResult res = await graphQLClient
       .query(QueryOptions(document: document, variables: data, fetchPolicy: fetchPolicy))
       .catchError((err) {
-    print('sslog::: graphql err:: ${err}');
+    print('sslog::: graphql err:: $err');
     Fluttertoast.showToast(msg: err.toString());
   }).whenComplete(() {
     httpLoadingModel.setCurrent(document, false);

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:zw_app/common/graphql_client.dart';
+import 'package:zw_app/common/config.dart';
 
 class ImageErrHelp extends StatelessWidget {
   final String imageUrl;
@@ -10,7 +10,7 @@ class ImageErrHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (imageUrl == null || imageUrl.isEmpty || imageUrl.contains('localhost:')) ? Container() : CachedNetworkImage(
-      imageUrl: imageUrl.contains('http') ? imageUrl : '$serverHost$imageUrl',
+      imageUrl: imageUrl.contains('http') ? imageUrl : '$imgServerHost$imageUrl',
       fit: BoxFit.fill,
       placeholder: (context, url) => Column(
         children: <Widget>[

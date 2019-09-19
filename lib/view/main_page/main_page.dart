@@ -9,14 +9,14 @@ import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/view/main_page/home/home.dart';
+import 'package:zw_app/view/main_page/promotion/promotion.dart';
 import 'package:zw_app/view/main_page/shopping_cart/shopping_cart.dart';
-import 'package:zw_app/view/main_page/sys_dev/sys_dev.dart';
 import 'package:zw_app/view/main_page/user_center/user_center.dart';
 
 final homeNavList = [
   NavObj('逛店', 'home', widget: Home()),
   NavObj('拼乐', 'limited_time', icon: Icons.ac_unit, widget: Text('123')),
-  NavObj('达人专区', 'hot', widget: Text('123')),
+  NavObj('达人专区', 'hot', widget: Promotion()),
   NavObj('购物车', 'shopping_cart',
       icon: Icons.shopping_cart, widget: ShoppingCart()),
   NavObj('我', 'user_center',
@@ -86,15 +86,15 @@ class MainPage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.ac_unit),
-        onPressed: () {
-          // 调试测试
-          mainNavigationKey.currentState.push(MaterialPageRoute(
-            builder: (context) => SysDev()
-          ));
-        },
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        child: Icon(Icons.ac_unit),
+//        onPressed: () {
+//          // 调试测试
+//          mainNavigationKey.currentState.push(MaterialPageRoute(
+//            builder: (context) => SysDev()
+//          ));
+//        },
+//      ),
     );
   }
 }

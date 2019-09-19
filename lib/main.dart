@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/config.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/common/theme.dart';
 import 'package:zw_app/component/init_help/init_help.dart';
@@ -14,7 +15,10 @@ import 'package:zw_app/view/test_page/first_page/first_page.dart';
 
 import 'model/http.dart';
 
-void main() => runApp(App());
+Future main() async {
+  await initConfig();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override

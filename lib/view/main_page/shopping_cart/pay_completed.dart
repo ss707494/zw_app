@@ -108,7 +108,7 @@ class PayCompleted extends StatelessWidget {
                                           style: TextStyle(fontSize: 18),
                                         ),
                                         Text(
-                                          '\$${orderDetail?.actuallyPaid}',
+                                          '\$${orderDetail?.actuallyPaid ?? ''}',
                                           style: TextStyle(fontSize: 18),
                                         ),
                                       ],

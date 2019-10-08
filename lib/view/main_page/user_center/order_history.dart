@@ -21,8 +21,6 @@ class OrderHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     OrderModel orderHistoryModel = Provider.of<OrderModel>(context);
     List<OrderItemEntity> orderList = orderHistoryModel.orderList;
-    print(orderList);
-    print(orderList.length);
 
     return Scaffold(
       appBar: AppBar(

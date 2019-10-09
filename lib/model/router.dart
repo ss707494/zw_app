@@ -7,6 +7,7 @@ class RouterModel extends ChangeNotifier {
     'main': '',
     'home': '',
     'shop': '',
+    'groupBuy': '',
   };
 
   getCurrent(type) {
@@ -16,6 +17,7 @@ class RouterModel extends ChangeNotifier {
     currentRouterData[type] = data;
     if (type == 'home') {
       currentRouterData['shop'] = '';
+      currentRouterData['groupBuy'] = '';
     }
     notifyListeners();
   }

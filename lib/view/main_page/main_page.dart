@@ -8,6 +8,7 @@ import 'package:zw_app/component/init_help/init_help.dart';
 import 'package:zw_app/component/nested_navigator/nested_navigator.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
+import 'package:zw_app/view/main_page/group_buy/group_buy.dart';
 import 'package:zw_app/view/main_page/home/home.dart';
 import 'package:zw_app/view/main_page/promotion/promotion.dart';
 import 'package:zw_app/view/main_page/shopping_cart/shopping_cart.dart';
@@ -15,7 +16,7 @@ import 'package:zw_app/view/main_page/user_center/user_center.dart';
 
 final homeNavList = [
   NavObj('逛店', 'home', widget: Home()),
-  NavObj('拼乐', 'limited_time', icon: Icons.ac_unit, widget: Text('123')),
+  NavObj('拼乐', 'group_buy', icon: Icons.ac_unit, widget: GroupBuy()),
   NavObj('达人专区', 'hot', widget: Promotion()),
   NavObj('购物车', 'shopping_cart',
       icon: Icons.shopping_cart, widget: ShoppingCart()),

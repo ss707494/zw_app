@@ -8,10 +8,13 @@ final GlobalKey<NavigatorState> mainNavigationKey = GlobalKey<NavigatorState>();
 
 final GlobalKey<NavigatorState> shopNavigationKey = GlobalKey<NavigatorState>();
 
+final GlobalKey<NavigatorState> groupBuyNavigationKey = GlobalKey<NavigatorState>();
+
 final helpKey = {
   'main': mainNavigationKey,
   'home': homeNavigationKey,
   'shop': shopNavigationKey,
+  'groupBuy': groupBuyNavigationKey,
 };
 
 pushNameByType(context, type, name) {

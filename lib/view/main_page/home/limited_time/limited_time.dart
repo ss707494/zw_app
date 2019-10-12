@@ -80,7 +80,7 @@ class LimitedTime extends StatelessWidget {
                             color: Colors.black.withAlpha(200),
                           ),
                           child: Text(
-                            '当前剩余: 231',
+                            '当前剩余: ${item.stock}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,

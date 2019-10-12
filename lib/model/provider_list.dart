@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/model/address.dart';
 import 'package:zw_app/model/classifications.dart';
+import 'package:zw_app/model/group_product.dart';
 import 'package:zw_app/model/home_sales.dart';
 import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/limited_time.dart';
@@ -17,6 +18,8 @@ import 'package:zw_app/model/sub_class.dart';
 import 'package:zw_app/model/subject_selection.dart';
 import 'package:zw_app/model/user_center.dart';
 import 'confirm_order.dart';
+import 'group_home_sales.dart';
+import 'group_limited_time.dart';
 
 class ProviderHelp extends StatelessWidget {
   final Widget child;
@@ -44,6 +47,9 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => OrderModel()),
         ChangeNotifierProvider(builder: (_) => AddressModel()),
         ChangeNotifierProvider(builder: (_) => PayCardModel()),
+        ChangeNotifierProvider(builder: (_) => GroupProductModel()),
+        ChangeNotifierProvider(builder: (_) => GroupHomeSalesModel()),
+        ChangeNotifierProvider(builder: (_) => GroupLimitedTimeModel()),
       ],
       child: child,
     );

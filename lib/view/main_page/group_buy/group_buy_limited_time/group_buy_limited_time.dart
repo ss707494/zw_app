@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
-import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
-import 'package:zw_app/model/limited_time.dart';
+import 'package:zw_app/model/group_limited_time.dart';
 
 class GroupBuyLimitedTime extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -80,7 +79,7 @@ class GroupBuyLimitedTime extends StatelessWidget {
                             color: Colors.black.withAlpha(200),
                           ),
                           child: Text(
-                            '当前剩余: 231',
+                            '当前剩余: ${item.stock}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -146,7 +145,7 @@ class GroupBuyLimitedTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LimitedTimeModel>(
+    return Consumer<GroupLimitedTimeModel>(
       builder: (_, limitedTimeModel, __) => Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: EasyRefreshCus(

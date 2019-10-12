@@ -62,7 +62,7 @@ Future<QueryResult> _queryGraphql (context, document, {data, fetchPolicy}) async
     httpLoadingModel.setCurrent(document, true);
   });
   QueryResult res = await graphQLClient
-      .query(QueryOptions(document: document, variables: data, fetchPolicy: fetchPolicy))
+      .query(QueryOptions(document: document, variables: data as Map<String, dynamic>, fetchPolicy: fetchPolicy))
       .catchError((err) {
     print('sslog::: graphql err:: $err');
     Fluttertoast.showToast(msg: err.toString());

@@ -6,7 +6,7 @@ import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
-import 'package:zw_app/model/home_sales.dart';
+import 'package:zw_app/model/group_home_sales.dart';
 
 class GroupBuyHomeSales extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -151,7 +151,7 @@ class GroupBuyHomeSales extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeSalesModel>(
+    return Consumer<GroupHomeSalesModel>(
       builder: (_, homeSalesModel, __) => Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: EasyRefreshCus(

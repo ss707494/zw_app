@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/image_err_help.dart';
+import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/subject_selection.dart';
 import 'package:zw_app/view/main_page/home/classifications/component/product_card/product_card.dart';
 
@@ -11,7 +12,10 @@ class SubjectSelection extends StatelessWidget {
 
   const SubjectSelection({Key key, this.scrollViewController}) : super(key: key);
 
-  buildCard(item) => Card(
+  buildCard(item, {context}) {
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+
+    return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -100,7 +104,9 @@ class SubjectSelection extends StatelessWidget {
                             padding: EdgeInsets.all(2),
                             elevation: 1,
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () async {
+                              await shoppingCartModel.addToShopCart(context, productId: item.id);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -130,6 +136,7 @@ class SubjectSelection extends StatelessWidget {
           ),
         ),
       );
+  }
 
   @override
   Widget build(BuildContext context) {

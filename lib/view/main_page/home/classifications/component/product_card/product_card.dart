@@ -12,7 +12,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+    ShoppingCartModel shoppingCartModel =
+        Provider.of<ShoppingCartModel>(context);
 //    print(item);
     return Card(
       child: Padding(
@@ -23,13 +24,12 @@ class ProductCard extends StatelessWidget {
               child: CarouselSliderIndicator(
                 aspectRatio: 1 / 1,
                 items: [
-                  ...(item.imgs?.length ?? 0) > 0
-                      ? item.imgs
+                  ...item?.imgs
                           ?.map((e) => ImageErrHelp(
                                 imageUrl: e.url,
                               ))
-                          ?.toList()
-                      : []
+                          ?.toList() ??
+                      []
                 ],
               ),
             ),
@@ -76,7 +76,8 @@ class ProductCard extends StatelessWidget {
                     mini: true,
                     backgroundColor: Colors.red,
                     onPressed: () async {
-                      await shoppingCartModel.addToShopCart(context, productId: item.id);
+                      await shoppingCartModel.addToShopCart(context,
+                          productId: item.id);
                     },
                     shape: CircleBorder(),
                     child: Icon(

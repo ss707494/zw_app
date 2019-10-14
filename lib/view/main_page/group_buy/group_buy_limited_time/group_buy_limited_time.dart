@@ -4,6 +4,7 @@ import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indic
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_limited_time.dart';
+import 'package:zw_app/model/group_shopping_cart.dart';
 
 class GroupBuyLimitedTime extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -23,7 +24,10 @@ class GroupBuyLimitedTime extends StatelessWidget {
         ),
       );
 
-  buildCard(ProductItemEntity item) => Card(
+  buildCard(ProductItemEntity item, {context}) {
+    GroupShoppingCartModel groupShoppingCartModel = Provider.of<GroupShoppingCartModel>(context);
+
+    return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -112,7 +116,9 @@ class GroupBuyLimitedTime extends StatelessWidget {
                             padding: EdgeInsets.all(2),
                             elevation: 1,
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () async {
+                              await groupShoppingCartModel.addToShopCart(context, product: item);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -142,6 +148,7 @@ class GroupBuyLimitedTime extends StatelessWidget {
           ),
         ),
       );
+  }
 
   @override
   Widget build(BuildContext context) {

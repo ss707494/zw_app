@@ -5,6 +5,7 @@ import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/limited_time.dart';
+import 'package:zw_app/model/shopping_cart.dart';
 
 class LimitedTime extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -24,7 +25,9 @@ class LimitedTime extends StatelessWidget {
         ),
       );
 
-  buildCard(ProductItemEntity item) => Card(
+  buildCard(ProductItemEntity item, {context}) {
+    ShoppingCartModel shoppingCartModel = Provider.of<ShoppingCartModel>(context);
+    return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -113,7 +116,9 @@ class LimitedTime extends StatelessWidget {
                             padding: EdgeInsets.all(2),
                             elevation: 1,
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () async {
+                              await shoppingCartModel.addToShopCart(context, productId: item.id);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -143,6 +148,7 @@ class LimitedTime extends StatelessWidget {
           ),
         ),
       );
+  }
 
   @override
   Widget build(BuildContext context) {

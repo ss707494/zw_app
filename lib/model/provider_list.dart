@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/model/address.dart';
 import 'package:zw_app/model/classifications.dart';
+import 'package:zw_app/model/group_confirm_order.dart';
 import 'package:zw_app/model/group_product.dart';
+import 'package:zw_app/model/group_shopping_cart.dart';
 import 'package:zw_app/model/home_sales.dart';
 import 'package:zw_app/model/http.dart';
 import 'package:zw_app/model/limited_time.dart';
@@ -50,6 +52,8 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => GroupProductModel()),
         ChangeNotifierProvider(builder: (_) => GroupHomeSalesModel()),
         ChangeNotifierProvider(builder: (_) => GroupLimitedTimeModel()),
+        ChangeNotifierProvider(builder: (_) => GroupShoppingCartModel()),
+        ChangeNotifierProvider(builder: (_) => GroupConfirmOrderModel()),
       ],
       child: child,
     );

@@ -7,6 +7,7 @@ import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_home_sales.dart';
+import 'package:zw_app/model/group_shopping_cart.dart';
 
 class GroupBuyHomeSales extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -27,7 +28,10 @@ class GroupBuyHomeSales extends StatelessWidget {
         ),
       );
 
-  buildCard(ProductItemEntity item, {index}) => Card(
+  buildCard(ProductItemEntity item, {index, context}) {
+    GroupShoppingCartModel groupShoppingCartModel = Provider.of<GroupShoppingCartModel>(context);
+
+    return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -99,7 +103,9 @@ class GroupBuyHomeSales extends StatelessWidget {
                                 padding: EdgeInsets.all(2),
                                 elevation: 1,
                                 color: Colors.red,
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await groupShoppingCartModel.addToShopCart(context, product: item);
+                                },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -148,6 +154,7 @@ class GroupBuyHomeSales extends StatelessWidget {
           ),
         ),
       );
+  }
 
   @override
   Widget build(BuildContext context) {

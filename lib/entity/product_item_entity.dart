@@ -2,13 +2,13 @@ import 'package:zw_app/entity/product_img_entity.dart';
 
 class ProductItemEntity {
   dynamic c3Id;
-  int priceIn;
+  dynamic priceIn;
   dynamic c3Name;
   int isEnable;
   dynamic c1Id;
-  int priceOut;
+  dynamic priceOut;
   String remark;
-  int priceMarket;
+  dynamic priceMarket;
   int number;
   int updateTime;
   dynamic c2Name;
@@ -34,11 +34,13 @@ class ProductItemEntity {
   int isGroup;
   int groupPrecision;
   int groupAmount;
+  String groupRemark;
 
-  ProductItemEntity({this.c3Id, this.priceIn, this.c3Name, this.isEnable, this.c1Id, this.priceOut, this.remark, this.priceMarket, this.number, this.updateTime, this.c2Name, this.categoryId, this.isHot, this.id, this.stock, this.brand, this.c2Id, this.imgs, this.c3Number, this.c2Number, this.c1Number, this.createTime, this.isNew, this.c1Name, this.weight, this.sort, this.isDelete, this.unit, this.oneImgUrl, this.name, this.isGroup, this.groupPrecision, this.groupAmount});
+  ProductItemEntity({this.c3Id, this.priceIn, this.c3Name, this.isEnable, this.c1Id, this.priceOut, this.remark, this.priceMarket, this.number, this.updateTime, this.c2Name, this.categoryId, this.isHot, this.id, this.stock, this.brand, this.c2Id, this.imgs, this.c3Number, this.c2Number, this.c1Number, this.createTime, this.isNew, this.c1Name, this.weight, this.sort, this.isDelete, this.unit, this.oneImgUrl, this.name, this.isGroup, this.groupPrecision, this.groupAmount, this.groupRemark});
 
   ProductItemEntity.fromJson(Map<String, dynamic> json) {
     groupAmount = json['group_amount'];
+    groupRemark = json['group_remark'];
     groupPrecision = json['group_precision'];
     c3Id = json['c3_id'];
     priceIn = json['price_in'];
@@ -77,6 +79,7 @@ class ProductItemEntity {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['group_remark'] = this.groupRemark;
     data['group_amount'] = this.groupAmount;
     data['group_precision'] = this.groupPrecision;
     data['c3_id'] = this.c3Id;

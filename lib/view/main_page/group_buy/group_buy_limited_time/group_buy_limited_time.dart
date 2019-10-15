@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_limited_time.dart';
-import 'package:zw_app/model/group_shopping_cart.dart';
+import 'package:zw_app/view/main_page/group_buy/order_confirm/group_product_detail.dart';
 
 class GroupBuyLimitedTime extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -25,7 +26,6 @@ class GroupBuyLimitedTime extends StatelessWidget {
       );
 
   buildCard(ProductItemEntity item, {context}) {
-    GroupShoppingCartModel groupShoppingCartModel = Provider.of<GroupShoppingCartModel>(context);
 
     return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -117,18 +117,22 @@ class GroupBuyLimitedTime extends StatelessWidget {
                             elevation: 1,
                             color: Colors.red,
                             onPressed: () async {
-                              await groupShoppingCartModel.addToShopCart(context, product: item);
+                              mainNavigationKey.currentState.push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          GroupProductDetail(product: item)));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
-                                  Icons.shopping_cart,
+                                  Icons.add_circle_outline,
                                   color: Colors.white,
                                   size: 12,
                                 ),
+                                Container(width: 5),
                                 Text(
-                                  '加入购物车',
+                                  '拼一个',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -165,7 +169,7 @@ class GroupBuyLimitedTime extends StatelessWidget {
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate([
-                  ...?limitedTimeModel.list.map(buildCard).toList(),
+                  ...?limitedTimeModel.list.map((e) => buildCard(e, context: context)).toList(),
                 ]),
               ),
             ],

@@ -33,6 +33,7 @@ dependencies:
   graphql: ^2.1.0
   flutter_secure_storage: ^3.2.1+1
   intl: ^0.16.0
+  decimal: ^0.3.5
 
 dev_dependencies:
   flutter_test:

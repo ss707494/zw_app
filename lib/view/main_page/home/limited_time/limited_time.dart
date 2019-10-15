@@ -192,7 +192,7 @@ class LimitedTime extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  ...?limitedTimeModel.list.map(buildCard).toList(),
+                  ...?limitedTimeModel.list.map((e) => buildCard(e, context: context)).toList(),
                 ]),
               ),
             ],

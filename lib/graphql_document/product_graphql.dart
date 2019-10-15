@@ -28,6 +28,9 @@ String getProductListDoc = r'''query ($data: ProductInput) {
         unit
         update_time
         weight
+        is_group
+        group_amount
+        group_precision
         imgs {
             id
             name
@@ -107,6 +110,10 @@ query ($data: ProductInput) {
     unit
     update_time
     weight
+    is_group
+    group_amount
+    group_precision
+    group_remark
     imgs {
       id
       name

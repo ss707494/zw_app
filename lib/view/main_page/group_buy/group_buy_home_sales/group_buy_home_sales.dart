@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
 import 'package:zw_app/component/easy_refresh_cus/lib/easy_refresh.dart';
@@ -7,7 +8,7 @@ import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/sliver_app_bar_height/sliver_app_bar_height.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_home_sales.dart';
-import 'package:zw_app/model/group_shopping_cart.dart';
+import 'package:zw_app/view/main_page/group_buy/order_confirm/group_product_detail.dart';
 
 class GroupBuyHomeSales extends StatelessWidget {
   final ScrollController scrollViewController;
@@ -29,131 +30,132 @@ class GroupBuyHomeSales extends StatelessWidget {
       );
 
   buildCard(ProductItemEntity item, {index, context}) {
-    GroupShoppingCartModel groupShoppingCartModel = Provider.of<GroupShoppingCartModel>(context);
 
     return Card(
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Container(
-                    height: 120,
-                    child: CarouselSliderIndicator(
-                      aspectRatio: 1 / 1,
-                      items: [
-                        ...(item.imgs?.length ?? 0) > 0
-                            ? item.imgs
-                                ?.map((e) => Container(
-                                      child: ImageErrHelp(
-                                        imageUrl: e.url,
-                                      ),
-                                    ))
-                                ?.toList()
-                            : []
-                      ],
-                    ),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Stack(
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  child: CarouselSliderIndicator(
+                    aspectRatio: 1 / 1,
+                    items: [
+                      ...(item.imgs?.length ?? 0) > 0
+                          ? item.imgs
+                              ?.map((e) => Container(
+                                    child: ImageErrHelp(
+                                      imageUrl: e.url,
+                                    ),
+                                  ))
+                              ?.toList()
+                          : []
+                    ],
                   ),
-                  Expanded(
-                    child: Container(
-                      height: 120,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
+                ),
+                Expanded(
+                  child: Container(
+                    height: 120,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(item.name),
+                              Container(
+                                width: 10,
+                              ),
+                              Text('${item.weight}${item.unit}'),
+                            ],
+                          ),
+                          Container(
+                            child: Row(
                               children: <Widget>[
-                                Text(item.name),
-                                Container(
-                                  width: 10,
-                                ),
                                 Text(
-                                    '${item.weight}${item.unit}'),
+                                  '¥${item.priceMarket}',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                    '¥${item.priceOut}',
+                                    style: TextStyle(
+                                        fontSize: 17, color: Colors.red),
+                                  ),
+                                ),
                               ],
                             ),
-                            Container(
+                          ),
+                          Container(
+                            height: 30,
+                            child: RaisedButton(
+                              padding: EdgeInsets.all(2),
+                              elevation: 1,
+                              color: Colors.red,
+                              onPressed: () async {
+                                mainNavigationKey.currentState.push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            GroupProductDetail(product: item)));
+                              },
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
+                                  Icon(
+                                    Icons.shopping_cart,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
                                   Text(
-                                    '¥${item.priceMarket}',
+                                    '加入购物车',
                                     style: TextStyle(
-                                      decoration: TextDecoration.lineThrough,
+                                      color: Colors.white,
+                                      fontSize: 12,
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      '¥${item.priceOut}',
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.red),
-                                    ),
-                                  ),
+                                  )
                                 ],
                               ),
-                            ),
-                            Container(
-                              height: 30,
-                              child: RaisedButton(
-                                padding: EdgeInsets.all(2),
-                                elevation: 1,
-                                color: Colors.red,
-                                onPressed: () async {
-                                  await groupShoppingCartModel.addToShopCart(context, product: item);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.shopping_cart,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
-                                    Text(
-                                      '加入购物车',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    )
-                                  ],
-                                ),
 //                    icon: Icon(Icons.shopping_cart,),
-                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  margin: EdgeInsets.all(4),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index == 0
-                        ? Colors.yellowAccent[700]
-                        : index == 1
-                            ? Colors.grey[700]
-                            : index == 2 ? Colors.lime[700] : Colors.black54,
-                  ),
-                  child: Text('${index + 1}',
-                      style: TextStyle(color: Colors.white)),
                 ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                margin: EdgeInsets.all(4),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: index == 0
+                      ? Colors.yellowAccent[700]
+                      : index == 1
+                          ? Colors.grey[700]
+                          : index == 2 ? Colors.lime[700] : Colors.black54,
+                ),
+                child:
+                    Text('${index + 1}', style: TextStyle(color: Colors.white)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   @override
@@ -208,8 +210,8 @@ class GroupBuyHomeSales extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                    (_, index) =>
-                        buildCard(homeSalesModel.list[index], index: index),
+                    (_, index) => buildCard(homeSalesModel.list[index],
+                        index: index, context: context),
                     childCount: homeSalesModel.list.length),
               ),
             ],

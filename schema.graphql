@@ -125,10 +125,14 @@ type Product {
     c3_number: String
     category_id: String
     create_time: Date
+    group_amount: Int
+    group_precision: Int
+    group_remark: String
     id: String
     imgs: [ProductImg]
     is_delete: Int
     is_enable: Int
+    is_group: Int
     is_hot: Int
     is_new: Int
     name: String
@@ -353,10 +357,14 @@ input ProductInput {
     brand: String
     category_id: String
     create_time: Date
+    group_amount: Int
+    group_precision: Int
+    group_remark: String
     id: String
     imgs: [ProductImgInput]
     is_delete: Boolean
     is_enable: Int
+    is_group: Int
     is_hot: Int
     is_new: Int
     name: String

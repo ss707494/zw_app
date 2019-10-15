@@ -208,7 +208,7 @@ class HomeSales extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                     (_, index) =>
-                        buildCard(homeSalesModel.list[index], index: index),
+                        buildCard(homeSalesModel.list[index], index: index, context: context),
                     childCount: homeSalesModel.list.length),
               ),
             ],

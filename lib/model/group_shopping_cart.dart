@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql/client.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/graphql_client.dart';
@@ -236,4 +235,36 @@ class GroupShoppingCartModel extends BaseModel {
 //    }
     return res.data['flag'];
   }
+
+  double _groupCopiesDiscount = 0.9;
+
+  double get groupCopiesDiscount => _groupCopiesDiscount;
+
+  set groupCopiesDiscount(double groupCopiesDiscount) {
+    _groupCopiesDiscount = groupCopiesDiscount;
+    notifyListeners();
+  }
+
+  double _groupFinishDiscount = 1;
+
+  double get groupFinishDiscount => _groupFinishDiscount;
+
+  set groupFinishDiscount(double groupFinishDiscount) {
+    _groupFinishDiscount = groupFinishDiscount;
+    notifyListeners();
+  }
+
+  int _selectStar = 0;
+
+  int get selectStar => _selectStar;
+
+  set selectStar(int selectStar) {
+    _selectStar = selectStar;
+    notifyListeners();
+  }
+
+  getUnitPrice(double priceOut) {
+    return priceOut * _groupCopiesDiscount * _groupFinishDiscount;
+  }
+
 }

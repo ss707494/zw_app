@@ -296,7 +296,7 @@ class _GroupShoppingCartState extends State<GroupShoppingCart> {
                     header: MaterialHeader(),
                     firstRefresh: shoppingCartModel.isInit,
                     onRefresh: () async {
-                      shoppingCartModel.getData(context);
+//                      shoppingCartModel.getData(context);
                     },
                     child: ListView(
                       padding: const EdgeInsets.symmetric(vertical: 10),

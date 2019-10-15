@@ -141,14 +141,14 @@ class GroupShoppingCartModel extends BaseModel {
   }
 
   getProductTotal() {
-    return _productList == null
+    return _productList == null || _productList.length == 0
         ? 0
         : _productList.fold(
             0,
             (pre, e) =>
                 pre +
                     double.tryParse('${e.product.priceOut}') *
-                        double.tryParse(_productNumbers[e.id].text) ??
+                        double.tryParse(_productNumbers[e.id] != null ? _productNumbers[e.id]?.text : '0') ??
                 0);
   }
 
@@ -209,6 +209,17 @@ class GroupShoppingCartModel extends BaseModel {
   TextEditingController get numberInputController => _numberInputController;
 
   addToShopCart(context, {@required ProductItemEntity product}) async {
+    _productList = [ShopCartItemEntity(
+      number: _selectStar,
+      productId: product.id,
+      product: product,
+      isNext: 0,
+    )];
+    if (_productNumbers == null) {
+      _productNumbers = {};
+    }
+    _productNumbers[product.id] = _selectStar;
+
 //    QueryResult res = await graphqlQuery(context, addToShopCartDoc, data: {
 //      'data': {
 //        'product_id': productId,
@@ -265,6 +276,12 @@ class GroupShoppingCartModel extends BaseModel {
 
   getUnitPrice(double priceOut) {
     return priceOut * _groupCopiesDiscount * _groupFinishDiscount;
+  }
+
+  initGroupData() {
+    _selectStar = 0;
+    _groupCopiesDiscount = 1.0;
+    _groupFinishDiscount = 1.0;
   }
 
 }

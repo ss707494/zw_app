@@ -1,11 +1,13 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/component/init_has_loading_help/init_has_loading_help.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_shopping_cart.dart';
+import 'package:zw_app/view/main_page/group_buy/order_confirm/group_shopping_cart.dart';
 
 class GroupProductDetail extends StatefulWidget {
   final ProductItemEntity product;
@@ -122,7 +124,9 @@ class _GroupProductDetailState extends State<GroupProductDetail> {
         children: <Widget>[
           Expanded(
             child: InitHasLoadingHelp(
-              init: () async {},
+              init: () async {
+                groupShoppingCartModel.initGroupData();
+              },
               child: ListView(
                 children: <Widget>[
                   CarouselSliderIndicator(
@@ -300,7 +304,14 @@ class _GroupProductDetailState extends State<GroupProductDetail> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () {
+                              groupShoppingCartModel.addToShopCart(context,
+                                  product: item);
+                              mainNavigationKey.currentState.push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          GroupShoppingCart()));
+                            },
                             child: Text(
                               '结算',
                               style: TextStyle(color: Colors.white),

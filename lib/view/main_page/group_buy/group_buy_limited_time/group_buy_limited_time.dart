@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/carousel_slider_indicator/carousel_slider_indicator.dart';
 import 'package:zw_app/component/easy_refresh_cus/easy_refresh_cus.dart';
+import 'package:zw_app/entity/group_queue_entity.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/model/group_limited_time.dart';
 import 'package:zw_app/view/main_page/group_buy/order_confirm/group_product_detail.dart';
@@ -25,7 +26,11 @@ class GroupBuyLimitedTime extends StatelessWidget {
         ),
       );
 
-  buildCard(ProductItemEntity item, {context}) {
+  buildCard(GroupQueueEntity groupQueueEntity, {context}) {
+    ProductItemEntity item = groupQueueEntity.product;
+
+    starIcon({Color color, double size: 14.0}) =>
+        Icon(Icons.star, size: size, color: color ?? Colors.yellow[700]);
 
     return Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -68,7 +73,20 @@ class GroupBuyLimitedTime extends StatelessWidget {
                             Container(
                               width: 10,
                             ),
-                            Text('${item.weight}${item.unit}'),
+                            Text('('),
+                            Row(
+                              children: <Widget>[
+                                Text(item.groupRemark),
+                                Text('/共${item.groupAmount}${item.unit}/${item.groupPrecision}份制'),
+                              ],
+                            ),
+                            Text(')'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            ...List.generate(groupQueueEntity.fillAmount, (index) => starIcon()),
+                            ...List.generate(groupQueueEntity.fillAmount, (index) => starIcon()),
                           ],
                         ),
                         Container(

@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/router_help.dart';
-import 'package:zw_app/component/confirm_dialog/confirm_dialog.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/entity/shop_cart_item_entity.dart';
 import 'package:zw_app/model/http.dart';
@@ -134,53 +133,7 @@ class _GroupShoppingCartState extends State<GroupShoppingCart> {
           margin: EdgeInsets.only(bottom: 10),
           child: buildProductCard(context, item, groupShoppingCartModel,
               actionsWidgets: [
-                SizedBox(
-                  height: 25,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: Colors.grey.withAlpha(100),
-                    child: Text('下次再买'),
-                    onPressed: () {
-                      showConfirmDialog(
-                        context: context,
-                        content: Text('确认移动至下次购买'),
-                        handleOk: () async {
-                          groupShoppingCartModel.moveToNext(item);
-                          groupShoppingCartModel.saveShopCart(context, item: item);
-                          return true;
-                        },
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(width: 10),
-                SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: IconButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      var control =
-                          groupShoppingCartModel.productNumbers[item.id];
-                      if (control.text == '1') {
-                        showConfirmDialog(
-                          context: context,
-                          content: Text('确认删除吗'),
-                          handleOk: () async {
-                            groupShoppingCartModel.removeProductItem(context, item);
-                            return true;
-                          },
-                        );
-                        return;
-                      }
-                      control.text = '${int.parse(control.text) - 1}';
-                      groupShoppingCartModel.saveShopCart(context, item: item);
-                    },
-                    icon: Icon(Icons.remove),
-                  ),
-                ),
+                Text('拼团数量'),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 5),
                   height: 25,
@@ -201,75 +154,11 @@ class _GroupShoppingCartState extends State<GroupShoppingCart> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: IconButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      var control =
-                          groupShoppingCartModel.productNumbers[item.id];
-                      control.text = '${int.parse(control.text) + 1}';
-                      groupShoppingCartModel.saveShopCart(context, item: item);
-                    },
-                    icon: Icon(Icons.add),
-                  ),
-                ),
+                Text('份'),
               ]),
         );
       });
 
-  buildProductForNext(
-          context, List<ShopCartItemEntity> productList, GroupShoppingCartModel groupShoppingCartModel) =>
-      List.generate(productList.length ?? 0, (index) {
-        var item = productList[index];
-        return Container(
-          margin: EdgeInsets.only(bottom: 10),
-          child: buildProductCard(context, item, groupShoppingCartModel,
-              actionsWidgets: [
-                SizedBox(
-                  height: 25,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: Colors.grey.withAlpha(100),
-                    child: Text('删除', style: TextStyle(color: Colors.red)),
-                    onPressed: () {
-                      showConfirmDialog(
-                        context: context,
-                        content: Text('确认删除吗'),
-                        handleOk: () async {
-                          groupShoppingCartModel.removeProductItem(context, item);
-                        },
-                      );
-                    },
-                  ),
-                ),
-                Container(width: 20),
-                SizedBox(
-                  height: 25,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: Colors.grey.withAlpha(100),
-                    child: Text('加入购物车'),
-                    onPressed: () {
-                      showConfirmDialog(
-                        context: context,
-                        content: Text('确认加入购物车'),
-                        handleOk: () async {
-                          groupShoppingCartModel.moveToProductList(item);
-                          groupShoppingCartModel.saveShopCart(context, item: item);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ]),
-        );
-      });
 
   buildTitle(String text, {context}) => Padding(
         padding: const EdgeInsets.only(left: 10, top: 15),
@@ -457,6 +346,15 @@ class _GroupShoppingCartState extends State<GroupShoppingCart> {
                                       '\$${shoppingCartModel.getProductTotal()}'),
                                 ],
                               ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text('拼团折后价格'),
+                                  Text(
+                                      '\$${shoppingCartModel.getDiscountProductTotal()}'),
+                                ],
+                              ),
                               shoppingCartModel.discountPrise > 0
                                   ? Row(
                                       mainAxisAlignment:
@@ -489,18 +387,6 @@ class _GroupShoppingCartState extends State<GroupShoppingCart> {
                                 ],
                               ),
                             ],
-                          ),
-                        ),
-                        buildTitle(
-                            '下次购买的商品(${shoppingCartModel.nextProductList?.length})'),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            children: buildProductForNext(
-                              context,
-                              shoppingCartModel.nextProductList,
-                              shoppingCartModel,
-                            ),
                           ),
                         ),
                       ],

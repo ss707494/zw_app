@@ -7,10 +7,10 @@ import 'package:zw_app/entity/order_item_entity.dart';
 import 'package:zw_app/model/order.dart';
 import 'package:zw_app/view/main_page/user_center/order_detail.dart';
 
-class PayCompleted extends StatelessWidget {
+class GroupPayCompleted extends StatelessWidget {
   final orderId;
 
-  const PayCompleted({Key key, @required this.orderId}) : super(key: key);
+  const GroupPayCompleted({Key key, @required this.orderId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +175,9 @@ class PayCompleted extends StatelessWidget {
                     child: Text('继续购物', style: TextStyle(color: Colors.white),),
                     onPressed: () {
                       mainNavigationKey.currentState.pop();
+//                      mainNavigationKey.currentState.popUntil((item) {
+//                        return item.settings.name == 'main';
+//                      });
 //                      pushNameByType(
 //                        context,
 //                        'home',

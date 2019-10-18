@@ -13,6 +13,8 @@ import 'package:zw_app/model/group_confirm_order.dart';
 import 'package:zw_app/model/group_shopping_cart.dart';
 import 'package:zw_app/model/pay_card.dart';
 
+import 'group_pay_completed.dart';
+
 class GroupConfirmOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -417,7 +419,7 @@ class GroupConfirmOrder extends StatelessWidget {
                     onPressed: () async {
                       var res = await confirmOrderModel.saveOrder(context);
                       if (res['order'] != null) {
-                        mainNavigationKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Container()));
+                        mainNavigationKey.currentState.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => GroupPayCompleted(orderId: res['order']['id'])), (item) => item.settings.name == 'main');
                       }
                     },
                     color: Colors.red,

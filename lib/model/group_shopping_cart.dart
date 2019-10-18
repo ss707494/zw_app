@@ -1,10 +1,13 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:graphql/client.dart';
 import 'package:zw_app/common/apiPath.dart';
 import 'package:zw_app/common/graphql_client.dart';
 import 'package:zw_app/common/http.dart';
+import 'package:zw_app/entity/group_queue_entity.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/entity/shop_cart_item_entity.dart';
+import 'package:zw_app/graphql_document/group.dart';
 import 'package:zw_app/graphql_document/shopping_cart_graphql.dart';
 import 'package:zw_app/model/base_model.dart';
 
@@ -152,6 +155,10 @@ class GroupShoppingCartModel extends BaseModel {
                 0);
   }
 
+  getDiscountProductTotal() {
+    return (Decimal.parse(getProductTotal().toString()) * Decimal.parse(_groupFinishDiscount.toString()) * Decimal.parse(_groupCopiesDiscount.toString())).toDouble();
+  }
+
   TextEditingController _cardCodeController;
 
   get cardCodeController => _cardCodeController;
@@ -201,7 +208,7 @@ class GroupShoppingCartModel extends BaseModel {
   }
 
   getFinalPrice() {
-    return getProductTotal() - _discountPrise + _shipPrice;
+    return getDiscountProductTotal() - _discountPrise + _shipPrice;
   }
 
   TextEditingController _numberInputController = TextEditingController();
@@ -212,13 +219,14 @@ class GroupShoppingCartModel extends BaseModel {
     _productList = [ShopCartItemEntity(
       number: _selectStar,
       productId: product.id,
+      id: product.id,
       product: product,
       isNext: 0,
     )];
     if (_productNumbers == null) {
       _productNumbers = {};
     }
-    _productNumbers[product.id] = _selectStar;
+    _productNumbers[product.id] = TextEditingController(text: _selectStar.toString());
 
 //    QueryResult res = await graphqlQuery(context, addToShopCartDoc, data: {
 //      'data': {
@@ -274,14 +282,59 @@ class GroupShoppingCartModel extends BaseModel {
     notifyListeners();
   }
 
-  getUnitPrice(double priceOut) {
-    return priceOut * _groupCopiesDiscount * _groupFinishDiscount;
+  changeSelectStar(int selectStar, ProductItemEntity product) {
+    _selectStar = selectStar;
+    dealStar(product);
+    notifyListeners();
   }
 
-  initGroupData() {
+  bool isFinishGroup(int groupPrecision) => _groupQueueList.where((e) => e.fillAmount + e.selectAmount == groupPrecision).length > 0;
+
+  dealStar(ProductItemEntity product) {
+    _groupQueueList..removeWhere((e) => e.fillAmount == 0)..sort((a, b) => b.fillAmount - a.fillAmount);
+    for (var e in _groupQueueList) {
+      e.selectAmount = 0;
+    }
+    GroupQueueEntity fillQueue = _groupQueueList.firstWhere((e) => e.fillAmount + _selectStar <= product.groupPrecision, orElse: () => null);
+    if (fillQueue != null) {
+      fillQueue?.selectAmount = _selectStar;
+    } else {
+      _groupQueueList.insert(0, GroupQueueEntity(fillAmount: 0, selectAmount: _selectStar, productId: product.id, product: product));
+    }
+    print(isFinishGroup(product.groupPrecision));
+    _groupFinishDiscount = isFinishGroup(product.groupPrecision) ? 0.8 : 1;
+
+  }
+
+  getUnitPrice(double priceOut) {
+    return Decimal.parse(priceOut.toString()) * Decimal.parse(_groupCopiesDiscount.toString()) * Decimal.parse(_groupFinishDiscount.toString());
+  }
+
+  List<GroupQueueEntity> _groupQueueList = [];
+
+  List<GroupQueueEntity> get groupQueueList => _groupQueueList;
+
+  List<GroupQueueEntity> get groupQueueListDoing => _groupQueueList.where((e) => e.fillAmount < e.product.groupPrecision).toList();
+
+  set groupQueueList(List<GroupQueueEntity> groupQueueList) {
+    _groupQueueList = groupQueueList;
+    notifyListeners();
+  }
+
+  initGroupData(context, {ProductItemEntity productItemEntity}) async {
     _selectStar = 0;
     _groupCopiesDiscount = 1.0;
     _groupFinishDiscount = 1.0;
+    QueryResult res = await graphqlQuery(context, getGroupDetail, data: {
+      "data": {
+        "product_id": productItemEntity?.id,
+      }
+    });
+    _groupQueueList = List<GroupQueueEntity>()
+      ..addAll((res.data['group_queue_list'] as List ?? [])
+          .map((e) => GroupQueueEntity.fromJson(e)));
+    notifyListeners();
   }
+
 
 }

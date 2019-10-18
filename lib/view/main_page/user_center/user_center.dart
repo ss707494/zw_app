@@ -16,6 +16,7 @@ import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
 import 'package:zw_app/view/main_page/user_center/my_pay_card_list.dart';
 import 'package:zw_app/view/main_page/user_center/order_history.dart';
 
+import 'group_order_history.dart';
 import 'my_user_info.dart';
 
 class UserCenter extends StatelessWidget {
@@ -141,6 +142,21 @@ class UserCenter extends StatelessWidget {
               onTap: () {
                 mainNavigationKey.currentState.push(MaterialPageRoute(
                   builder: (context) => OrderHistory(),
+                ));
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.access_alarm),
+              title: Text(
+                '拼团订单历史',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+//          subtitle: Text('${userCenterModel.orderList.length ?? 0}个订单待取货'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                mainNavigationKey.currentState.push(MaterialPageRoute(
+                  builder: (context) => GroupOrderHistory(),
                 ));
               },
             ),

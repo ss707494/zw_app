@@ -26,7 +26,7 @@ setServerHost ({String server, String imgServer}) async {
 initConfig () async {
   String _serverHost = await getStorageByKey('serverHost');
   if (_serverHost == null) {
-    _serverHost = 'http://10.0.2.2:4464/';
+    _serverHost = 'http://${helpServerList[0]}:4464/';
     await setStorage(key: 'serverHost', value: _serverHost);
   }
   _serverHost.substring(_serverHost.indexOf('//') + 2, _serverHost.lastIndexOf(':'));

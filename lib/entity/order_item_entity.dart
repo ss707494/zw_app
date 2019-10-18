@@ -11,18 +11,19 @@ class OrderItemEntity {
 	String addressId;
 	int isDelete;
 	String number;
-	int actuallyPaid;
+	dynamic actuallyPaid;
 	int updateTime;
-	int subtotal;
+	dynamic subtotal;
+  dynamic discountProductTotal;
 	dynamic name;
 	int saleTax;
 	String id;
 	int state;
-	int vipDiscount;
+	dynamic vipDiscount;
 	PayCardEntity paymentMethod;
-	int couponDiscount;
+	dynamic couponDiscount;
 
-	OrderItemEntity({this.product, this.address, this.createTime, this.paymentMethodCardId, this.transportationCosts, this.addressId, this.isDelete, this.number, this.actuallyPaid, this.updateTime, this.subtotal, this.name, this.saleTax, this.id, this.state, this.vipDiscount, this.paymentMethod, this.couponDiscount});
+	OrderItemEntity({this.product, this.address, this.createTime, this.paymentMethodCardId, this.transportationCosts, this.addressId, this.isDelete, this.number, this.actuallyPaid, this.updateTime, this.subtotal, this.name, this.saleTax, this.id, this.state, this.vipDiscount, this.paymentMethod, this.couponDiscount, this.discountProductTotal});
 
 	OrderItemEntity.fromJson(Map<String, dynamic> json) {
 		if (json['product'] != null) {
@@ -38,6 +39,7 @@ class OrderItemEntity {
 		actuallyPaid = json['actually_paid'];
 		updateTime = json['update_time'];
 		subtotal = json['subtotal'];
+    discountProductTotal = json['discount_product_total'];
 		name = json['name'];
 		saleTax = json['sale_tax'];
 		id = json['id'];
@@ -64,6 +66,7 @@ class OrderItemEntity {
 		data['actually_paid'] = this.actuallyPaid;
 		data['update_time'] = this.updateTime;
 		data['subtotal'] = this.subtotal;
+    data['discount_product_total'] = this.discountProductTotal;
 		data['name'] = this.name;
 		data['sale_tax'] = this.saleTax;
 		data['id'] = this.id;

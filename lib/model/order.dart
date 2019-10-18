@@ -46,6 +46,24 @@ class OrderModel extends BaseModel {
     notifyListeners();
   }
 
+  List<OrderItemEntity> _groupOrderList = [];
+
+  List<OrderItemEntity> get groupOrderList => _groupOrderList;
+
+  set groupOrderList(List<OrderItemEntity> groupOrderList) {
+    _groupOrderList = groupOrderList;
+    notifyListeners();
+  }
+
+  getGroupData(context) async {
+    QueryResult res = await graphqlQuery(context, getGroupOrderListDoc);
+    _groupOrderList = List<OrderItemEntity>()
+      ..addAll((res.data['group_order_list'] as List ?? [])
+          .map((e) => OrderItemEntity.fromJson(e)));
+    handleInit();
+    notifyListeners();
+  }
+
   getData(context) async {
     QueryResult res = await graphqlQuery(context, getOrderListDoc);
     _orderList = List<OrderItemEntity>()
@@ -64,9 +82,10 @@ class OrderModel extends BaseModel {
     notifyListeners();
   }
 
-  getOrderDetail(context, {@required String id}) async {
-    QueryResult res =
-    await graphqlQuery(context, getOrderDetailDoc, data: {'id': id});
+  getOrderDetail(context, {@required String id, int isGroup}) async {
+
+    QueryResult res = await graphqlQuery(context, getOrderDetailDoc,
+        data: {'id': id, 'isGroup': isGroup});
     _orderDetail = OrderItemEntity.fromJson(res.data['order_detail'] ?? {});
 
     notifyListeners();

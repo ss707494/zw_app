@@ -11,8 +11,9 @@ import 'package:zw_app/model/shopping_cart.dart';
 
 class OrderDetail extends StatelessWidget {
   final String orderId;
+  final int isGroup;
 
-  const OrderDetail({Key key, @required this.orderId}) : super(key: key);
+  const OrderDetail({Key key, @required this.orderId, this.isGroup: 0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,7 @@ class OrderDetail extends StatelessWidget {
                         Spacer(),
                         Row(
                           children: [
-                            FlatButton(
+                            isGroup == 1 ? Container() : FlatButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -108,8 +109,8 @@ class OrderDetail extends StatelessWidget {
       ),
       body: InitHasLoadingHelp(
         init: () async {
-          if (orderDetail.id != orderId) {
-            await orderModel.getOrderDetail(context, id: orderId);
+          if (orderDetail?.id != orderId) {
+            await orderModel.getOrderDetail(context, id: orderId, isGroup: isGroup);
           }
         },
         child: orderDetail != null
@@ -180,6 +181,7 @@ class OrderDetail extends StatelessWidget {
                       children: [
                         ...[
                           ['小计', orderDetail?.subtotal],
+                          ['拼团折扣价', orderDetail?.discountProductTotal],
                           ['优惠券折扣', -orderDetail?.couponDiscount],
                           ['运费', orderDetail?.transportationCosts],
                           ['达人币抵扣', orderDetail?.vipDiscount],

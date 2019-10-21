@@ -1,6 +1,7 @@
 import 'package:zw_app/entity/address_item_entity.dart';
 import 'package:zw_app/entity/category_item_entity.dart';
 import 'package:zw_app/entity/category_list_entity.dart';
+import 'package:zw_app/entity/group_info_entity.dart';
 import 'package:zw_app/entity/group_queue_entity.dart';
 import 'package:zw_app/entity/order_item_entity.dart';
 import 'package:zw_app/entity/pay_card_entity.dart';
@@ -8,6 +9,7 @@ import 'package:zw_app/entity/product_img_entity.dart';
 import 'package:zw_app/entity/product_item_entity.dart';
 import 'package:zw_app/entity/shop_cart_item_entity.dart';
 import 'package:zw_app/entity/sub_category_with_product_entity.dart';
+import 'package:zw_app/entity/test_entity.dart';
 import 'package:zw_app/entity/user_coin_entity.dart';
 import 'package:zw_app/entity/user_info_entity.dart';
 
@@ -21,6 +23,8 @@ class EntityFactory {
       return CategoryItemEntity.fromJson(json) as T;
     } else if (T.toString() == "CategoryListEntity") {
       return CategoryListEntity.fromJson(json) as T;
+    } else if (T.toString() == "GroupInfoEntity") {
+      return GroupInfoEntity.fromJson(json) as T;
     } else if (T.toString() == "GroupQueueEntity") {
       return GroupQueueEntity.fromJson(json) as T;
     } else if (T.toString() == "OrderItemEntity") {
@@ -35,6 +39,8 @@ class EntityFactory {
       return ShopCartItemEntity.fromJson(json) as T;
     } else if (T.toString() == "SubCategoryWithProductEntity") {
       return SubCategoryWithProductEntity.fromJson(json) as T;
+    } else if (T.toString() == "TestEntity") {
+      return TestEntity.fromJson(json) as T;
     } else if (T.toString() == "UserCoinEntity") {
       return UserCoinEntity.fromJson(json) as T;
     } else if (T.toString() == "UserInfoEntity") {

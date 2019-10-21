@@ -39,6 +39,10 @@ String getProductListDoc = r'''query ($data: ProductInput) {
             product_id
             url
         }
+        group_info {
+          doing
+          finish
+        }
     }
 }
 ''';

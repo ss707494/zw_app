@@ -64,34 +64,31 @@ class GroupProductCard extends StatelessWidget {
                             ],
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: 4,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.black.withAlpha(200),
-                            ),
-                            child: Text(
-                              '当前剩余: ${item.stock}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          Container(
                             child: Row(
                               children: <Widget>[
-                                Text(
-                                  '169',
-                                  style: TextStyle(fontSize: 17, color: Colors.red),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.black.withAlpha(200),
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        '拼单中 ${item?.groupInfo?.doing}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  '单 已成团',
-                                  style: TextStyle(color: Colors.red),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                    '已完成 ${item?.groupInfo?.finish}',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
                                 ),
                               ],
                             ),

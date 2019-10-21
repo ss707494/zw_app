@@ -53,6 +53,11 @@ type Category {
     update_time: Date
 }
 
+type GroupInfo {
+    doing: Int
+    finish: Int
+}
+
 type GroupQueue {
     create_time: String
     fill_amount: Int
@@ -139,6 +144,7 @@ type Product {
     category_id: String
     create_time: Date
     group_amount: Int
+    group_info: GroupInfo
     group_precision: Int
     group_remark: String
     id: String

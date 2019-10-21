@@ -1,3 +1,4 @@
+import 'package:zw_app/entity/group_info_entity.dart';
 import 'package:zw_app/entity/product_img_entity.dart';
 
 class ProductItemEntity {
@@ -35,8 +36,9 @@ class ProductItemEntity {
   int groupPrecision;
   int groupAmount;
   String groupRemark;
+  GroupInfoEntity groupInfo;
 
-  ProductItemEntity({this.c3Id, this.priceIn, this.c3Name, this.isEnable, this.c1Id, this.priceOut, this.remark, this.priceMarket, this.number, this.updateTime, this.c2Name, this.categoryId, this.isHot, this.id, this.stock, this.brand, this.c2Id, this.imgs, this.c3Number, this.c2Number, this.c1Number, this.createTime, this.isNew, this.c1Name, this.weight, this.sort, this.isDelete, this.unit, this.oneImgUrl, this.name, this.isGroup, this.groupPrecision, this.groupAmount, this.groupRemark});
+  ProductItemEntity({this.c3Id, this.priceIn, this.c3Name, this.isEnable, this.c1Id, this.priceOut, this.remark, this.priceMarket, this.number, this.updateTime, this.c2Name, this.categoryId, this.isHot, this.id, this.stock, this.brand, this.c2Id, this.imgs, this.c3Number, this.c2Number, this.c1Number, this.createTime, this.isNew, this.c1Name, this.weight, this.sort, this.isDelete, this.unit, this.oneImgUrl, this.name, this.isGroup, this.groupPrecision, this.groupAmount, this.groupRemark, this.groupInfo});
 
   ProductItemEntity.fromJson(Map<String, dynamic> json) {
     groupAmount = json['group_amount'];
@@ -75,6 +77,7 @@ class ProductItemEntity {
     oneImgUrl = json['oneImgUrl'];
     name = json['name'];
     isGroup = json['is_group'];
+    groupInfo = json['group_info'] != null ? new GroupInfoEntity.fromJson(json['group_info']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -115,6 +118,9 @@ class ProductItemEntity {
     data['oneImgUrl'] = this.oneImgUrl;
     data['name'] = this.name;
     data['is_group'] = this.isGroup;
+    if (this.groupInfo != null) {
+      data['group_info'] = this.groupInfo.toJson();
+    }
     return data;
   }
 }

@@ -9,11 +9,11 @@ import 'order_draw.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
-class ProductList extends StatelessWidget {
+class GroupProductList extends StatelessWidget {
   final title;
   final typeId;
 
-  const ProductList({Key key, this.title, this.typeId}) : super(key: key);
+  const GroupProductList({Key key, this.title, this.typeId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +44,21 @@ class ProductList extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                  FlatButton(
-                    child: Text('排序'),
-                    onPressed: () {
-                      _scaffoldState.currentState.openDrawer();
-                    },
-                    padding: EdgeInsets.all(0),
-                  ),
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Text('筛选'),
-                    onPressed: () {
-                      _scaffoldState.currentState.openEndDrawer();
-                    },
-                  ),
-                ],
+                FlatButton(
+                  child: Text('排序'),
+                  onPressed: () {
+                    _scaffoldState.currentState.openDrawer();
+                  },
+                  padding: EdgeInsets.all(0),
+                ),
+                FlatButton(
+                  padding: EdgeInsets.all(0),
+                  child: Text('筛选'),
+                  onPressed: () {
+                    _scaffoldState.currentState.openEndDrawer();
+                  },
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -68,25 +68,19 @@ class ProductList extends StatelessWidget {
                 await productModel.getListData(
                   context,
                   data: {
-                    "data": {
-                      "category_id": typeId
-                    }
+                    "data": {"category_id": typeId}
                   },
                 );
               },
-              child: GridView.count(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 10 / 14,
-                crossAxisCount: 2,
-                children: <Widget>[
+              child: ListView(
+                children: [
                   ...productModel
                       .getList()
-                      .map((e) => ProductCard(
+                      ?.map((e) => GroupProductCard(
                     item: e,
                   ))
-                      .toList(),
+                      ?.toList() ??
+                      [],
                 ],
               ),
             ),

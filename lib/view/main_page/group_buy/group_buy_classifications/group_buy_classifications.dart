@@ -23,7 +23,7 @@ class GroupBuyClassifications extends StatelessWidget {
       child: ListView.builder(
         itemCount: classificationsModel?.list?.length ?? 0,
         padding: EdgeInsets.symmetric(horizontal: 10),
-        itemBuilder: (context, index) => ClassificationCard(
+        itemBuilder: (context, index) => GroupClassificationCard(
           item: classificationsModel.list[index],
           level: 1,
         ),

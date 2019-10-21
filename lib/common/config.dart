@@ -1,6 +1,8 @@
 
 import 'package:zw_app/common/secure_storage.dart';
 
+final isProd = bool.fromEnvironment('dart.vm.product');
+
 List<String> helpServerList = [
   '10.0.2.2',
   '47.52.230.148',
@@ -26,7 +28,7 @@ setServerHost ({String server, String imgServer}) async {
 initConfig () async {
   String _serverHost = await getStorageByKey('serverHost');
   if (_serverHost == null) {
-    _serverHost = 'http://${helpServerList[0]}:4464/';
+    _serverHost = 'http://${helpServerList[isProd ? 1 : 0]}:4464/';
     await setStorage(key: 'serverHost', value: _serverHost);
   }
   _serverHost.substring(_serverHost.indexOf('//') + 2, _serverHost.lastIndexOf(':'));

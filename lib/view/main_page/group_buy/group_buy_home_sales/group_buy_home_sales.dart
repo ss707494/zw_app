@@ -59,11 +59,9 @@ class GroupBuyHomeSales extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    height: 120,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -73,25 +71,52 @@ class GroupBuyHomeSales extends StatelessWidget {
                               Container(
                                 width: 10,
                               ),
-                              Text('${item.weight}${item.unit}'),
+                              Text('('),
+                              Row(
+                                children: <Widget>[
+                                  Text(item.groupRemark),
+                                  Text(
+                                      '/共${item.groupAmount}${item.unit}/${item.groupPrecision}份制'),
+                                ],
+                              ),
+                              Text(')'),
                             ],
                           ),
                           Container(
                             child: Row(
                               children: <Widget>[
                                 Text(
-                                  '¥${item.priceMarket}',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
+                                  '169',
+                                  style: TextStyle(fontSize: 17, color: Colors.red),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    '¥${item.priceOut}',
-                                    style: TextStyle(
-                                        fontSize: 17, color: Colors.red),
-                                  ),
+                                Text(
+                                  '单 已成团',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text('市场价 '),
+                              Text(
+                                '\$${item.priceMarket}',
+                                style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  '基准价格 ',
+                                  style: TextStyle(fontSize: 17, color: Colors.red),
+                                ),
+                                Text(
+                                  '\$${item.priceOut}/${item.unit}',
+                                  style: TextStyle(fontSize: 17, color: Colors.red),
                                 ),
                               ],
                             ),
@@ -112,12 +137,13 @@ class GroupBuyHomeSales extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Icon(
-                                    Icons.shopping_cart,
+                                    Icons.add_circle_outline,
                                     color: Colors.white,
                                     size: 12,
                                   ),
+                                  Container(width: 5),
                                   Text(
-                                    '加入购物车',
+                                    '拼一个',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,

@@ -31,6 +31,7 @@ String getProductListDoc = r'''query ($data: ProductInput) {
         is_group
         group_amount
         group_precision
+        group_remark
         imgs {
             id
             name

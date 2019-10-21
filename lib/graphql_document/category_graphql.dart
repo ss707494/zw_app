@@ -50,19 +50,43 @@ query ($data: CategoryInput, $proData: ProductInput) {
     is_enable
   }
   product_list (ListInput: $proData) {
+    brand
+    c1_id
+    c1_name
+    c1_number
+    c2_id
+    c2_name
+    c2_number
+    c3_id
+    c3_name
+    c3_number
+    category_id
+    create_time
     id
+    is_delete
+    is_enable
+    is_hot
+    is_new
     name
     number
-    weight
-    unit
-    price_market
     price_in
+    price_market
     price_out
+    remark
+    stock
+    unit
+    update_time
+    weight
+    is_group
+    group_amount
+    group_precision
+    group_remark
     imgs {
       id
       name
-      url
       number
+      product_id
+      url
     }
   }
 }

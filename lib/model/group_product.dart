@@ -26,7 +26,7 @@ class GroupProductModel extends ChangeNotifier {
   }
 
   getListData(context, {Map<String, dynamic> data}) async {
-    QueryResult res = await graphqlQuery(context, getProductListDoc, data: {'data': {...?data, 'is_group': 1}});
+    QueryResult res = await graphqlQuery(context, getProductListDoc, data: {'data': {...?data['data'], 'is_group': 1}});
     _list = List<ProductItemEntity>()..addAll((res.data['product_list'] as List ?? []).map((e) => ProductItemEntity.fromJson(e)));
 //    _list = res.data['product_list'];
     notifyListeners();

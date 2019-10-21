@@ -11,7 +11,8 @@ import 'package:zw_app/view/main_page/group_buy/order_confirm/group_product_deta
 class GroupBuyLimitedTime extends StatelessWidget {
   final ScrollController scrollViewController;
 
-  const GroupBuyLimitedTime({Key key, this.scrollViewController}) : super(key: key);
+  const GroupBuyLimitedTime({Key key, this.scrollViewController})
+      : super(key: key);
 
   buildTimerNumber(String text) => Container(
         margin: EdgeInsets.symmetric(horizontal: 2),
@@ -33,143 +34,134 @@ class GroupBuyLimitedTime extends StatelessWidget {
         Icon(Icons.star, size: size, color: color ?? Colors.yellow[700]);
 
     return Card(
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Container(
-                height: 120,
-                child: CarouselSliderIndicator(
-                  aspectRatio: 1 / 1,
-                  items: [
-                    ...(item.imgs?.length ?? 0) > 0
-                        ? item.imgs
-                            ?.map((e) => Container(
-                                  child: Image.network(
-                                    '$e',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ))
-                            ?.toList()
-                        : []
-                  ],
-                ),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              height: 120,
+              child: CarouselSliderIndicator(
+                aspectRatio: 1 / 1,
+                items: [
+                  ...(item.imgs?.length ?? 0) > 0
+                      ? item.imgs
+                          ?.map((e) => Container(
+                                child: Image.network(
+                                  '$e',
+                                  fit: BoxFit.fill,
+                                ),
+                              ))
+                          ?.toList()
+                      : []
+                ],
               ),
-              Expanded(
-                child: Container(
-                  height: 120,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(item.name),
-                            Container(
-                              width: 10,
-                            ),
-                            Text('('),
-                            Row(
-                              children: <Widget>[
-                                Text(item.groupRemark),
-                                Text('/共${item.groupAmount}${item.unit}/${item.groupPrecision}份制'),
-                              ],
-                            ),
-                            Text(')'),
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            ...List.generate(groupQueueEntity.fillAmount, (index) => starIcon()),
-                            ...List.generate(groupQueueEntity.fillAmount, (index) => starIcon()),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 4,
+            ),
+            Expanded(
+              child: Container(
+                height: 120,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(item.name),
+                          Container(
+                            width: 10,
                           ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black.withAlpha(200),
-                          ),
-                          child: Text(
-                            '当前剩余: ${item.stock}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Row(
+                          Text('('),
+                          Row(
                             children: <Widget>[
+                              Text(item.groupRemark),
                               Text(
-                                '¥${item.priceMarket}',
-                                style: TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Text(
-                                  '¥${item.priceOut}',
-                                  style: TextStyle(
-                                      fontSize: 17, color: Colors.red),
-                                ),
-                              ),
+                                  '/共${item.groupAmount}${item.unit}/${item.groupPrecision}份制'),
                             ],
                           ),
-                        ),
-                        Container(
-                          height: 30,
-                          child: RaisedButton(
-                            padding: EdgeInsets.all(2),
-                            elevation: 1,
-                            color: Colors.red,
-                            onPressed: () async {
-                              mainNavigationKey.currentState.push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          GroupProductDetail(product: item)));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  color: Colors.white,
-                                  size: 12,
-                                ),
-                                Container(width: 5),
-                                Text(
-                                  '拼一个',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                )
-                              ],
+                          Text(')'),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          ...List.generate(groupQueueEntity.fillAmount,
+                              (index) => starIcon()),
+                          ...List.generate(
+                              item.groupPrecision - groupQueueEntity.fillAmount,
+                              (index) =>
+                                  starIcon(color: Colors.grey.withAlpha(150))),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text('市场价 '),
+                          Text(
+                            '\$${item.priceMarket}',
+                            style: TextStyle(
+                              decoration: TextDecoration.lineThrough,
                             ),
-//                    icon: Icon(Icons.shopping_cart,),
                           ),
+                        ],
+                      ),
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              '基准价格 ',
+                              style: TextStyle(fontSize: 17, color: Colors.red),
+                            ),
+                            Text(
+                              '\$${item.priceOut}/${item.unit}',
+                              style: TextStyle(fontSize: 17, color: Colors.red),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        height: 30,
+                        child: RaisedButton(
+                          padding: EdgeInsets.all(2),
+                          elevation: 1,
+                          color: Colors.red,
+                          onPressed: () async {
+                            mainNavigationKey.currentState.push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GroupProductDetail(product: item)));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              Container(width: 5),
+                              Text(
+                                '拼一个',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+//                    icon: Icon(Icons.shopping_cart,),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   @override
@@ -179,7 +171,7 @@ class GroupBuyLimitedTime extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: EasyRefreshCus(
           outerController: scrollViewController,
-          firstRefresh: limitedTimeModel.isInit,
+          firstRefresh: true,
           onRefresh: () async {
             await limitedTimeModel.getListData(context);
           },
@@ -187,7 +179,9 @@ class GroupBuyLimitedTime extends StatelessWidget {
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate([
-                  ...?limitedTimeModel.list.map((e) => buildCard(e, context: context)).toList(),
+                  ...?limitedTimeModel.list
+                      .map((e) => buildCard(e, context: context))
+                      .toList(),
                 ]),
               ),
             ],

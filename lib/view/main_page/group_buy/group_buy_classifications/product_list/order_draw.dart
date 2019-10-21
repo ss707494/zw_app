@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zw_app/model/product.dart';
+import 'package:zw_app/model/group_product.dart';
 
 class OrderDraw extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final productModel = Provider.of<ProductModel>(context);
+    final productModel = Provider.of<GroupProductModel>(context);
     return ListView(
           children: <Widget>[
             Padding(

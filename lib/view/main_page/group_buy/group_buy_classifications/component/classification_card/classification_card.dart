@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/component/image_err_help.dart';
 import 'package:zw_app/entity/Category_item_entity.dart';
-import 'package:zw_app/view/main_page/home/classifications/product_list/product_list.dart';
-import 'package:zw_app/view/main_page/home/classifications/sub_classifications/sub_classifications.dart';
+import 'package:zw_app/view/main_page/group_buy/group_buy_classifications/product_list/product_list.dart';
+import 'package:zw_app/view/main_page/group_buy/group_buy_classifications/sub_classifications/sub_classifications.dart';
 
-class ClassificationCard extends StatelessWidget {
+class GroupClassificationCard extends StatelessWidget {
   final CategoryItemEntity item;
   final int level;
 
-  const ClassificationCard({Key key, this.item, this.level = 2})
+  const GroupClassificationCard({Key key, this.item, this.level = 2})
       : super(key: key);
 
   @override
@@ -59,13 +59,13 @@ class ClassificationCard extends StatelessWidget {
               onTap: () {
                 if (level == 3) {
                   mainNavigationKey.currentState.push(MaterialPageRoute(
-                      builder: (context) => ProductList(
+                      builder: (context) => GroupProductList(
                             title: item.name,
                             typeId: item.id,
                           )));
                 } else {
                   mainNavigationKey.currentState.push(MaterialPageRoute(
-                      builder: (BuildContext context) => SubClassifications(
+                      builder: (BuildContext context) => GroupSubClassifications(
                             parentId: item.id,
                             level: level + 1,
                           )));

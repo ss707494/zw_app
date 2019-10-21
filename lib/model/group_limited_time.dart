@@ -20,6 +20,8 @@ class GroupLimitedTimeModel extends BaseModel {
 
 //    QueryResult res = await graphqlQuery(context, getProductListWithFeatureDoc, data: {'data': {...?data, 'is_group': 1}});
     _list = List<GroupQueueEntity>()..addAll((res.data['group_queue_list'] as List ?? []).map((e) => GroupQueueEntity.fromJson(e)));
+    _list = _list.where((e) => e.fillAmount < e.product.groupPrecision).toList();
+
     handleInit();
     notifyListeners();
   }

@@ -7,11 +7,11 @@ import 'package:zw_app/model/sub_class.dart';
 import 'package:zw_app/view/main_page/group_buy/group_buy_classifications/component/classification_card/classification_card.dart';
 import 'package:zw_app/view/main_page/group_buy/group_buy_classifications/component/product_card/product_card.dart';
 
-class SubClassifications extends StatelessWidget {
+class GroupSubClassifications extends StatelessWidget {
   final parentId;
   final int level;
 
-  const SubClassifications({Key key, @required this.parentId, this.level = 2})
+  const GroupSubClassifications({Key key, @required this.parentId, this.level = 2})
       : super(key: key);
 
   @override
@@ -29,6 +29,7 @@ class SubClassifications extends StatelessWidget {
                 ? subClassModel.subData2
                 : subClassModel.subData3;
             data ??= SubCategoryWithProductEntity();
+
             return EasyRefreshCus(
               firstRefresh: true,
               onRefresh: () async {
@@ -40,7 +41,8 @@ class SubClassifications extends StatelessWidget {
                       "parent_id": parentId
                     },
                     "proData": {
-                      "origin_category_id": parentId
+                      "origin_category_id": parentId,
+                      'is_group': 1,
                     }
                   },
                 );
@@ -51,7 +53,7 @@ class SubClassifications extends StatelessWidget {
                     delegate: SliverChildListDelegate(
                       [
                         ...data.categoryList
-                                ?.map((e) => ClassificationCard(
+                                ?.map((e) => GroupClassificationCard(
                                       item: e,
                                       level: level,
                                     ))
@@ -73,17 +75,15 @@ class SubClassifications extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SliverGrid.count(
-                    childAspectRatio: 10 / 14,
-                    crossAxisCount: 2,
-                    children: [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
                       ...data.productList
-                              ?.map((e) => ProductCard(
-                                    item: e,
-                                  ))
-                              ?.toList() ??
+                          ?.map((e) => GroupProductCard(
+                        item: e,
+                      ))
+                          ?.toList() ??
                           [],
-                    ],
+                    ]),
                   ),
                   SliverToBoxAdapter(
                     child: Container(height: 20),

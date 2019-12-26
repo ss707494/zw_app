@@ -12,6 +12,19 @@ mutation($data: SaveOrderInput) {
 ''';
 
 // language=GraphQL
+String finishOrderDoc = r'''
+mutation($data: SaveOrderInput) {
+  finish_order(saveOrderInput: $data) {
+    flag
+    order {
+      id
+      number
+    }
+  }
+}
+''';
+
+// language=GraphQL
 String getOrderDetailDoc = r'''query ($id: String!, $isGroup: Int) {
     order_detail(id: $id, isGroup: $isGroup) {
         id

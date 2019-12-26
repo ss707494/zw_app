@@ -16,6 +16,7 @@ import 'package:zw_app/view/test_page/first_page/first_page.dart';
 import 'model/http.dart';
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initConfig();
   runApp(App());
 }

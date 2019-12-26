@@ -134,6 +134,13 @@ class ConfirmOrderModel extends BaseModel {
       await shoppingCartModel.getData(context);
       Fluttertoast.showToast(msg: '操作成功');
     }
+    if (!res.data['save_order']['order']['id'].isEmpty) {
+      await graphqlQuery(context, finishOrderDoc, data: {
+        'data': {
+          'id': res.data['save_order']['order']['id']
+        }
+      });
+    }
     return res.data['save_order'];
   }
 

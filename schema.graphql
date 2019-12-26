@@ -11,6 +11,21 @@ interface listSearch {
     sort_type: String
 }
 
+type AddItem {
+    amount: Float
+    count: Float
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    product: Product
+    product_id: String
+    remark: String
+    supplement_id: String
+    supplier: String
+    update_time: Date
+}
+
 type Address {
     address: String
     city: String
@@ -73,6 +88,7 @@ type Mutation {
     addToShopCart(ShopCartInput: ShopCartInput): result
     changePassword(data: ChangePassword!): String
     deleteOneUser(id: String!): String
+    finish_order(saveOrderInput: SaveOrderInput): result
     importAllUser(data: String!): String
     remove_all_shop_cart(ids: [String!]!): result
     remove_shop_cart(id: String!): result
@@ -82,6 +98,7 @@ type Mutation {
     save_order(saveOrderInput: SaveOrderInput): result
     save_pay_card(editPayCardInput: EditPayCardInput): result
     save_product(ProductInput: ProductInput): result
+    save_product_supplement(productSupplementInput: ProductSupplementInput): result
     save_shop_cart(SaveShopCartInput: SaveShopCartInput): result
     set_default_address(defaultId: String!): result
     set_default_pay_card(defaultId: String!): result
@@ -110,6 +127,8 @@ type Order {
     subtotal: Float
     transportation_costs: Float
     update_time: Date
+    user: User
+    user_id: String
     vip_discount: Float
 }
 
@@ -176,10 +195,27 @@ type ProductImg {
     url: String
 }
 
+type ProductSupplement {
+    addItemList: [AddItem]
+    amount: Float
+    code: String
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    number: String
+    state: Int
+    supplier: String
+    update_time: Date
+    user_id: String
+}
+
 type Query {
     address_list(addressInput: AddressInput): [Address]
     allDataUser: String
     allUser(data: UserInput): [User]
+    all_order_list(allOrderListInput: AllOrderListInput): [Order]
+    all_order_list_total(allOrderListInput: AllOrderListInput): Int
     category_list(CategoryInput: CategoryInput): [Category]
     category_origin(id: String): Category
     category_total(CategoryInput: CategoryInput): Int
@@ -191,6 +227,8 @@ type Query {
     order_list(id: String): [Order]
     pay_card_list(payCardInput: PayCardInput): [PayCard]
     product_list(ListInput: ProductInput): [Product]
+    product_supplement_list(productSupplementListInput: ProductSupplementListInput): [ProductSupplement]
+    product_supplement_list_total(productSupplementListInput: ProductSupplementListInput): Int
     product_total(ListInput: ProductInput): Int
     shop_cart_list(ShopCartInput: ShopCartInput): [ShopCart]
     test: String
@@ -246,6 +284,15 @@ type token {
     token: String
 }
 
+input AddItemInput {
+    addNumber: Float
+    addPrice: Float
+    addRemark: String
+    addSupplier: String
+    id: String
+    product_id: String
+}
+
 input AddressInput {
     address: String
     city: String
@@ -261,6 +308,12 @@ input AddressInput {
     update_time: Date
     user_id: String
     zip: String
+}
+
+input AllOrderListInput {
+    page: Int
+    rows_per_page: Int
+    sort_type: String
 }
 
 input CategoryInput {
@@ -414,6 +467,27 @@ input ProductInput {
     update_time: Date
     user_id: String
     weight: Float
+}
+
+input ProductSupplementInput {
+    addList: [AddItemInput]
+    id: String
+}
+
+input ProductSupplementListInput {
+    amount: Float
+    code: String
+    create_time: Date
+    id: String
+    is_delete: Int
+    name: String
+    number: String
+    page: Int
+    rows_per_page: Int
+    state: Int
+    supplier: String
+    update_time: Date
+    user_id: String
 }
 
 input SaveGroupOrderInput {

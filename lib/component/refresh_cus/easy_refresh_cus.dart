@@ -7,7 +7,7 @@ class RefreshCus extends StatelessWidget {
   final bool firstRefresh;
   final Widget child;
   final onRefresh;
-  final LoadCallback onLoad;
+  final onLoad;
   final EasyRefreshController outerController;
 //  final GlobalKey<EasyRefreshState> easyRefreshKey;
 //  final GlobalKey<RefreshHeaderState> _headerKey =

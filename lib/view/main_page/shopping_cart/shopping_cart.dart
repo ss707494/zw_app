@@ -34,7 +34,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: ImageErrHelp(
-                  imageUrl: item.product?.imgs == null ? '' : item.product?.imgs[0]?.url,
+                  imageUrl: (item.product?.imgs?.isEmpty ?? true) ? '' : item.product?.imgs[0]?.url,
                 ),
               ),
             ),
@@ -127,8 +127,9 @@ class _ShoppingCartState extends State<ShoppingCart> {
 
   buildProductForCart(
           context, List<ShopCartItemEntity> productList, ShoppingCartModel shoppingCartModel) =>
-      List.generate(productList.length ?? 0, (index) {
+      List.generate(productList?.length ?? 0, (index) {
         var item = productList[index];
+//        item.product?.imgs
         return Container(
           margin: EdgeInsets.only(bottom: 10),
           child: buildProductCard(context, item, shoppingCartModel,

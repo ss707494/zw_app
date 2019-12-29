@@ -4,8 +4,8 @@ import 'package:zw_app/common/secure_storage.dart';
 final isProd = bool.fromEnvironment('dart.vm.product');
 
 List<String> helpServerList = [
-  '47.52.230.148',
   '10.0.2.2',
+  '47.52.230.148',
 ];
 
 String serverHost;

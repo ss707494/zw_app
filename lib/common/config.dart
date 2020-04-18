@@ -5,12 +5,12 @@ final isProd = bool.fromEnvironment('dart.vm.product');
 
 List<String> helpServerList = [
   '10.0.2.2',
-  '47.52.230.148',
+  '47.75.157.220',
 ];
 
 String serverHost;
 getServerHost() => serverHost;
-//final String serverHost = 'http://47.52.230.148:4464/';
+//final String serverHost = 'http://47.75.157.220:4464/';
 String imgServerHost;
 getImgServerHost () => imgServerHost;
 
@@ -35,7 +35,7 @@ initConfig () async {
   serverHost = _serverHost;
   String _imgServerHost = await getStorageByKey('imgServerHost');
   if (_imgServerHost == null) {
-    _imgServerHost = 'http://47.52.230.148:4464/';
+    _imgServerHost = 'http://47.75.157.220:4464/';
     await setStorage(key: 'imgServerHost', value: _imgServerHost);
   }
   imgServerHost = _imgServerHost;

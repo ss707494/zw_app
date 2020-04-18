@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class NestedNavigator extends StatelessWidget {
@@ -19,7 +18,7 @@ class NestedNavigator extends StatelessWidget {
       initialRoute: initialRoute,
       onGenerateRoute: (RouteSettings routeSettings) {
         WidgetBuilder builder = routes[routeSettings.name];
-        if (routeSettings.isInitialRoute) {
+        if (routeSettings.name == initialRoute) {
           return PageRouteBuilder(
             pageBuilder: (context, __, ___) => builder(context),
             settings: routeSettings,

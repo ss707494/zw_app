@@ -1,0 +1,11 @@
+
+query promoCodeList (
+    $data: PromoCodeItemInput
+) {
+    promoCodeList (promoCodeItemInput: $data) {
+        id
+        name
+        createTime
+    }
+}
+

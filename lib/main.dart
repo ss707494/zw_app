@@ -11,6 +11,7 @@ import 'package:zw_app/model/provider_list.dart';
 import 'package:zw_app/view/login/login.dart';
 import 'package:zw_app/view/main_page/main_page.dart';
 import 'package:zw_app/view/main_page/shopping_cart/confirm_order.dart';
+import 'package:zw_app/view/register/register.dart';
 import 'package:zw_app/view/test_page/first_page/first_page.dart';
 
 import 'model/http.dart';
@@ -49,6 +50,7 @@ class App extends StatelessWidget {
                       'empty': (context) => FirstPage(),
                       'main': (context) => MainPage(),
                       'login': (context) => Login(),
+                      'register': (context) => Register(),
                       'test': (context) => ConfirmOrder(),
                     },
                   ),

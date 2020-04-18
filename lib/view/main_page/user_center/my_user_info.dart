@@ -43,7 +43,7 @@ class MyUserInfo extends StatelessWidget {
                             Text('姓名'),
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text(userInfo.userName),
+                              child: Text(userInfo.userName??''),
                             ),
                             Spacer(),
                             SizedBox(
@@ -74,7 +74,7 @@ class MyUserInfo extends StatelessWidget {
                             Text('电话'),
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text(userInfo.phone),
+                              child: Text(userInfo.phone??''),
                             ),
                           ],
                         ),
@@ -86,7 +86,7 @@ class MyUserInfo extends StatelessWidget {
                             Text('邮箱'),
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text(userInfo.email),
+                              child: Text(userInfo.email??''),
                             ),
                           ],
                         ),

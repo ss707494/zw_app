@@ -14,6 +14,7 @@ import 'package:zw_app/model/may_like.dart';
 import 'package:zw_app/model/order.dart';
 import 'package:zw_app/model/pay_card.dart';
 import 'package:zw_app/model/product.dart';
+import 'package:zw_app/model/register.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
 import 'package:zw_app/model/sub_class.dart';
@@ -54,6 +55,7 @@ class ProviderHelp extends StatelessWidget {
         ChangeNotifierProvider(builder: (_) => GroupLimitedTimeModel()),
         ChangeNotifierProvider(builder: (_) => GroupShoppingCartModel()),
         ChangeNotifierProvider(builder: (_) => GroupConfirmOrderModel()),
+        ChangeNotifierProvider(builder: (_) => RegisterModel()),
       ],
       child: child,
     );

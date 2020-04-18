@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zw_app/common/router_help.dart';
 import 'package:zw_app/model/login.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -10,7 +11,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   bool autoValidate = false;
 
   @override
@@ -67,6 +67,17 @@ class _LoginState extends State<Login> {
                       });
                     }
                   },
+                ),
+                Row(
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('注册'),
+                      onPressed: () async {
+                        mainNavigationKey.currentState.pushNamed('register');
+                      },
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.end,
                 ),
               ],
             ),

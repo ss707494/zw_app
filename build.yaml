@@ -1,0 +1,14 @@
+targets:
+  $default:
+#    sources:
+#      - graphql_type/**
+    builders:
+      artemis:
+        options:
+          schema_mapping:
+            - schema: lib/type__graphql/schema.graphql
+              queries_glob: lib/type__graphql/queries_glob/**.graphql
+              output: lib/type__graphql/art_graphql/art_graphql_query.dart
+          scalar_mapping:
+            - graphql_type: Timestamp
+              dart_type: int

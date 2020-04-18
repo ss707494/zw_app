@@ -1,0 +1,24 @@
+fragment User on User {
+    id
+    name
+    createTime
+    updateTime
+    isDelete
+    type
+    orderCoinNextMonth
+    orderCoinCurrentMonth
+    orderAmountCurrentYear
+}
+
+query userCenter {
+    oneUser {
+        ...User
+        userInfo {
+            name
+            phone
+            email
+        }
+    }
+}
+
+

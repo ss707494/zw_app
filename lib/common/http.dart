@@ -1,7 +1,5 @@
 library ss_dio;
 
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,6 @@ Future<Response> httpPost(context, String path, {data}) async {
     '${httpLoadingModel.hostStr}$path',
     data: data,
     options: Options(
-      contentType: ContentType.json,
     )
   )
       .catchError((err) {

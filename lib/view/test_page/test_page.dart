@@ -10,7 +10,6 @@ import 'package:zw_app/view/test_page/provider_sample/modal/cart.dart';
 import 'package:zw_app/view/test_page/provider_sample/screen/cart.dart';
 import 'package:zw_app/view/test_page/provider_sample/screen/catalog.dart';
 import 'package:zw_app/view/test_page/provider_sample/screen/login.dart';
-import 'package:zw_app/view/test_page/provider_sample/ss_provider/ss_provider.dart';
 
 // This app is a stateful, it tracks the user's current choice.
 class BasicAppBarSample extends StatefulWidget {
@@ -22,20 +21,6 @@ class _BasicAppBarSampleState extends State<BasicAppBarSample> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -517,7 +502,7 @@ class Title extends StatelessWidget {
 }
 
 class ProviderSample extends StatelessWidget {
-@override
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       builder: (context) => CartModel(),
@@ -554,4 +539,3 @@ class Test extends StatelessWidget {
     );
   }
 }
-

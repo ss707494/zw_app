@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:zw_app/common/router_help.dart';
-import 'package:zw_app/entity/user_coin_entity.dart';
-import 'package:zw_app/entity/user_info_entity.dart';
+import 'package:zw_app/common/storeModel/storeModel.dart';
 import 'package:zw_app/model/login.dart';
 import 'package:zw_app/model/router.dart';
 import 'package:zw_app/model/shopping_cart.dart';
-import 'package:zw_app/model/user_center.dart';
+import 'package:zw_app/type__graphql/model/user_center.dart';
 import 'package:zw_app/view/main_page/sys_dev/sys_dev.dart';
 import 'package:zw_app/view/main_page/user_center/help_info.dart';
 import 'package:zw_app/view/main_page/user_center/my_address_list.dart';
@@ -19,12 +19,14 @@ import 'package:zw_app/view/main_page/user_center/order_history.dart';
 import 'group_order_history.dart';
 import 'my_user_info.dart';
 
-class UserCenter extends StatelessWidget {
+class UserCenter extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    UserCenterModel userCenterModel = Provider.of<UserCenterModel>(context);
-    UserInfoEntity userInfo = userCenterModel.userInfo;
-    UserCoinEntity userCoin = userCenterModel.userCoin;
+    final userCenterModelStore = useStoreModel(userCenterModelDate);
+    final uCHelp = userCenterModelStore.helpAction;
+    final uCState = userCenterModelStore.state;
+    final uCActions = userCenterModelStore.actions;
+
     ShoppingCartModel shoppingCartModel =
         Provider.of<ShoppingCartModel>(context);
 
@@ -46,18 +48,18 @@ class UserCenter extends StatelessWidget {
       children: <Widget>[
         Container(height: 30),
         Text(
-          '你好, ${userInfo.userName ?? ''}',
+          '你好, ${uCState.user?.userInfo?.name ?? ''}',
           style: TextStyle(
             fontSize: 20,
           ),
         ),
         Container(height: 20),
-        Text('${userInfo.phone ?? ''}'),
+        Text('${uCState.user?.userInfo?.phone ?? ''}'),
         Row(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text('${userInfo.email ?? ''}'),
+              child: Text('${uCState.user?.userInfo?.email ?? ''}'),
             ),
             Spacer(),
             FlatButton(
@@ -92,7 +94,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('\$${userCoin.currentMouthIcons ?? 0}'),
+                  Text('\$${uCState.user?.orderCoinCurrentMonth ?? 0}'),
                   Text('当月达人币'),
                 ],
               ),
@@ -105,7 +107,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('\$${userCoin.nextMouthIcons ?? 0}'),
+                  Text('\$${uCState.user?.orderCoinNextMonth ?? 0}'),
                   Text('下月达人币'),
                 ],
               ),
@@ -118,7 +120,7 @@ class UserCenter extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${userCoin.cardNumber ?? 0}'),
+                  Text('${0}'),
                   Text('达人卡'),
                 ],
               ),
@@ -137,7 +139,6 @@ class UserCenter extends StatelessWidget {
                 '我的订单历史',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-//          subtitle: Text('${userCenterModel.orderList.length ?? 0}个订单待取货'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 mainNavigationKey.currentState.push(MaterialPageRoute(
@@ -152,7 +153,6 @@ class UserCenter extends StatelessWidget {
                 '拼团订单历史',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-//          subtitle: Text('${userCenterModel.orderList.length ?? 0}个订单待取货'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 mainNavigationKey.currentState.push(MaterialPageRoute(
@@ -241,7 +241,7 @@ class UserCenter extends StatelessWidget {
           firstRefresh: true,
           header: MaterialHeader(),
           onRefresh: () async {
-            await userCenterModel.getData(context);
+            await uCActions.getData(uCHelp)();
           },
           child: ListView(
             children: <Widget>[

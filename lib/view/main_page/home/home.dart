@@ -14,6 +14,7 @@ import 'package:zw_app/view/main_page/home/home_sales/home_sales.dart';
 import 'package:zw_app/view/main_page/home/limited_time/limited_time.dart';
 import 'package:zw_app/view/main_page/home/may_like/may_like.dart';
 import 'package:zw_app/view/main_page/home/subject_selection/subject_selection.dart';
+import 'package:zw_app/view/test_page/use_hooks/use_hooks.dart';
 
 var getShopNavList = (control) => [
       NavObj('分类选择', 'classifications',
@@ -38,6 +39,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+          mainNavigationKey.currentState.push(MaterialPageRoute(
+            builder: (context) => CounterTest(),
+          ));
+        });
   }
 
   @override
@@ -78,8 +84,8 @@ class _HomeState extends State<Home> {
               headerSliverBuilder: (context, boxIsScrolled) => [
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: CarouselSliderIndicator(
                       items: List.generate(
                           3,
@@ -98,7 +104,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 SliverOverlapAbsorber(
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   child: SliverAppBarHeight(
                     customizeHeight: 45,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -109,7 +116,8 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: getShopNavList(_scrollViewController).map((e) {
+                        children:
+                            getShopNavList(_scrollViewController).map((e) {
                           bool isCurrent = e.routeName ==
                               (routerModel.getCurrent('shop') ??
                                   getShopNavList(_scrollViewController)[0]

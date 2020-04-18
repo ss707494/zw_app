@@ -45,7 +45,12 @@ class HttpModel extends ChangeNotifier {
 
   String _token;
 
-  String get token => _token;
+  String get token {
+    if (_token == null) {
+      initToken();
+    }
+    return _token;
+  }
 
   setTokenAsync(String token) async {
     _token = token;
